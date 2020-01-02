@@ -3,7 +3,6 @@ package com.robbies.scraddle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerViewHolder> {
+public class SelectPlayerAdapter extends RecyclerView.Adapter<SelectPlayerAdapter.PlayerViewHolder> {
 
     private final List<Player> mAllPlayers;
     private OnPlayerListener mOnPlayerListener;
 
 
-    public PlayerAdapter(List<Player> allPlayers, OnPlayerListener onPlayerListener) {
+    public SelectPlayerAdapter(List<Player> allPlayers, OnPlayerListener onPlayerListener) {
         mAllPlayers = allPlayers;
         this.mOnPlayerListener = onPlayerListener;
     }
@@ -27,7 +26,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     public PlayerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //Create the new view
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scorecard, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_select_player_item, parent, false);
         PlayerViewHolder vh = new PlayerViewHolder(view, mOnPlayerListener);
         return vh;
     }
@@ -39,16 +38,7 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
         Player player = mAllPlayers.get(position);
 
         //Set each item
-        holder.nameTextView.setText(player.getName());
-        holder.scoreTextView.setText(Integer.toString(player.getTotal()));
-        holder.lastScoreTextView.setText(player.getLastScore());
-        holder.bestScoreTextView.setText(player.getHighScore());
-        holder.personalBestTextView.setText(player.getPersonalBest());
-
-
-        // Change the display to active player
-        holder.nameTextView.setBackgroundResource(player.getPlayerStatus() ? R.color.activePlayer : R.color.inactivePlayer);
-
+        holder.playerNameTextView.setText(player.getName());
 
     }
 
@@ -67,30 +57,17 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
     public static class PlayerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         OnPlayerListener onPlayerListener;
-        private TextView nameTextView;
-        private TextView lastScoreTextView;
-        private LinearLayout linearLayout;
-        private TextView scoreTextView;
-        private TextView bestScoreTextView;
-        private TextView personalBestTextView;
+        TextView playerNameTextView;
+
 
         public PlayerViewHolder(@NonNull View itemView, OnPlayerListener onPlayerListener) {
             super(itemView);
 
-
-            scoreTextView = itemView.findViewById(R.id.textViewPlayerTotal);
-            nameTextView = itemView.findViewById(R.id.textViewPlayerName);
-            lastScoreTextView = itemView.findViewById(R.id.textViewLastScore);
-            bestScoreTextView = itemView.findViewById(R.id.textViewBestScore);
-            personalBestTextView = itemView.findViewById(R.id.textViewPersonalBest);
-            linearLayout = itemView.findViewById(R.id.linearLayoutPlayer);
-
+            playerNameTextView = itemView.findViewById(R.id.textViewPlayerNameItem);
 
             this.onPlayerListener = onPlayerListener;
 
-
             itemView.setOnClickListener((this));
-
 
         }
 
@@ -103,7 +80,6 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
 
 
 }
-
 
 
 

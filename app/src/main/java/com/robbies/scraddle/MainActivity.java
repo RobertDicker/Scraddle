@@ -1,6 +1,8 @@
 package com.robbies.scraddle;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,13 +14,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements PlayerAdapter.OnPlayerListener {
+public class MainActivity extends AppCompatActivity implements PlayerListAdapter.OnPlayerListener {
 
-    List<Player> mAllPlayers = new ArrayList<Player>();
+    List<Player> mPlayers = new ArrayList<Player>();
     RecyclerView mRecyclerViewPlayers;
     int activePlayer = 0;
     EditText scoreEditText;
-    PlayerAdapter playerAdapter;
+    PlayerListAdapter playerAdapter;
+    GameDataAdapter gameData = new GameDataAdapter();
 
 
     @Override
@@ -28,22 +31,30 @@ public class MainActivity extends AppCompatActivity implements PlayerAdapter.OnP
 
         setContentView(R.layout.activity_main);
 
-        Player player1 = new Player("Robbie");
-        Player player2 = new Player("Katherine");
-        Player player3 = new Player("Steve");
-        mAllPlayers.add(player1);
-        mAllPlayers.add(player2);
-        mAllPlayers.add(player3);
+        Intent intent = new Intent();
 
-        player1.setPlayerTurn(true);
+
+        initialisePlayers(getIntent().getStringArrayListExtra("selectedPlayersIds"));
+
+        mPlayers.get(0).setPlayerTurn(true);
 
         scoreEditText = findViewById(R.id.editTextAddScore);
 
 
         mRecyclerViewPlayers = findViewById(R.id.rVPlayers);
-        playerAdapter = new PlayerAdapter(mAllPlayers, this);
+        playerAdapter = new PlayerListAdapter(mPlayers, this);
         mRecyclerViewPlayers.setAdapter(playerAdapter);
         mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(this));
+
+
+    }
+
+    private void initialisePlayers(ArrayList<String> playerIds) {
+
+        for (String playerId : playerIds) {
+            mPlayers.add(gameData.getIndividualPlayer(playerId));
+            Log.d("-----------------------", playerId);
+        }
 
 
     }
@@ -51,26 +62,26 @@ public class MainActivity extends AppCompatActivity implements PlayerAdapter.OnP
 
     public void onPlayerClick(int position) {
 
-        Player player = mAllPlayers.get(position);
-        mAllPlayers.get(activePlayer).setPlayerTurn(false);
+        Player player = mPlayers.get(position);
+        mPlayers.get(activePlayer).setPlayerTurn(false);
         player.setPlayerTurn(true);
-        Collections.rotate(mAllPlayers, mAllPlayers.size() - position);
+        Collections.rotate(mPlayers, mPlayers.size() - position);
         playerAdapter.notifyDataSetChanged();
-        scoreEditText.setHint("Add" + mAllPlayers.get(0).getName() + "'s score");
+        scoreEditText.setHint("Add" + mPlayers.get(0).getName() + "'s score");
     }
 
 
     public void addToPlayer(View view) {
 
         if (scoreEditText.getText().toString().trim().length() > 0) {
-            mAllPlayers.get(activePlayer).addScore(scoreEditText.getText().toString());
+            mPlayers.get(activePlayer).addScore(scoreEditText.getText().toString());
             // Change Player
-            mAllPlayers.get(activePlayer).setPlayerTurn(false);
-            Collections.rotate(mAllPlayers, 1);
-            mAllPlayers.get(activePlayer).setPlayerTurn(true);
+            mPlayers.get(activePlayer).setPlayerTurn(false);
+            Collections.rotate(mPlayers, 1);
+            mPlayers.get(activePlayer).setPlayerTurn(true);
             playerAdapter.notifyDataSetChanged();
             scoreEditText.setText("");
-            scoreEditText.setHint("Add " + mAllPlayers.get(0).getName() + "'s score");
+            scoreEditText.setHint("Add " + mPlayers.get(0).getName() + "'s score");
         }
 
 
