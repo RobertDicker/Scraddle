@@ -78,10 +78,11 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
 
         ArrayList<String> mSelectedPlayerIds = new ArrayList<String>(mSelectedPlayers.keySet());
 
+        if (mSelectedPlayerIds.size() > 0) {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putStringArrayListExtra("selectedPlayersIds", mSelectedPlayerIds);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putStringArrayListExtra("selectedPlayersIds", mSelectedPlayerIds);
-
-        startActivity(intent);
-    }
+            startActivity(intent);
+        }
+}
 }

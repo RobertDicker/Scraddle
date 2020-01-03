@@ -36,5 +36,9 @@ public class GameData {
         return mAllMatches;
     }
 
+    public void addMatchtoHistory(Match match) {
+        mAllMatches.add(match);
+    }
+
 
 }

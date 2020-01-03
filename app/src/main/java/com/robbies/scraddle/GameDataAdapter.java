@@ -11,7 +11,7 @@ public class GameDataAdapter {
     }
 
     public ArrayList<Player> getAllPlayers() {
-        return new ArrayList<Player>(gameData.getAllPlayers().values());
+        return new ArrayList<>(gameData.getAllPlayers().values());
     }
 
     public ArrayList<Match> getAllMatches() {
@@ -21,6 +21,10 @@ public class GameDataAdapter {
     public Player getIndividualPlayer(String playerId) {
 
         return gameData.getAllPlayers().get(playerId);
+    }
+
+    public void addMatch(Match match) {
+        gameData.addMatchtoHistory(match);
     }
 
 

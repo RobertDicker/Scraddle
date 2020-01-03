@@ -1,8 +1,6 @@
 package com.robbies.scraddle;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,16 +10,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements PlayerListAdapter.OnPlayerListener {
 
-    List<Player> mPlayers = new ArrayList<Player>();
+    ArrayList<Player> mPlayers = new ArrayList<Player>();
     RecyclerView mRecyclerViewPlayers;
     int activePlayer = 0;
     EditText scoreEditText;
     PlayerListAdapter playerAdapter;
     GameDataAdapter gameData = new GameDataAdapter();
+    Match currentMatch;
 
 
     @Override
@@ -31,32 +29,28 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
 
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent();
-
-
         initialisePlayers(getIntent().getStringArrayListExtra("selectedPlayersIds"));
 
+        //Create a match to keep track of the scores
+        currentMatch = new Match(mPlayers);
+
+        //Set player 1's first turn, will cycle through players in order.
         mPlayers.get(0).setPlayerTurn(true);
 
-        scoreEditText = findViewById(R.id.editTextAddScore);
 
+        scoreEditText = findViewById(R.id.editTextAddScore);
 
         mRecyclerViewPlayers = findViewById(R.id.rVPlayers);
         playerAdapter = new PlayerListAdapter(mPlayers, this);
         mRecyclerViewPlayers.setAdapter(playerAdapter);
         mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
     private void initialisePlayers(ArrayList<String> playerIds) {
 
         for (String playerId : playerIds) {
             mPlayers.add(gameData.getIndividualPlayer(playerId));
-            Log.d("-----------------------", playerId);
         }
-
-
     }
 
 
