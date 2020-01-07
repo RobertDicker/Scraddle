@@ -44,4 +44,22 @@
             app:srcCompat="@drawable/ic_check_circle_black_24dp" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonEndGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="endMatch"
+        android:text="End Match"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSaveAndQuit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="saveMatch"
+        android:text="Save and Quit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEndGame" />
 </androidx.constraintlayout.widget.ConstraintLayout>

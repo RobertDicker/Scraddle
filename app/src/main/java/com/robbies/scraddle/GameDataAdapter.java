@@ -1,13 +1,18 @@
 package com.robbies.scraddle;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 public class GameDataAdapter {
 
-    private GameData gameData = GameData.getInstance();
+    private Context context;
+    private GameData gameData;
 
+    public GameDataAdapter(Context context) {
+        this.context = context;
+        this.gameData = GameData.getInstance(context);
 
-    public GameDataAdapter() {
     }
 
     public ArrayList<Player> getAllPlayers() {
@@ -25,6 +30,16 @@ public class GameDataAdapter {
 
     public void addMatch(Match match) {
         gameData.addMatchtoHistory(match);
+    }
+
+    public void updatePlayerData(Player player) {
+        gameData.updatePlayer(player);
+    }
+
+    public void persistGameData() {
+        gameData.persistMatchData(context);
+        gameData.persistPlayerData(context);
+
     }
 
 

@@ -3,22 +3,23 @@ package com.robbies.scraddle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.PlayerViewHolder> {
 
-    private final List<Player> mAllPlayers;
+    private final ArrayList<Player> mAllPlayers;
+    private final Match mCurrentMatch;
     private OnPlayerListener mOnPlayerListener;
 
 
-    public PlayerListAdapter(List<Player> allPlayers, OnPlayerListener onPlayerListener) {
+    public PlayerListAdapter(ArrayList<Player> allPlayers, Match currentMatch, OnPlayerListener onPlayerListener) {
         mAllPlayers = allPlayers;
+        this.mCurrentMatch = currentMatch;
         this.mOnPlayerListener = onPlayerListener;
     }
 
@@ -37,17 +38,30 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
     public void onBindViewHolder(@NonNull PlayerViewHolder holder, int position) {
 
         Player player = mAllPlayers.get(position);
+        Score playerScore = mCurrentMatch.getPlayerScore(player.getPlayerID());
+        int visibility = player.getPlayerStatus() ? View.VISIBLE : View.GONE;
 
-        //Set each item
+        //Always show
         holder.nameTextView.setText(player.getName());
-        holder.scoreTextView.setText(Integer.toString(player.getTotal()));
-        holder.lastScoreTextView.setText(player.getLastScore());
-        holder.bestScoreTextView.setText(player.getHighScore());
-        holder.personalBestTextView.setText(player.getPersonalBest());
-
-
-        // Change the display to active player
         holder.nameTextView.setBackgroundResource(player.getPlayerStatus() ? R.color.activePlayer : R.color.inactivePlayer);
+        holder.scoreTextView.setText(playerScore.getTotalScore());
+
+        //Set Text
+        holder.lastScoreTextView.setText(playerScore.getLastScore());
+        holder.bestScoreTextView.setText(playerScore.getBestScoreSoFar());
+        holder.personalBestTextView.setText(Integer.toString(player.getPersonalBest()));
+        holder.miniScore.setText(playerScore.getTotalScore());
+
+        //Set Visibility
+
+        holder.lastScoreTextView.setVisibility(visibility);
+        holder.bestScoreTextView.setVisibility(visibility);
+        holder.personalBestTextView.setVisibility(visibility);
+        holder.labelPB.setVisibility(visibility);
+        holder.labelBest.setVisibility(visibility);
+        holder.labelLast.setVisibility(visibility);
+        holder.miniScore.setVisibility(player.getPlayerStatus() ? View.GONE : View.VISIBLE);
+
 
 
     }
@@ -69,22 +83,25 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Pl
         OnPlayerListener onPlayerListener;
         private TextView nameTextView;
         private TextView lastScoreTextView;
-        private LinearLayout linearLayout;
-        private TextView scoreTextView;
+        private TextView scoreTextView, miniScore;
         private TextView bestScoreTextView;
         private TextView personalBestTextView;
+        private TextView labelLast, labelBest, labelPB;
+
 
         public PlayerViewHolder(@NonNull View itemView, OnPlayerListener onPlayerListener) {
             super(itemView);
 
 
             scoreTextView = itemView.findViewById(R.id.textViewPlayerTotal);
+            miniScore = itemView.findViewById(R.id.textViewminiScore);
             nameTextView = itemView.findViewById(R.id.textViewPlayerName);
             lastScoreTextView = itemView.findViewById(R.id.textViewLastScore);
             bestScoreTextView = itemView.findViewById(R.id.textViewBestScore);
             personalBestTextView = itemView.findViewById(R.id.textViewPersonalBest);
-            linearLayout = itemView.findViewById(R.id.linearLayoutPlayer);
-
+            labelLast = itemView.findViewById(R.id.labelLastScore);
+            labelBest = itemView.findViewById(R.id.labelBestScore);
+            labelPB = itemView.findViewById(R.id.labelHighestScore);
 
             this.onPlayerListener = onPlayerListener;
 
