@@ -3,7 +3,9 @@ package com.robbies.scraddle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
     PlayerListAdapter playerAdapter;
     GameDataAdapter gameData;
     Match currentMatch;
+    int increment = 0;
+    TextView currentPlayerTurn;
+    Button button;
 
 
     @Override
@@ -33,10 +38,9 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
 
         gameData = new GameDataAdapter(getApplicationContext());
         initialiseMatch(getIntent().getIntExtra("gameMode", -1));
+        currentPlayerTurn = findViewById(R.id.textViewCurrentPlayerTurn);
+        button = findViewById(R.id.buttonAddToPlayer);
 
-
-
-        scoreEditText = findViewById(R.id.editTextAddScore);
 
         mRecyclerViewPlayers = findViewById(R.id.rVPlayers);
         playerAdapter = new PlayerListAdapter(mPlayers, currentMatch, this);
@@ -67,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
 
     public void onPlayerClick(int position) {
 
-        Player player = mPlayers.get(position);
         //Set active player to the current selected player and rotate to the top of screen.
 
         changePlayer(mPlayers.size() - position);
@@ -75,17 +78,20 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
 
 
     public void addToPlayer(View view) {
-        int tempScore = Integer.parseInt(scoreEditText.getText().toString());
+
+
         Player currentPlayer = mPlayers.get(activePlayer);
 
-        if (scoreEditText.getText().toString().trim().length() > 0) {
-            currentMatch.addScoreToPlayer(currentPlayer.getPlayerID(), tempScore);
+        if (increment > 0) {
+            currentMatch.addScoreToPlayer(currentPlayer.getPlayerID(), increment);
 
             //Check for score records
-            if (tempScore > currentPlayer.getPersonalBest()) {
-                currentPlayer.setPersonalBest(tempScore);
+            if (increment > currentPlayer.getPersonalBest()) {
+                currentPlayer.setPersonalBest(increment);
             }
             // Next Player
+            increment = 0;
+            button.setText("Add\n" + increment);
             changePlayer(-1);
         }
     }
@@ -96,8 +102,12 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
         Collections.rotate(mPlayers, rotateDistance);
         mPlayers.get(activePlayer).setPlayerTurn(true);
         playerAdapter.notifyDataSetChanged();
-        scoreEditText.setText("");
-        scoreEditText.setHint("Add " + mPlayers.get(0).getName() + "'s score");
+
+        //Set the title to show who's turn it is
+        String turnString = mPlayers.get(0).getName() + "'s Turn";
+
+
+        currentPlayerTurn.setText(turnString);
     }
 
     public void endMatch(View view) {
@@ -125,5 +135,33 @@ public class MainActivity extends AppCompatActivity implements PlayerListAdapter
         startActivity(intent);
 
     }
+
+    public void increment(View view) {
+
+
+        switch (view.getId()) {
+
+            case R.id.buttonAddOne:
+                increment++;
+                break;
+            case R.id.buttonAddFive:
+                increment += 5;
+                break;
+            case R.id.buttonAddTen:
+                increment += 10;
+            case R.id.buttonMinusOne:
+                increment = increment > 0 ? increment - 1 : 0;
+                break;
+            case R.id.buttonClear:
+                increment = 0;
+                break;
+
+
+        }
+
+        button.setText("Add\n" + increment);
+
+    }
+
 
 }

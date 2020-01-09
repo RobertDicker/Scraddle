@@ -1,8 +1,10 @@
 package com.robbies.scraddle;
 
+import java.math.BigInteger;
+
 public class PrimeValue {
 
-    public static int calculatePrimeValue(String word) {
+    public static String calculatePrimeValue(String word) {
 
         int[] primeNumbers = new int[]{3,
                 5,
@@ -31,19 +33,20 @@ public class PrimeValue {
                 101,
                 103};
 
-        int wordNumber = 1;
+        BigInteger wordNumber = new BigInteger("1");
 
         char[] wordAsCharArray = word.toCharArray();
 
         for (char letter : wordAsCharArray) {
-            int charValue = Character.getNumericValue(letter);
+            BigInteger charValue = new BigInteger(Integer.toString(primeNumbers[Character.getNumericValue(letter) - 10]));
 
             // Multiply each letter by eachothers prime number value
             // Words that contain the specific letter or word will be divisible with no remainder.
             // -10  is used to turn index of a = 10 to 0 so that a=3 b=5 etc;
-            wordNumber = wordNumber * primeNumbers[Character.getNumericValue(letter) - 10];
+
+            wordNumber = wordNumber.multiply(charValue);
         }
-        return wordNumber;
+        return wordNumber.toString();
 
 
     }

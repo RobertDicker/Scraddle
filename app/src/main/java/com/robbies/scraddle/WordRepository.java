@@ -32,6 +32,10 @@ public class WordRepository {
 
     }
 
+    LiveData<List<Word>> getMatchingPrimeWords(String anagramPrimeValue, int minimumLength, int maxLength) {
+        return mWordDao.getMatchingPrimeWords(anagramPrimeValue, minimumLength, maxLength);
+    }
+
 
     private static class insertWordAsyncTask extends AsyncTask<Word, Void, Void> {
 

@@ -11,6 +11,7 @@ public class WordViewModel extends AndroidViewModel {
 
     private WordRepository mRepository;
     private LiveData<List<Word>> mAllWords;
+    private LiveData<List<Word>> mMatchingWords;
 
     public WordViewModel(Application application) {
         super(application);
@@ -18,11 +19,17 @@ public class WordViewModel extends AndroidViewModel {
         mRepository = new WordRepository(application);
         mAllWords = mRepository.getAllWords();
 
+
     }
 
 
     LiveData<List<Word>> getAllWords() {
         return this.mAllWords;
+    }
+
+    LiveData<List<Word>> getAnagramsOf(String anagramPrimeValue, int minimumLength, int maxLength) {
+        mMatchingWords = mRepository.getMatchingPrimeWords(anagramPrimeValue, minimumLength, maxLength);
+        return this.mMatchingWords;
     }
 
     void insertWord(Word word) {

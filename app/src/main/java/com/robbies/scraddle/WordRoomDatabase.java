@@ -11,7 +11,6 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Database(entities = {Word.class}, version = 1, exportSchema = false)
 public abstract class WordRoomDatabase extends RoomDatabase {
@@ -22,9 +21,9 @@ public abstract class WordRoomDatabase extends RoomDatabase {
             new RoomDatabase.Callback() {
 
                 @Override
-                public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                public void onCreate(@NonNull SupportSQLiteDatabase db) {
                     super.onOpen(db);
-                    new PopulateDbAsync(INSTANCE, mWordList).execute();
+                    new PopulateDbAsync(INSTANCE).execute();
                 }
             };
 
@@ -34,18 +33,21 @@ public abstract class WordRoomDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (WordRoomDatabase.class) {
                 if (INSTANCE == null) {
-                    mWordList = WordList.getInstance(context).getAllWords();
+                    // mWordList = WordList.getInstance(context).getAllWords();
+
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            WordRoomDatabase.class, "word_db")
+                            WordRoomDatabase.class, "word_table").createFromAsset("words.db")
                             //TODO add migration strategy to replace destructive migration
                             .fallbackToDestructiveMigration()
                             .addCallback(sWordRoomDatabaseCallback)
                             .build();
 
+
                 }
             }
 
         }
+
 
         return INSTANCE;
     }
@@ -56,12 +58,11 @@ public abstract class WordRoomDatabase extends RoomDatabase {
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
 
         private final WordDao mWordDao;
-        private List<String> mWords = new ArrayList<>();
 
 
-        PopulateDbAsync(WordRoomDatabase db, ArrayList<String> words) {
+        PopulateDbAsync(WordRoomDatabase db) {
             mWordDao = db.wordDao();
-            mWords = words;
+
         }
 
         @Override
@@ -71,14 +72,21 @@ public abstract class WordRoomDatabase extends RoomDatabase {
             // Start the app with a clean database every time.
             // Not needed if you only populate the database
             // when it is first created
-            mWordDao.deleteAll();
+/*            mWordDao.deleteAll();
 
 
             for (int i = 0; i <= mWords.size() - 1; i++) {
                 Word word = new Word(mWords.get(i));
                 Log.d("----WORD---", word.getWord());
                 mWordDao.insert(word);
+            }*/
+
+            // If we have no words, then create the initial list of words
+            if (mWordDao.getAnyWord().length < 1) {
+                Log.d("WordRoomDatabase", "------APPARENTLY THE DATABASE IS EMPTY, FIX IT!");
             }
+
+
             return null;
         }
 

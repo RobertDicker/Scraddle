@@ -1,5 +1,7 @@
 package com.robbies.scraddle;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -10,29 +12,34 @@ public class Word {
 
     @PrimaryKey
     @NonNull
+
     @ColumnInfo(name = "word")
     private String word;
 
     @NonNull
     @ColumnInfo(name = "primeValue")
-    private int primeValue;
+    private String primeValue;
 
 
     public Word(@NonNull String word) {
+        Log.d("creating word", word);
         this.word = word;
-        this.primeValue = PrimeValue.calculatePrimeValue(word);
+        this.primeValue = PrimeValue.calculatePrimeValue(word) + "";
     }
 
     public String getWord() {
         return this.word;
     }
 
-    public int getPrimeValue() {
+    public String getPrimeValue() {
         return this.primeValue;
     }
 
+    public void setPrimeValue(String primeValue) {
+        this.primeValue = PrimeValue.calculatePrimeValue(word) + "";
+    }
 
-    public void setPrimeValue(int primeValue) {
-        this.primeValue = PrimeValue.calculatePrimeValue(word);
+    public long getPrimeValueLong() {
+        return Long.parseLong(this.primeValue);
     }
 }
