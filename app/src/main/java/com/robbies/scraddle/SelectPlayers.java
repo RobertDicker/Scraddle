@@ -6,27 +6,33 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.List;
 
 public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdapter.OnPlayerListener {
 
 
     private RecyclerView mRecyclerView;
     private SelectPlayerAdapter mSelectPlayerAdapter;
-    private GameDataAdapter gameData;
+
     private ArrayList<Player> mCachedAllPlayers;
-    private LinkedHashMap<String, Player> mSelectedPlayers;
+    //private LinkedHashMap<Integer, Player> mSelectedPlayers;
+    private List<Integer> mSelectedPlayerIds;
     private EditText editText;
+    private GameViewModel gameViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +40,23 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
         setContentView(R.layout.activity_select_players);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        gameData = new GameDataAdapter(getApplicationContext());
-        mCachedAllPlayers = gameData.getAllPlayers();
-        mSelectedPlayers = new LinkedHashMap<>();
+
+
+        mSelectedPlayerIds = new ArrayList<>();
+
+
+        gameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+
+        gameViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+            @Override
+            public void onChanged(List<Player> players) {
+                mCachedAllPlayers = (ArrayList) players;
+
+                mSelectPlayerAdapter.setPlayers(mCachedAllPlayers);
+                Log.d("================", mCachedAllPlayers.toString());
+
+            }
+        });
 
 
         mRecyclerView = findViewById(R.id.recyclerviewPlayers);
@@ -61,34 +81,57 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
 
     @Override
     public void onPlayerClick(int position) {
+
         View v = mRecyclerView.getLayoutManager().findViewByPosition(position);
-        String playerId = mCachedAllPlayers.get(position).getPlayerID();
-        Log.d("--------------", playerId);
 
-        if (mSelectedPlayers.containsKey(playerId)) {
-            mSelectedPlayers.remove(playerId);
-            v.findViewById(R.id.imageSelect).setVisibility(View.INVISIBLE);
+        if (v != null) {
+            int playerId = mCachedAllPlayers.get(position).getPlayerId();
+            Log.d("--------------", playerId + "");
+
+            if (mSelectedPlayerIds.contains(playerId)) {
+                mSelectedPlayerIds.remove(playerId);
+
+                v.findViewById(R.id.tVSelectPlayerTurnOrder).setVisibility(View.INVISIBLE);
 
 
-        } else {
-            mSelectedPlayers.put(playerId, mCachedAllPlayers.get(position));
-            v.findViewById(R.id.imageSelect).setVisibility(View.VISIBLE);
+            } else {
+                mSelectedPlayerIds.add(playerId);
+                v.findViewById(R.id.imageSelect).setVisibility(View.VISIBLE);
+                TextView tv = v.findViewById(R.id.tVSelectPlayerTurnOrder);
 
+
+            }
         }
-
 
     }
 
     public void startScoring(View view) {
 
-        ArrayList<String> mSelectedPlayerIds = new ArrayList<String>(mSelectedPlayers.keySet());
 
         if (mSelectedPlayerIds.size() > 0) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("gameMode", getIntent().getIntExtra("gameMode", 0));
-            intent.putStringArrayListExtra("selectedPlayersIds", mSelectedPlayerIds);
+
+            long matchId;
+            matchId = gameViewModel.insertMatch(new Match());
+            int order = 0;
+            for (int playerId : mSelectedPlayerIds) {
+                gameViewModel.insertScore(new Score(playerId, matchId, order++));
+            }
+
+
+            Intent intent = new Intent(this, ScoringActivity.class);
+
+       /*     while (matchId == -1) {
+                try {
+                    wait(800);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }*/
+
+            intent.putExtra("lastMatchId", matchId);
 
             startActivity(intent);
+
         }
     }
 
@@ -103,12 +146,15 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         editText.setHint("Enter Player Name");
                         String editTextInput = editText.getText().toString();
                         Log.d("onclick", "editext value is: " + editTextInput);
+
                         Player player = new Player(editTextInput);
-                        mCachedAllPlayers.add(player);
-                        gameData.updatePlayerData(player);
+
+                        gameViewModel.insertPlayer(player);
+
                         mSelectPlayerAdapter.notifyDataSetChanged();
 
                     }
@@ -118,6 +164,7 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
         dialog.show();
 
     }
+
 }
 
 
