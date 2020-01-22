@@ -91,6 +91,7 @@ public class GameRepository {
     }
 
 
+
     private static class insertPlayerAsyncTask extends AsyncTask<Player, Void, Void> {
 
         private GameDao mAsyncTaskDao;
@@ -176,4 +177,6 @@ public class GameRepository {
             return null;
         }
     }
+
+
 }

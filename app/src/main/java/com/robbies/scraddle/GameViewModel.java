@@ -85,6 +85,8 @@ public class GameViewModel extends AndroidViewModel {
     public void deleteMatch(long matchId) {
         mGameRepository.deleteMatch(matchId);
     }
+
+
 }
 
 

@@ -71,7 +71,8 @@ public interface GameDao {
     @Query("SELECT * FROM player_table WHERE :id == playerId")
     Player getPlayerFromId(int id);
 
-
-    @Query("SELECT * FROM player_table p JOIN score_table s ON p.playerId == s.playerId WHERE :matchId == s.matchId ORDER BY s.playersTurnOrder")
+    @Query("SELECT p.name, p.personalBest, highestMatchScore, p.playerId, wins, loss, draw, matchId, score, playersTurnOrder, totalScore, maxScore, result FROM player_table p JOIN score_table s ON p.playerId == s.playerId WHERE :matchId == s.matchId ORDER BY s.playersTurnOrder")
     LiveData<List<GameDetail>> getGameDetails(long matchId);
+
+
 }

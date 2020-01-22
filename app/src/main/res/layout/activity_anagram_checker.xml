@@ -4,39 +4,126 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#00BCD4"
     tools:context=".AnagramChecker">
 
     <EditText
         android:id="@+id/editTextLettersToSolve"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="#FFFFFF"
+        android:digits="abcdefghijklmnopqrstuvwxyz"
         android:ems="10"
+        android:fontFamily="@font/sigmar_one"
         android:hint="Enter your letters"
+        android:imeOptions="actionDone"
         android:inputType="textPersonName"
+        android:maxLength="13"
+        android:paddingBottom="8dp"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="word" />
 
-    <Button
-        android:id="@+id/buttonSolve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="solveAnagram"
-        android:text="Solve"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLettersToSolve" />
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLettersToSolve">
+
+        <Button
+            android:id="@+id/button_allWords"
+            style="@style/anagramButton"
+            android:backgroundTint="#E91E63"
+            android:onClick="solveAnagram"
+            android:text="All Words"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonTwoWords"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#4CAF50"
+            android:imeOptions="actionDone"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/buttonThree"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#8BC34A"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/buttonFour"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#CDDC39"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/buttonFive"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#FFEB3B"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/buttonSix"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#FFC107"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/buttonSeven"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#FF9800"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/buttonEight"
+            style="@style/anagramButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/roundbutton"
+            android:backgroundTint="#FF5722"
+            android:text="8+"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rVWords"
         android:layout_width="0dp"
-        android:layout_height="604dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSolve" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

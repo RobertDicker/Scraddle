@@ -2,36 +2,42 @@ package com.robbies.scraddle;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdapter.OnPlayerListener {
+public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener {
 
 
-    private RecyclerView mRecyclerView;
-    private SelectPlayerAdapter mSelectPlayerAdapter;
-
+    private final String TAG = this.getClass().getSimpleName();
+    private RecyclerView mRecyclerViewAllPlayers;
+    private ItemTouchHelper mItemTouchHelper;
+    private SelectPlayerAdapter mAllPlayerAdapter;
     private ArrayList<Player> mCachedAllPlayers;
-    //private LinkedHashMap<Integer, Player> mSelectedPlayers;
-    private List<Integer> mSelectedPlayerIds;
+    private ArrayList<Player> mSelectedPlayers;
     private EditText editText;
     private GameViewModel gameViewModel;
+    private Button addPlayerButton;
+    private SharedPreferences sharedPreferences;
 
 
     @Override
@@ -42,9 +48,9 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
         setSupportActionBar(toolbar);
 
 
-        mSelectedPlayerIds = new ArrayList<>();
+        addPlayerButton = findViewById(R.id.buttonAddPlayers);
 
-
+        mSelectedPlayers = new ArrayList<>();
         gameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
         gameViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
@@ -52,81 +58,91 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
             public void onChanged(List<Player> players) {
                 mCachedAllPlayers = (ArrayList) players;
 
-                mSelectPlayerAdapter.setPlayers(mCachedAllPlayers);
-                Log.d("================", mCachedAllPlayers.toString());
+                //mAllPlayerAdapter.setPlayers(mCachedAllPlayers);
+                if (players.size() > 0) {
+                    addPlayerButton.setVisibility(View.VISIBLE);
 
+                    //Add 1-2 players
+                    if (mSelectedPlayers.isEmpty()) {
+                        for (int i = 0; i < mCachedAllPlayers.size() && i < 2; i++) {
+                            mSelectedPlayers.add(mCachedAllPlayers.get(i));
+                        }
+                    }
+
+
+                    mAllPlayerAdapter.setPlayers(mSelectedPlayers);
+
+                }
             }
         });
 
 
-        mRecyclerView = findViewById(R.id.recyclerviewPlayers);
-        mSelectPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this);
-        mRecyclerView.setAdapter(mSelectPlayerAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerViewAllPlayers = findViewById(R.id.recyclerviewPlayers);
+        mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
+        mRecyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
+        mRecyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(this));
 
+        mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
+                .SimpleCallback(
+                ItemTouchHelper.DOWN | ItemTouchHelper.UP, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+
+                int from = viewHolder.getAdapterPosition();
+                int to = target.getAdapterPosition();
+                Collections.swap(mCachedAllPlayers, from, to);
+                mAllPlayerAdapter.notifyItemMoved(from, to);
+                return true;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int from = viewHolder.getAdapterPosition();
+                mSelectedPlayers.remove(from);
+
+                mAllPlayerAdapter.notifyItemRemoved(from);
+
+//                        .setAction("Action", null).show();
+            }
+        });
+
+        mItemTouchHelper.attachToRecyclerView(mRecyclerViewAllPlayers);
         FloatingActionButton fab = findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
+//
 
                 createPlayerPopup();
 
             }
         });
 
-
     }
 
+    //TODO probably dont need this or maybe turn into a select primary players
     @Override
     public void onPlayerClick(int position) {
 
-        View v = mRecyclerView.getLayoutManager().findViewByPosition(position);
-
-        if (v != null) {
-            int playerId = mCachedAllPlayers.get(position).getPlayerId();
-            Log.d("--------------", playerId + "");
-
-            if (mSelectedPlayerIds.contains(playerId)) {
-                mSelectedPlayerIds.remove(playerId);
-
-                v.findViewById(R.id.tVSelectPlayerTurnOrder).setVisibility(View.INVISIBLE);
-
-
-            } else {
-                mSelectedPlayerIds.add(playerId);
-                v.findViewById(R.id.imageSelect).setVisibility(View.VISIBLE);
-                TextView tv = v.findViewById(R.id.tVSelectPlayerTurnOrder);
-
-
-            }
-        }
 
     }
+
 
     public void startScoring(View view) {
 
 
-        if (mSelectedPlayerIds.size() > 0) {
+        if (mSelectedPlayers.size() > 0) {
 
             long matchId;
             matchId = gameViewModel.insertMatch(new Match());
             int order = 0;
-            for (int playerId : mSelectedPlayerIds) {
-                gameViewModel.insertScore(new Score(playerId, matchId, order++));
+            for (Player player : mSelectedPlayers) {
+                gameViewModel.insertScore(new Score(player.getPlayerId(), matchId, order++));
             }
 
 
             Intent intent = new Intent(this, ScoringActivity.class);
-
-       /*     while (matchId == -1) {
-                try {
-                    wait(800);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }*/
 
             intent.putExtra("lastMatchId", matchId);
 
@@ -146,16 +162,18 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        editText.setMaxLines(1);
+                        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                         editText.setHint("Enter Player Name");
                         String editTextInput = editText.getText().toString();
-                        Log.d("onclick", "editext value is: " + editTextInput);
+
 
                         Player player = new Player(editTextInput);
+                        //First two created players will automatically be added to every game
 
                         gameViewModel.insertPlayer(player);
+                        mAllPlayerAdapter.setPlayers(mSelectedPlayers);
 
-                        mSelectPlayerAdapter.notifyDataSetChanged();
 
                     }
                 })
@@ -165,6 +183,63 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
 
     }
 
+
+    public void addPlayers(View view) {
+
+        final List<Integer> selectedItems = new ArrayList<>();
+        String[] items = new String[mCachedAllPlayers.size()];
+        boolean[] checkedItems = new boolean[mCachedAllPlayers.size()];
+        int i = 0;
+        for (Player player : mCachedAllPlayers) {
+            items[i] = player.getName();
+            if (mSelectedPlayers.contains(player)) {
+                checkedItems[i] = true;
+                selectedItems.add(i);
+            }
+            checkedItems[i] = mSelectedPlayers.contains(player);
+            i++;
+        }
+
+
+        AlertDialog dialog = new AlertDialog.Builder(this).
+                setTitle("Select Your Players").setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int index, boolean isChecked) {
+
+                if (isChecked) {
+                    // If the user checked the item, add it to the selected items
+                    selectedItems.add(index);
+                } else if (selectedItems.contains(index)) {
+                    // Else, if the item is already in the array, remove it
+                    selectedItems.remove(Integer.valueOf(index));
+                }
+
+            }
+        })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int buttonId) {
+                        mSelectedPlayers.clear();
+                        for (Integer i : selectedItems) {
+                            mSelectedPlayers.add(mCachedAllPlayers.get(i));
+                        }
+                        mAllPlayerAdapter.setPlayers(mSelectedPlayers);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+
+        dialog.show();
+
+
+    }
+
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 }
 
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ScoringActivity"
+    tools:showIn="@layout/activity_player_scoring">
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rVPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/textViewCurrentPlayerTurn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        tools:listitem="@layout/scorecard">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/textViewCurrentPlayerTurn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/dark_header"
+        android:backgroundTint="#5DC0AB"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Robs Turn" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#48B6AC"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayoutClearMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonClear"
+                style="@style/buttonCalcSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F44336"
+                android:onClick="increment"
+                android:text="C" />
+
+            <Button
+                android:id="@+id/buttonMinusOne"
+                style="@style/buttonCalcSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#E91E63"
+                android:onClick="increment"
+                android:text="-1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutOneFive"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonAddOne"
+                style="@style/buttonCalcSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#CDDC39"
+                android:onClick="increment"
+                android:text="+1" />
+
+            <Button
+                android:id="@+id/buttonAddFive"
+                style="@style/buttonCalcSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="#CDDC39"
+                android:onClick="increment"
+                android:text="+5" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonAddTen"
+            style="@style/buttonCalcSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:backgroundTint="#8BC34A"
+            android:onClick="increment"
+            android:text="+10" />
+
+        <Button
+            android:id="@+id/buttonAddToPlayer"
+            style="@style/buttonCalcSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:backgroundTint="#4CAF50"
+            android:lines="2"
+
+            android:onClick="addToPlayer"
+            android:text="Next "
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

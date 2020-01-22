@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LeaderBoard extends AppCompatActivity implements PlayerDetailAdapter.OnPlayerListener {
+public class LeaderBoard extends AppCompatActivity {
 
 
     private GameViewModel gameViewModel;
@@ -31,7 +31,7 @@ public class LeaderBoard extends AppCompatActivity implements PlayerDetailAdapte
 
 
         recyclerView = findViewById(R.id.rVLeaderBoard);
-        playerDetailAdapter = new PlayerDetailAdapter(this);
+        playerDetailAdapter = new PlayerDetailAdapter();
         recyclerView.setAdapter(playerDetailAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -45,15 +45,6 @@ public class LeaderBoard extends AppCompatActivity implements PlayerDetailAdapte
 
             }
         });
-
-
     }
 
-
-    @Override
-    public void onPlayerClick(int position) {
-        Log.d("======", "Clicked player at " + position);
-
-
-    }
 }

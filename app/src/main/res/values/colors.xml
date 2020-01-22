@@ -5,4 +5,13 @@
     <color name="colorAccent">#D81B60</color>
     <color name="activePlayer">#00BCD4</color>
     <color name="inactivePlayer">#000</color>
+    <color name="inactiveContinue">#654CAF50</color>
+
+    <!--LEADER BOARD-->
+    <color name="lBPlayerFirst">#9C27B0</color>
+    <color name="lBPlayerSecond">#673AB7</color>
+    <color name="lBPlayerThird">#3F51B5</color>
+    <color name="lBPlayerOdd">#009688</color>
+    <color name="lBPlayerDefault">#00BCD4</color>
+
 </resources>

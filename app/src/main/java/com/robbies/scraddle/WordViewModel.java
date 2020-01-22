@@ -36,4 +36,5 @@ public class WordViewModel extends AndroidViewModel {
         mRepository.insertWord(word);
     }
 
+
 }

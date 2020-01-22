@@ -20,7 +20,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:background="@color/inactivePlayer"
+            android:background="@color/activePlayer"
             android:fontFamily="sans-serif-condensed-medium"
             android:textAlignment="center"
             android:textAllCaps="true"
@@ -28,23 +28,6 @@
             android:textSize="30sp"
             tools:text="Robbie" />
 
-        <TextView
-            android:id="@+id/textViewminiScore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-
-            android:layout_marginBottom="8dp"
-            android:background="@color/inactivePlayer"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:paddingRight="32dp"
-            android:textAlignment="center"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
-            android:visibility="invisible"
-            tools:text="0"
-            tools:visibility="visible" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:labelFor="@id/textViewLastScore"
                 android:text="Last Score"
                 android:textStyle="bold" />
 
@@ -83,6 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:labelFor="@id/textViewBestScore"
                 android:text="Best Score"
                 android:textStyle="bold"
                 tools:text="Best Score" />
@@ -102,6 +87,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:labelFor="@id/textViewPersonalBest"
                 android:text="Personal Best"
                 android:textStyle="bold" />
 
@@ -133,12 +119,33 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/scoreCardTallyDividerTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="#009688"
-        app:srcCompat="?attr/dividerHorizontal" />
+        android:visibility="gone"
+        app:srcCompat="?attr/dividerHorizontal"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tVScoreTally"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:visibility="gone"
+        tools:text="4 + 4 +56 +78 +89 +65"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/scoreCardTallyDividerTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="#009688"
+        android:visibility="visible"
+        app:srcCompat="?attr/dividerHorizontal"
+        tools:visibility="visible" />
 
 
 </LinearLayout>

@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@android:color/holo_orange_dark</item>
+
     </style>
 
     <style name="NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
@@ -30,5 +32,40 @@
         <item name="android:padding">16dp</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="anagramButton">
+        <item name="android:background">@drawable/roundbutton</item>
+        <item name="android:layout_marginEnd">2dp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:onClick">solveAnagram</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="android:imeActionId">2</item>
+        <item name="android:inputType">text</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">10</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="buttonCalcSmall">
+        <item name="android:fontFamily">@font/sarpanch</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:radius">55dp</item>
+        <item name="android:background">@drawable/roundbutton</item>
+        <item name="android:layout_margin">5dp</item>
+    </style>
+
+    <style name="leaderboard_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#00FFFFFF</item>
+        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 
 </resources>

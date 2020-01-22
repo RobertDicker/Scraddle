@@ -17,11 +17,11 @@ import java.util.List;
 public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapter.DetailViewHolder> {
 
     private List<Player> mAllPlayers;
-    private OnPlayerListener mOnPlayerListener;
 
-    public PlayerDetailAdapter(OnPlayerListener playerListener) {
+
+    public PlayerDetailAdapter() {
         this.mAllPlayers = new ArrayList<>();
-        this.mOnPlayerListener = playerListener;
+        //  this.mOnPlayerListener = playerListener;
     }
 
 
@@ -31,7 +31,7 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
 
         //Create the new view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_item, parent, false);
-        DetailViewHolder vh = new DetailViewHolder(view, mOnPlayerListener);
+        DetailViewHolder vh = new DetailViewHolder(view);
         return vh;
     }
 
@@ -94,14 +94,9 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
     }
 
 
-    public interface OnPlayerListener {
-        void onPlayerClick(int position);
+    public static class DetailViewHolder extends RecyclerView.ViewHolder {
 
-    }
-
-    public static class DetailViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        OnPlayerListener onPlayerListener;
+        //  OnPlayerListener onPlayerListener;
         TextView playerNameTextView;
         TextView playerRankTextView;
         TextView playerGamesPlayedTextView;
@@ -112,7 +107,7 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
         TextView playerWordHighScoreTextView;
 
 
-        public DetailViewHolder(@NonNull View itemView, OnPlayerListener onPlayerListener) {
+        public DetailViewHolder(@NonNull View itemView) {
             super(itemView);
 
             playerNameTextView = itemView.findViewById(R.id.tVLBPlayerName);
@@ -124,17 +119,10 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
             playerMatchHighScoreTextView = itemView.findViewById(R.id.tVLBMatchHighScore);
             playerWordHighScoreTextView = itemView.findViewById(R.id.tvLBHighestWordScore);
 
-            this.onPlayerListener = onPlayerListener;
-
-            itemView.setOnClickListener((this));
 
         }
 
-        @Override
-        public void onClick(View view) {
-            onPlayerListener.onPlayerClick(getAdapterPosition());
 
-        }
     }
 
 

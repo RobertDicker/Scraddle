@@ -3,6 +3,8 @@ package com.robbies.scraddle;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
@@ -30,6 +32,13 @@ public class AnagramChecker extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anagram_checker);
+
+        //Set The Navigation Bar to transparent===============================
+        Window w = getWindow(); // in Activity's onCreate() for instance
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        // ===============================
+
+
         mWordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
         Log.d("===========>", mWordViewModel.getAllWords().toString());
         letters = findViewById(R.id.editTextLettersToSolve);
@@ -40,6 +49,7 @@ public class AnagramChecker extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        letters.requestFocus();
 
     }
 
