@@ -82,6 +82,7 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
         mRecyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
         mRecyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(this));
 
+
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(
                 ItemTouchHelper.DOWN | ItemTouchHelper.UP, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -90,7 +91,7 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
 
                 int from = viewHolder.getAdapterPosition();
                 int to = target.getAdapterPosition();
-                Collections.swap(mCachedAllPlayers, from, to);
+                Collections.swap(mSelectedPlayers, from, to);
                 mAllPlayerAdapter.notifyItemMoved(from, to);
                 return true;
             }
@@ -125,7 +126,6 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
     @Override
     public void onPlayerClick(int position) {
 
-
     }
 
 
@@ -155,17 +155,20 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
 
 
         editText = new EditText(this);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        editText.setSingleLine(true);
+
+        editText.setHint("Enter Player Name");
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Create New Player")
                 .setMessage("Enter new players name below")
                 .setView(editText)
+
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        editText.setMaxLines(1);
-                        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-                        editText.setHint("Enter Player Name");
-                        String editTextInput = editText.getText().toString();
+
+                        String editTextInput = editText.getText().toString().trim();
 
 
                         Player player = new Player(editTextInput);
