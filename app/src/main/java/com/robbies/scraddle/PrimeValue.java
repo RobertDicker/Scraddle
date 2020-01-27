@@ -1,5 +1,7 @@
 package com.robbies.scraddle;
 
+import android.util.Log;
+
 import java.math.BigInteger;
 
 public class PrimeValue {
@@ -45,6 +47,7 @@ public class PrimeValue {
             // -10  is used to turn index of a = 10 to 0 so that a=3 b=5 etc;
 
             wordNumber = wordNumber.multiply(charValue);
+            Log.d("--------", wordNumber.toString());
         }
         return wordNumber.toString();
 

@@ -21,7 +21,6 @@ public class ScoringViewModel extends AndroidViewModel {
         mCurrentMatch = gameRepository.getLastMatch();
     }
 
-
     LiveData<List<GameDetail>> getPlayersDetails(long matchId) {
         return gameRepository.getGameDetails(matchId);
     }

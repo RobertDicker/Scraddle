@@ -34,21 +34,13 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             Word current = mWords.get(position);
             holder.wordItemView.setText(current.getWord());
 
-
             String backgroundColorOfWord = COLOUR_CHOICES[0];
             backgroundColorOfWord = current.getWord().length() <= 8 ? COLOUR_CHOICES[current.getWord().length()] : backgroundColorOfWord;
 
             holder.wordItemView.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
-
-
-
-
         } else {
-            // Covers the case of data not being ready yet.
-            holder.wordItemView.setText("No Word");
+            holder.wordItemView.setText("No Words");
         }
-
-
     }
 
 
@@ -57,14 +49,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         notifyDataSetChanged();
     }
 
-
-    // getItemCount() is called many times, and when it is first called,
-    // mWords has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
-        if (mWords != null)
-            return mWords.size();
-        else return 0;
+        return mWords != null ? mWords.size() : 0;
     }
 
     class WordViewHolder extends RecyclerView.ViewHolder {

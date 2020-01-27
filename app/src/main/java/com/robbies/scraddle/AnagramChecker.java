@@ -1,10 +1,11 @@
 package com.robbies.scraddle;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
@@ -21,7 +22,7 @@ public class AnagramChecker extends AppCompatActivity {
 
     private EditText letters;
     private WordViewModel mWordViewModel;
-
+    private int maxLettersLength = 16;
     private String anagramPrimeValue = "";
 
     private List<Word> anagramWords;
@@ -38,11 +39,8 @@ public class AnagramChecker extends AppCompatActivity {
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         // ===============================
 
-
         mWordViewModel = ViewModelProviders.of(this).get(WordViewModel.class);
-        Log.d("===========>", mWordViewModel.getAllWords().toString());
         letters = findViewById(R.id.editTextLettersToSolve);
-
 
         RecyclerView recyclerView = findViewById(R.id.rVWords);
         adapter = new WordListAdapter(this);
@@ -66,6 +64,12 @@ public class AnagramChecker extends AppCompatActivity {
             }
         }
 
+        // Check if no view has focus:
+
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         anagramWords = new ArrayList<>();
         String anagramToSolve = letters.getText().toString().toLowerCase();

@@ -39,7 +39,6 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         //Alter Continue button if there are no games to continue
         if (lastMatch == -1) {
             view.findViewById(R.id.buttonContinue).setVisibility(View.GONE);
-
         }
 
         for (int button : registeredMenuButtons) {
@@ -70,10 +69,12 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.buttonSettings:
-                fragmentSwitcher.switchFragment(new SettingsFragment());
+                //  fragmentSwitcher.switchFragment(new SettingsFragment());
                 break;
 
         }
+
+
     }
 
 

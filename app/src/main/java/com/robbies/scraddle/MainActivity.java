@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity implements MainMenuFragment.FragmentSwitcher, LeaderboardFragment.OnFragmentInteractionListener {
 
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,13 +21,13 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
         // Instantiate the fragment.
         MainMenuFragment mainMenuFragment = new MainMenuFragment(this);
         // Get the FragmentManager and start a transaction.
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
 
         // Add the SimpleFragment.
         fragmentTransaction.add(R.id.content,
-                mainMenuFragment).addToBackStack(null).commit();
+                mainMenuFragment).commit();
 
    /*
             //Set The Navigation Bar to transparent===============================
@@ -43,9 +44,17 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
     public void switchFragment(Fragment fragment) {
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content, fragment)
+                .add(R.id.content, fragment).addToBackStack(null)
                 .commit();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() > 0)
+            fragmentManager.popBackStackImmediate();
+        else super.onBackPressed();
+    }
+
 
 
     @Override
