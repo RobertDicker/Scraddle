@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ScoringActivity"
+    tools:showIn="@layout/activity_scoring">
+
+    <!--   <Button
+           android:id="@+id/buttonAddPlayers"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:background="@android:drawable/bottom_bar"
+           android:backgroundTint="#4CAF50"
+           android:drawableEnd="@drawable/ic_person_black_24dp"
+
+           android:text="Add Player "
+           android:textColor="@android:color/white"
+           android:textSize="30sp"
+           android:visibility="gone" />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:listitem="@layout/activity_select_player_item">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/buttonStartScoring"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/bottom_bar"
+        android:backgroundTint="#009688"
+
+        android:text="Start Scoring"
+        android:textSize="30sp" />
+
+
+</LinearLayout>

@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.robbies.scraddle.ScoringActivity">
+
+    <item
+        android:id="@+id/menuSelectPlayers"
+        android:orderInCategory="100"
+        android:title="Select Players"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuCreatePlayer"
+        android:icon="@drawable/ic_add_for_fab"
+        android:orderInCategory="100"
+        android:title="Create Player"
+        app:showAsAction="ifRoom" />
+
+
+</menu>
