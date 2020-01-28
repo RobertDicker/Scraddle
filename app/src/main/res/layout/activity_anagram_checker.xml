@@ -21,7 +21,7 @@
         android:hint="Enter your letters"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
-        android:maxLength="13"
+        android:maxLength="@string/maxAnagramLetters"
         android:paddingBottom="8dp"
         android:textColor="@android:color/white"
         android:textSize="30sp"

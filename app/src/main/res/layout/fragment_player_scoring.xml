@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScoringActivity"
-    tools:showIn="@layout/activity_player_scoring">
+    tools:showIn="@layout/content_scoring">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -47,7 +47,6 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:id="@+id/linearLayoutClearMinus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -59,7 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F44336"
-                android:onClick="increment"
+
                 android:text="C" />
 
             <Button
@@ -68,12 +67,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
-                android:onClick="increment"
+
                 android:text="-1" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayoutOneFive"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -85,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#CDDC39"
-                android:onClick="increment"
+
                 android:text="+1" />
 
             <Button
@@ -94,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:backgroundTint="#CDDC39"
-                android:onClick="increment"
+
                 android:text="+5" />
         </LinearLayout>
 
@@ -105,7 +103,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:backgroundTint="#8BC34A"
-            android:onClick="increment"
+
             android:text="+10" />
 
         <Button
@@ -117,7 +115,6 @@
             android:backgroundTint="#4CAF50"
             android:lines="2"
 
-            android:onClick="addToPlayer"
             android:text="Next "
             android:textColor="@android:color/white"
             android:textSize="24sp" />

@@ -181,7 +181,6 @@
         tools:text="45" />
 
     <View
-        android:id="@+id/lBdividerBottom"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="8dp"
