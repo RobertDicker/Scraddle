@@ -1,31 +1,33 @@
 package com.robbies.scraddle;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener {
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener, View.OnClickListener {
 
 
     private final String TAG = this.getClass().getSimpleName();
@@ -35,32 +37,39 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
     private ArrayList<Player> mCachedAllPlayers;
     private ArrayList<Player> mSelectedPlayers;
     private EditText editText;
-    private GameViewModel gameViewModel;
     private Button addPlayerButton;
     private SharedPreferences sharedPreferences;
+    private FragmentSwitcher fragmentSwitcher;
+    private ScoringViewModel scoringViewModel;
 
+
+    public SelectPlayerFragment(FragmentSwitcher fragmentSwitcher) {
+        this.fragmentSwitcher = fragmentSwitcher;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_players);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_select_players, container, false);
+        sharedPreferences = getContext().getSharedPreferences("Match", 0);
 
+        //Enable control of the toolbar within the fragment and not main activity
+        setHasOptionsMenu(true);
 
-        addPlayerButton = findViewById(R.id.buttonAddPlayers);
+        scoringViewModel = ViewModelProviders.of(getActivity()).get(ScoringViewModel.class);
+
+        //addPlayerButton = view.findViewById(R.id.buttonAddPlayers);
 
         mSelectedPlayers = new ArrayList<>();
-        gameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
 
-        gameViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        scoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 mCachedAllPlayers = (ArrayList) players;
 
                 //mAllPlayerAdapter.setPlayers(mCachedAllPlayers);
                 if (players.size() > 0) {
-                    addPlayerButton.setVisibility(View.VISIBLE);
+                    //addPlayerButton.setVisibility(View.VISIBLE);
 
                     //Add 1-2 players
                     if (mSelectedPlayers.isEmpty()) {
@@ -69,19 +78,17 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
                         }
                     }
 
-
                     mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-
                 }
             }
         });
 
+        view.findViewById(R.id.buttonStartScoring).setOnClickListener(this);
 
-        mRecyclerViewAllPlayers = findViewById(R.id.recyclerviewPlayers);
+        mRecyclerViewAllPlayers = view.findViewById(R.id.recyclerviewPlayers);
         mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
         mRecyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
-        mRecyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(this));
-
+        mRecyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(
@@ -108,86 +115,35 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
         });
 
         mItemTouchHelper.attachToRecyclerView(mRecyclerViewAllPlayers);
-        FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//
-
-                createPlayerPopup();
-
-            }
-        });
+        return view;
 
     }
 
-    //TODO probably dont need this or maybe turn into a select primary players
+
     @Override
     public void onPlayerClick(int position) {
-
     }
 
 
-    public void startScoring(View view) {
-
+    public void startScoring() {
 
         if (mSelectedPlayers.size() > 0) {
 
-            long matchId;
-            matchId = gameViewModel.insertMatch(new Match());
+            long matchId = scoringViewModel.getCurrentMatchId();
             int order = 0;
             for (Player player : mSelectedPlayers) {
-                gameViewModel.insertScore(new Score(player.getPlayerId(), matchId, order++));
+                scoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
             }
 
+            sharedPreferences.edit().putLong("matchId", matchId).apply();
 
-            Intent intent = new Intent(this, ScoringActivity.class);
-
-            intent.putExtra("lastMatchId", matchId);
-
-            startActivity(intent);
+            fragmentSwitcher.switchFragment(new ScoringFragment());
 
         }
     }
 
-    private void createPlayerPopup() {
-
-
-        editText = new EditText(this);
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        editText.setSingleLine(true);
-
-        editText.setHint("Enter Player Name");
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Create New Player")
-                .setMessage("Enter new players name below")
-                .setView(editText)
-
-                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        String editTextInput = editText.getText().toString().trim();
-
-
-                        Player player = new Player(editTextInput);
-                        //First two created players will automatically be added to every game
-
-                        gameViewModel.insertPlayer(player);
-                        mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-
-
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
-
-    }
-
-
-    public void addPlayers(View view) {
+    public void addPlayers() {
 
         final List<Integer> selectedItems = new ArrayList<>();
         String[] items = new String[mCachedAllPlayers.size()];
@@ -204,7 +160,7 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
         }
 
 
-        AlertDialog dialog = new AlertDialog.Builder(this).
+        AlertDialog dialog = new AlertDialog.Builder(getContext()).
                 setTitle("Select Your Players").setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int index, boolean isChecked) {
@@ -237,12 +193,74 @@ public class SelectPlayers extends AppCompatActivity implements SelectPlayerAdap
 
     }
 
+    private void createPlayerPopup() {
+
+
+        editText = new EditText(getContext());
+        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+        editText.setSingleLine(true);
+
+        editText.setHint("Enter Player Name");
+        AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setTitle("Create New Player")
+                .setMessage("Enter new players name below")
+                .setView(editText)
+
+                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        String editTextInput = editText.getText().toString().trim();
+
+
+                        Player player = new Player(editTextInput);
+                        //First two created players will automatically be added to every game
+
+                        scoringViewModel.savePlayer(player);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
+
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case (R.id.menuSelectPlayers):
+                addPlayers();
+                break;
+            case (R.id.menuCreatePlayer):
+                createPlayerPopup();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
 
         mItemTouchHelper.startDrag(viewHolder);
     }
+
+    @Override
+    public void onClick(View view) {
+
+        if (view.getId() == R.id.buttonStartScoring) {
+            startScoring();
+        }
+
+    }
+
+    public interface FragmentSwitcher {
+        void switchFragment(Fragment fragment);
+    }
+
 }
 
 
