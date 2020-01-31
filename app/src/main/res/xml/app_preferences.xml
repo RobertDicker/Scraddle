@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <PreferenceCategory android:title="Data">
+
+        <Preference
+            android:layout_width="match_parent"
+            android:background="#FFFFFF"
+            android:key="deletePlayer"
+            android:summary="Select The Players You Wish to Delete"
+            android:title="@string/deletePlayer"
+            android:visibility="gone"
+            app:icon="@drawable/ic_delete_players"
+            tools:visibility="visible" />
+        <Preference
+            android:layout_width="match_parent"
+            android:background="#FFFFFF"
+            android:key="deleteAll"
+            android:summary="Delete All Data"
+            android:title="@string/deleteAllTitle"
+            app:icon="@drawable/ic_delete_forever_black_24dp" />
+        <Preference
+            android:layout_width="match_parent"
+            android:key="@string/createPlayer"
+            android:summary="Create a new Player"
+            android:title="Create New Player"
+            app:icon="@drawable/ic_face_black_24dp" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Appearance">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_night_mode_24dp"
+            android:key="switchNightMode"
+            android:title="Night Mode" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

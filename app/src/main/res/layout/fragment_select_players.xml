@@ -35,8 +35,8 @@
         android:id="@+id/buttonStartScoring"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/bottom_bar"
-        android:backgroundTint="#009688"
+        android:background="@drawable/buttonripple"
+        android:backgroundTint="#70009688"
 
         android:text="Start Scoring"
         android:textSize="30sp" />

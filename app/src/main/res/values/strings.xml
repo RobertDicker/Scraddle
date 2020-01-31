@@ -11,11 +11,20 @@
 
     <!-- Messages Preferences -->
 
-    <!-- Sync Preferences -->
-
+    <!-- Anagram Preferences -->
     <string name="maxAnagramLetters">12</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="title_activity_score">ScoreActivity</string>
+    <!-- Select Player and Scoring -->
+    <string name="title_activity_score">Score Activity</string>
+
+
+    <!-- Settings Screen -->
+    <string name="deleteAllTitle">Delete All</string>
+    <string name="deleteAllKey">deleteAll</string>
+    <string name="createPlayer">createPlayer</string>
+    <string name="deletePlayer">Delete Players</string>
+    <string name="scraddle_logo">Scraddle Logo</string>
+    <string name="no_words">No Words Available</string>
+
 
 </resources>

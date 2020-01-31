@@ -2,7 +2,11 @@
 <resources>
     <color name="activePlayer">#00BCD4</color>
     <color name="inactivePlayer">#000</color>
-
+    <color name="preferenceScreenBackgroundColorDark">#000000</color>
+    <color name="preferenceScreenBackgroundColorLight">#DFDFDF</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorPrimaryLight">#FFF</color>
+    <color name="colorPrimary">#00BCD4</color>
     <!--LEADER BOARD-->
 
 </resources>

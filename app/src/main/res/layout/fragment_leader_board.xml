@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#000000"
     android:backgroundTint="#393A3A"
+    android:clickable="true"
     tools:context=".MainActivity">
 
     <TextView

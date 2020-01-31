@@ -34,7 +34,8 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Robs Turn" />
+        android:text="Start adding values to begin..."
+        tools:text="Start adding values to begin.." />
 
     <LinearLayout
         android:id="@+id/linearLayout"
