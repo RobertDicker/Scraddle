@@ -13,16 +13,45 @@ import java.util.List;
 public class ScoringViewModel extends AndroidViewModel {
 
     private GameRepository gameRepository;
-    private LiveData<Match> mCurrentMatch;
+    private LiveData<List<Player>> mAllPlayers;
+    private long mCurrentMatchId;
 
     public ScoringViewModel(@NonNull Application application) {
         super(application);
         gameRepository = new GameRepository(application);
-        mCurrentMatch = gameRepository.getLastMatch();
     }
+
+    //GETTERS
 
     LiveData<List<GameDetail>> getPlayersDetails(long matchId) {
         return gameRepository.getGameDetails(matchId);
+    }
+
+    LiveData<List<Player>> getAllPlayers() {
+
+        if (mAllPlayers == null) {
+            this.mAllPlayers = gameRepository.getAllPlayers();
+        }
+        return mAllPlayers;
+    }
+
+    long getCurrentMatchId() {
+        if (mCurrentMatchId == -1) {
+            mCurrentMatchId = insertMatch(new Match());
+        }
+        return mCurrentMatchId;
+    }
+
+
+    //INSERTS
+
+    void setCurrentMatchId(long mCurrentMatchId) {
+        this.mCurrentMatchId = mCurrentMatchId;
+    }
+
+    private long insertMatch(Match match) {
+        this.mCurrentMatchId = gameRepository.insertMatch(match);
+        return mCurrentMatchId;
     }
 
     void savePlayer(Player player) {
@@ -35,13 +64,19 @@ public class ScoringViewModel extends AndroidViewModel {
         Log.d("==SAVING===>", "saving" + score.toString());
     }
 
+    //DELETES
+
     //Deletes matching scores and match from data
     void deleteMatch(long matchId) {
         gameRepository.deleteMatch(matchId);
     }
 
-    LiveData<Match> getCurrentMatch() {
-        return mCurrentMatch;
+    void deletePlayer(int playerId) {
+        gameRepository.deletePlayer(playerId);
+    }
+
+    void deleteAll() {
+        gameRepository.deleteAll();
     }
 
 }

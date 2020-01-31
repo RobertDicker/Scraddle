@@ -10,7 +10,6 @@ import java.util.Calendar;
 public class Match {
 
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     private long matchId;
 
     @NonNull
@@ -29,15 +28,15 @@ public class Match {
     }
 
     @NonNull
-    public String getDatePlayed() {
+    String getDatePlayed() {
         return datePlayed;
     }
 
-    public void setDatePlayed(@NonNull String datePlayed) {
+    void setDatePlayed(@NonNull String datePlayed) {
         this.datePlayed = datePlayed;
     }
 
-
+    @NonNull
     @Override
     public String toString() {
         return "Match{" +

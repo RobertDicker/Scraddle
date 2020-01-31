@@ -1,7 +1,6 @@
 package com.robbies.scraddle;
 
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapter.DetailViewHolder> {
+public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.DetailViewHolder> {
 
     private List<Player> mAllPlayers;
 
-
-    public PlayerDetailAdapter() {
+    LeaderBoardAdapter() {
         this.mAllPlayers = new ArrayList<>();
-        //  this.mOnPlayerListener = playerListener;
     }
-
 
     @NonNull
     @Override
@@ -31,14 +27,12 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
 
         //Create the new view
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_leaderboard_item, parent, false);
-        DetailViewHolder vh = new DetailViewHolder(view);
-        return vh;
+        return new DetailViewHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull DetailViewHolder holder, int position) {
-
 
         //Determine the colour for positions 1,2,3 and striation for odds even thereafter
         String playerNameBgColour = "#00BCD4";
@@ -58,7 +52,6 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
                     playerNameBgColour = "#009688";
                 }
         }
-        Log.d("====Color==>", playerNameBgColour + "");
 
         holder.playerNameTextView.setBackgroundColor(Color.parseColor(playerNameBgColour));
 
@@ -67,15 +60,13 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
         //Set each item
         holder.playerNameTextView.setText(player.getName());
 
-        int gamesPlayed = player.getDraw() + player.getLoss() + player.getWins();
-
-        holder.playerRankTextView.setText(Integer.toString(position + 1));
-        holder.playerGamesPlayedTextView.setText(Integer.toString(gamesPlayed));
-        holder.playerWinsTextView.setText(Integer.toString(player.getWins()));
-        holder.playerDrawsTextView.setText(Integer.toString(player.getDraw()));
-        holder.playerLossTextView.setText(Integer.toString(player.getLoss()));
-        holder.playerMatchHighScoreTextView.setText(Integer.toString(player.getPlayersHighestMatchScore()));
-        holder.playerWordHighScoreTextView.setText(Integer.toString(player.getPersonalBest()));
+        holder.playerRankTextView.setText(String.format("%s", position + 1));
+        holder.playerGamesPlayedTextView.setText(String.format("%s", player.getDraw() + player.getLoss() + player.getWins()));
+        holder.playerWinsTextView.setText(String.format("%s", player.getWins()));
+        holder.playerDrawsTextView.setText(String.format("%s", player.getDraw()));
+        holder.playerLossTextView.setText(String.format("%s", player.getLoss()));
+        holder.playerMatchHighScoreTextView.setText(String.format("%s", player.getPlayersHighestMatchScore()));
+        holder.playerWordHighScoreTextView.setText(String.format("%s", player.getPersonalBest()));
     }
 
     void setPlayers(List<Player> players) {
@@ -88,13 +79,11 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
     // Size of the dataset
     @Override
     public int getItemCount() {
-        int size = mAllPlayers != null ? mAllPlayers.size() : 0;
-
-        return size;
+        return mAllPlayers != null ? mAllPlayers.size() : 0;
     }
 
 
-    public static class DetailViewHolder extends RecyclerView.ViewHolder {
+    static class DetailViewHolder extends RecyclerView.ViewHolder {
 
         //  OnPlayerListener onPlayerListener;
         TextView playerNameTextView;
@@ -107,9 +96,8 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
         TextView playerWordHighScoreTextView;
 
 
-        public DetailViewHolder(@NonNull View itemView) {
+        DetailViewHolder(@NonNull View itemView) {
             super(itemView);
-
             playerNameTextView = itemView.findViewById(R.id.tVLBPlayerName);
             playerRankTextView = itemView.findViewById(R.id.tVLBPosition);
             playerGamesPlayedTextView = itemView.findViewById(R.id.tVLBGamesPlayed);
@@ -118,14 +106,8 @@ public class PlayerDetailAdapter extends RecyclerView.Adapter<PlayerDetailAdapte
             playerLossTextView = itemView.findViewById(R.id.tVLBLoss);
             playerMatchHighScoreTextView = itemView.findViewById(R.id.tVLBMatchHighScore);
             playerWordHighScoreTextView = itemView.findViewById(R.id.tvLBHighestWordScore);
-
-
         }
-
-
     }
-
-
 }
 
 

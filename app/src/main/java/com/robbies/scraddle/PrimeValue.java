@@ -4,9 +4,9 @@ import android.util.Log;
 
 import java.math.BigInteger;
 
-public class PrimeValue {
+class PrimeValue {
 
-    public static String calculatePrimeValue(String word) {
+    static String calculatePrimeValue(String word) {
 
         int[] primeNumbers = new int[]{3,
                 5,

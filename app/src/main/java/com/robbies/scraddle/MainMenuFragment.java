@@ -8,34 +8,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainMenuFragment extends Fragment implements View.OnClickListener {
+public class MainMenuFragment extends Fragment implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final String TAG = this.getClass().getSimpleName();
     private final int[] registeredMenuButtons = {R.id.buttonAnagramSolver, R.id.buttonStartNewGame, R.id.buttonLeaderBoard, R.id.buttonContinue, R.id.buttonSettings};
     private long lastMatch = -1;
     private FragmentSwitcher fragmentSwitcher;
+    private SharedPreferences sP;
 
-    public MainMenuFragment(FragmentSwitcher fragmentSwitcher) {
-        this.fragmentSwitcher = fragmentSwitcher;
+    public MainMenuFragment() {
     }
 
+    MainMenuFragment(FragmentSwitcher fragmentSwitcher) {
+        this.fragmentSwitcher = fragmentSwitcher;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.main_menu_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
 
 
-        SharedPreferences sP = getContext().getSharedPreferences("Match", 0);
+        sP = PreferenceManager.getDefaultSharedPreferences(requireContext());
         lastMatch = sP.getLong("matchId", -1);
 
+        if (getFragmentManager() != null && getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        }
+
+        changeBack();
         //Alter Continue button if there are no games to continue
         if (lastMatch == -1) {
             view.findViewById(R.id.buttonContinue).setVisibility(View.GONE);
@@ -47,6 +56,20 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .unregisterOnSharedPreferenceChangeListener(this);
+        sP.unregisterOnSharedPreferenceChangeListener(this);
+    }
 
     @Override
     public void onClick(View view) {
@@ -57,10 +80,9 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(getContext(), AnagramChecker.class));
                 break;
             case R.id.buttonStartNewGame:
-                startActivity(new Intent(getContext(), SelectPlayers.class));
+                startActivity(new Intent(getContext(), ScoringActivity.class));
                 break;
             case R.id.buttonLeaderBoard:
-                //  startActivity(new Intent(getContext(), LeaderBoard.class));
                 fragmentSwitcher.switchFragment(new LeaderboardFragment());
                 break;
             case R.id.buttonContinue:
@@ -69,12 +91,35 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.buttonSettings:
-                //  fragmentSwitcher.switchFragment(new SettingsFragment());
+                fragmentSwitcher.switchFragment(new Settings());
+                sP.registerOnSharedPreferenceChangeListener(this);
                 break;
+        }
+    }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+
+        lastMatch = sP.getLong("matchId", -1);
+
+        //Alter Continue button if there are no games to continue
+        if (lastMatch == -1) {
+            if (getView() != null) {
+                getView().findViewById(R.id.buttonContinue).setVisibility(View.GONE);
+            }
         }
 
+        if (s.equals(Settings.KEY_PREF_NIGHT_MODE)) {
+            /* int mode = sharedPreferences.getBoolean(s, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;*/
+            changeBack();
+            //startActivity(new Intent(getContext(), MainActivity.class));
+        }
 
+    }
+
+    private void changeBack() {
+        int currentTheme = sP.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        AppCompatDelegate.setDefaultNightMode(currentTheme);
     }
 
 

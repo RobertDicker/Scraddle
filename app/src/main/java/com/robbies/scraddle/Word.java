@@ -27,15 +27,17 @@ public class Word {
         this.primeValue = PrimeValue.calculatePrimeValue(word) + "";
     }
 
+    @NonNull
     public String getWord() {
         return this.word;
     }
 
-    public String getPrimeValue() {
+    @NonNull
+    String getPrimeValue() {
         return this.primeValue;
     }
 
-    public void setPrimeValue(String primeValue) {
+    void setPrimeValue(String primeValue) {
         this.primeValue = PrimeValue.calculatePrimeValue(word) + "";
     }
 

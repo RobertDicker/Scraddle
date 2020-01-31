@@ -10,13 +10,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import java.util.ArrayList;
-
 @Database(entities = {Word.class}, version = 1, exportSchema = false)
 public abstract class WordRoomDatabase extends RoomDatabase {
 
     private static WordRoomDatabase INSTANCE;
-    private static ArrayList<String> mWordList;
+    //private static ArrayList<String> mWordList;
     private static WordRoomDatabase.Callback sWordRoomDatabaseCallback =
             new RoomDatabase.Callback() {
 
@@ -27,7 +25,7 @@ public abstract class WordRoomDatabase extends RoomDatabase {
                 }
             };
 
-    public static WordRoomDatabase getDatabase(final Context context) {
+    static WordRoomDatabase getDatabase(final Context context) {
 
 
         if (INSTANCE == null) {

@@ -17,11 +17,8 @@ import static androidx.room.ForeignKey.CASCADE;
         })
 public class Score {
 
-
-    @NonNull
     private long matchId;
 
-    @NonNull
     private int playerId;
 
     @ColumnInfo(defaultValue = "", name = "score")
@@ -37,7 +34,7 @@ public class Score {
     @ColumnInfo(defaultValue = "404", name = "result")
     private int result;
 
-    public Score(@NonNull int playerId, long matchId, int playersTurnOrder) {
+    public Score(int playerId, long matchId, int playersTurnOrder) {
         this.score = "";
         this.matchId = matchId;
         this.playerId = playerId;
@@ -55,9 +52,7 @@ public class Score {
         this.totalScore = player.getTotalScore();
         this.maxScore = player.getMaxScore();
         this.result = player.getResult();
-
     }
-
 
     public String getScore() {
         return score;
@@ -67,13 +62,13 @@ public class Score {
         this.score = score;
     }
 
-    public void addScore(int score) {
+/*    public void addScore(int score) {
         totalScore += score;
         maxScore = score > maxScore ? score : maxScore;
         this.score = this.score + ", " + score;
-    }
+    }*/
 
-    public int getPlayerId() {
+    int getPlayerId() {
         return this.playerId;
     }
 
@@ -81,7 +76,7 @@ public class Score {
         this.playerId = playerId;
     }
 
-    public int getTotalScore() {
+    int getTotalScore() {
         return this.totalScore;
     }
 
@@ -89,7 +84,7 @@ public class Score {
         this.totalScore = totalScore;
     }
 
-    public int getMaxScore() {
+    int getMaxScore() {
         return this.maxScore;
     }
 
@@ -110,7 +105,7 @@ public class Score {
     }
 
 
-    public int getPlayersTurnOrder() {
+    int getPlayersTurnOrder() {
         return playersTurnOrder;
     }
 
@@ -119,7 +114,7 @@ public class Score {
     }
 
     //Win 1, draw 0, loss -1
-    public int getResult() {
+    int getResult() {
         return result;
     }
 
@@ -127,7 +122,7 @@ public class Score {
         this.result = result;
     }
 
-
+    @NonNull
     @Override
     public String toString() {
         return "Score{" +

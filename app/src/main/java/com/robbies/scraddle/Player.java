@@ -11,7 +11,6 @@ import java.util.Calendar;
 @Entity(tableName = "player_table")
 public class Player implements Comparable {
 
-
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;
@@ -22,10 +21,8 @@ public class Player implements Comparable {
     @ColumnInfo(name = "highestMatchScore", defaultValue = "0")
     private int playersHighestMatchScore;
 
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "playerId")
-    @NonNull
     private int playerId;
 
     @ColumnInfo(name = "wins", defaultValue = "0")
@@ -37,13 +34,12 @@ public class Player implements Comparable {
     @ColumnInfo(name = "draw", defaultValue = "0")
     private int draw;
 
-
     @NonNull
     @ColumnInfo(name = "lastPlayed")
     private String lastPlayed;
 
 
-    public Player(String name) {
+    public Player(@NonNull String name) {
         personalBest = 0;
         playersHighestMatchScore = 0;
         wins = 0;
@@ -51,7 +47,6 @@ public class Player implements Comparable {
         draw = 0;
         lastPlayed = Calendar.getInstance().getTime().toString();
         this.name = name;
-
     }
 
     public Player(GameDetail gameDetail) {
@@ -65,7 +60,6 @@ public class Player implements Comparable {
         lastPlayed = Calendar.getInstance().getTime().toString();
     }
 
-
     @NonNull
     public String getName() {
         return name;
@@ -75,83 +69,69 @@ public class Player implements Comparable {
         this.name = name;
     }
 
-    public int getPersonalBest() {
+    int getPersonalBest() {
         return personalBest;
     }
 
-    public void setPersonalBest(int personalBest) {
+    void setPersonalBest(int personalBest) {
         this.personalBest = personalBest;
     }
 
-    public int getPlayersHighestMatchScore() {
+    int getPlayersHighestMatchScore() {
         return playersHighestMatchScore;
     }
 
-    public void setPlayersHighestMatchScore(int playersHighestMatchScore) {
+    void setPlayersHighestMatchScore(int playersHighestMatchScore) {
         this.playersHighestMatchScore = playersHighestMatchScore;
     }
 
-    public int getPlayerId() {
+    int getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
 
-    public int getWins() {
+    int getWins() {
         return wins;
     }
 
-    public void setWins(int wins) {
+    void setWins(int wins) {
         this.wins = wins;
     }
 
-    public int getLoss() {
+    int getLoss() {
         return loss;
     }
 
-    public void setLoss(int loss) {
+    void setLoss(int loss) {
         this.loss = loss;
     }
 
-    public int getDraw() {
+    int getDraw() {
         return draw;
     }
 
-    public void setDraw(int draw) {
+    void setDraw(int draw) {
         this.draw = draw;
     }
 
 
     @NonNull
-    public String getLastPlayed() {
+    String getLastPlayed() {
         return lastPlayed;
     }
 
-    public void setLastPlayed(@NonNull String lastPlayed) {
+    void setLastPlayed(@NonNull String lastPlayed) {
         this.lastPlayed = lastPlayed;
     }
 
-    public void incrementWin() {
-        this.wins++;
-
-    }
-
-    public void incrementDraw() {
-        this.draw++;
-
-    }
-
-    public void incrementLoss() {
-        this.loss++;
-
-    }
-
-    public int getRank() {
+    private int getRank() {
         return (this.wins * 3 + this.draw + (this.loss * -1));
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Player{" +
@@ -167,24 +147,30 @@ public class Player implements Comparable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        boolean result = false;
 
-        if (this.getPlayerId() == ((Player) obj).getPlayerId()) {
-            result = true;
+        boolean result = false;
+        if (obj instanceof Player) {
+            if (this.getPlayerId() == ((Player) obj).getPlayerId()) {
+                result = true;
+            }
         }
         return result;
 
 
     }
 
-    @Override
-    public int compareTo(Object o) {
-        int i = 0;
 
-        if (this.getRank() > ((Player) o).getRank()) {
-            i = 1;
-        } else if (this.getRank() < ((Player) o).getRank()) {
-            i = -1;
+    @Override
+    public int compareTo(@NonNull Object o) {
+
+        int i = 0;
+        if (o instanceof Player) {
+
+            if (this.getRank() > ((Player) o).getRank()) {
+                i = 1;
+            } else if (this.getRank() < ((Player) o).getRank()) {
+                i = -1;
+            }
         }
 
         return i;

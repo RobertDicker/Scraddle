@@ -15,19 +15,13 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AnagramChecker extends AppCompatActivity {
 
     private EditText letters;
     private WordViewModel mWordViewModel;
-    private int maxLettersLength = 16;
-    private String anagramPrimeValue = "";
-
-    private List<Word> anagramWords;
     private WordListAdapter adapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,21 +58,20 @@ public class AnagramChecker extends AppCompatActivity {
             }
         }
 
-        // Check if no view has focus:
+        //Hide Keyboard
 
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
-        anagramWords = new ArrayList<>();
+
         String anagramToSolve = letters.getText().toString().toLowerCase();
-        anagramPrimeValue = PrimeValue.calculatePrimeValue(anagramToSolve);
+        String anagramPrimeValue = PrimeValue.calculatePrimeValue(anagramToSolve);
 
         mWordViewModel.getAnagramsOf(anagramPrimeValue, minWordLength, maxWordLength).observe(this, new Observer<List<Word>>() {
             @Override
             public void onChanged(@Nullable final List<Word> words) {
-
                 adapter.setWords(words);
             }
         });

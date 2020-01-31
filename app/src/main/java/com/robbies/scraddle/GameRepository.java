@@ -8,47 +8,31 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class GameRepository {
+class GameRepository {
 
     private GameDao gameDao;
     private LiveData<List<Player>> allPlayers;
-    private LiveData<List<Match>> allMatches;
 
 
-    public GameRepository(Application application) {
+    GameRepository(Application application) {
 
         GameRoomDatabase db = GameRoomDatabase.getDatabase(application);
         gameDao = db.gameDao();
         this.allPlayers = gameDao.getAllPlayers();
-        this.allMatches = gameDao.getAllMatches();
+
     }
 
     LiveData<List<Player>> getAllPlayers() {
         return this.allPlayers;
     }
 
-    LiveData<List<Match>> getAllMatches() {
-        return this.allMatches;
-    }
-
-    LiveData<List<Player>> getPlayersFromMatch(long matchId) {
-        return gameDao.getPlayersFromMatch(matchId);
-    }
-
-    LiveData<List<Score>> getScoresFromMatch(long matchId) {
-        return gameDao.getScoresFromMatch(matchId);
-    }
-
     LiveData<Match> getLastMatch() {
         return gameDao.getLastMatch();
-
     }
-
 
     LiveData<List<GameDetail>> getGameDetails(long matchId) {
         return gameDao.getGameDetails(matchId);
     }
-
 
     //INSERTS
 
@@ -61,57 +45,42 @@ public class GameRepository {
         long matchId = 0;
         try {
             matchId = new insertMatchAsyncTask(gameDao).execute(match).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
         return matchId;
-
     }
 
     void insertScore(Score score) {
         new insertScoreAsyncTask(gameDao).execute(score);
     }
 
-    public LiveData<Player> getPlayer(int playerId) {
-        return gameDao.getPlayer(playerId);
-    }
-
-    public LiveData<Integer> getResultCountForPlayer(int result, int playerId) {
-        return gameDao.getResultCountForPlayer(result, playerId);
-    }
-
-    public void deleteMatch(long matchId) {
+    void deleteMatch(long matchId) {
         new deleteMatchAsyncTask(gameDao).execute(matchId);
     }
 
-    public Player getPlayerFromId(int id) {
-        return gameDao.getPlayerFromId(id);
+    void deletePlayer(int playerId) {
+        new deletePlayerAsyncTask(gameDao).execute(playerId);
     }
 
+    void deleteAll() {
+        new deleteAll(gameDao).execute();
+    }
 
 
     private static class insertPlayerAsyncTask extends AsyncTask<Player, Void, Void> {
 
         private GameDao mAsyncTaskDao;
 
-
         insertPlayerAsyncTask(GameDao gameDao) {
-
             this.mAsyncTaskDao = gameDao;
         }
-
 
         @Override
         protected Void doInBackground(final Player... players) {
 
-
             mAsyncTaskDao.insert(players[0]);
-
-
             return null;
-
         }
     }
 
@@ -120,22 +89,14 @@ public class GameRepository {
 
         private GameDao mAsyncTaskDao;
 
-
         insertMatchAsyncTask(GameDao gameDao) {
-
             this.mAsyncTaskDao = gameDao;
         }
 
-
         @Override
         protected Long doInBackground(final Match... matches) {
-            long matchId = mAsyncTaskDao.insert(matches[0]);
-            return matchId;
-
-
+            return mAsyncTaskDao.insert(matches[0]);
         }
-
-
     }
 
 
@@ -143,37 +104,62 @@ public class GameRepository {
 
         private GameDao mAsyncTaskDao;
 
-
         insertScoreAsyncTask(GameDao gameDao) {
-
             this.mAsyncTaskDao = gameDao;
         }
-
 
         @Override
         protected Void doInBackground(final Score... scores) {
 
-
             mAsyncTaskDao.insert(scores[0]);
-
             return null;
-
         }
     }
 
 
-    private class deleteMatchAsyncTask extends AsyncTask<Long, Void, Void> {
+    private static class deleteMatchAsyncTask extends AsyncTask<Long, Void, Void> {
 
         private GameDao mAsyncTaskDao;
 
-        public deleteMatchAsyncTask(GameDao gameDao) {
+        deleteMatchAsyncTask(GameDao gameDao) {
             this.mAsyncTaskDao = gameDao;
         }
-
 
         @Override
         protected Void doInBackground(Long... longs) {
             mAsyncTaskDao.delete(longs[0]);
+            return null;
+        }
+    }
+
+
+    private static class deletePlayerAsyncTask extends AsyncTask<Integer, Void, Void> {
+
+        private GameDao mAsyncTaskDao;
+
+        deletePlayerAsyncTask(GameDao gameDao) {
+            this.mAsyncTaskDao = gameDao;
+        }
+
+        @Override
+        protected Void doInBackground(Integer... integers) {
+            mAsyncTaskDao.deletePlayer(integers[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAll extends AsyncTask<Void, Void, Void> {
+
+        private GameDao mAsyncTaskDao;
+
+        deleteAll(GameDao gameDao) {
+            this.mAsyncTaskDao = gameDao;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mAsyncTaskDao.deleteAllPlayers();
+            mAsyncTaskDao.deleteAllMatches();
             return null;
         }
     }

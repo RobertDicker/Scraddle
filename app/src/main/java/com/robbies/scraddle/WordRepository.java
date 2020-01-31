@@ -7,12 +7,12 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class WordRepository {
+class WordRepository {
 
     private WordDao mWordDao;
     private LiveData<List<Word>> mAllWords;
 
-    public WordRepository(Application application) {
+    WordRepository(Application application) {
 
         WordRoomDatabase db = WordRoomDatabase.getDatabase(application);
 

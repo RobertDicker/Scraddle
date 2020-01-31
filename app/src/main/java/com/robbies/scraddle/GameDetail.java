@@ -15,10 +15,8 @@ public class GameDetail {
     @ColumnInfo(name = "highestMatchScore", defaultValue = "0")
     private int playersHighestMatchScore;
 
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "playerId")
-    @NonNull
     private int playerId;
 
     @ColumnInfo(name = "wins", defaultValue = "0")
@@ -30,7 +28,6 @@ public class GameDetail {
     @ColumnInfo(name = "draw", defaultValue = "0")
     private int draw;
 
-    @NonNull
     private long matchId;
 
     @ColumnInfo(defaultValue = "", name = "score")
@@ -46,8 +43,7 @@ public class GameDetail {
     @ColumnInfo(defaultValue = "404", name = "result")
     private int result;
 
-
-    public GameDetail(@NonNull String name, int personalBest, int playersHighestMatchScore, int playerId, int wins, int loss, int draw, long matchId, String score, int playersTurnOrder, int totalScore, int maxScore, int result) {
+    GameDetail(@NonNull String name, int personalBest, int playersHighestMatchScore, int playerId, int wins, int loss, int draw, long matchId, String score, int playersTurnOrder, int totalScore, int maxScore, int result) {
         this.name = name;
         this.personalBest = personalBest;
         this.playersHighestMatchScore = playersHighestMatchScore;
@@ -63,11 +59,9 @@ public class GameDetail {
         this.result = result;
     }
 
-
-    public GameDetail(GameDetail gameDetail) {
+    GameDetail(GameDetail gameDetail) {
         this(gameDetail.name, gameDetail.personalBest, gameDetail.playersHighestMatchScore, gameDetail.playerId, gameDetail.wins, gameDetail.loss, gameDetail.draw, gameDetail.matchId, gameDetail.score, gameDetail.playersTurnOrder, gameDetail.totalScore, gameDetail.getMaxScore(), gameDetail.result);
     }
-
 
     @NonNull
     public String getName() {
@@ -78,23 +72,23 @@ public class GameDetail {
         this.name = name;
     }
 
-    public int getPersonalBest() {
+    int getPersonalBest() {
         return personalBest;
     }
 
-    public void setPersonalBest(int personalBest) {
+    void setPersonalBest(int personalBest) {
         this.personalBest = personalBest;
     }
 
-    public int getPlayersHighestMatchScore() {
+    int getPlayersHighestMatchScore() {
         return playersHighestMatchScore;
     }
 
-    public void setPlayersHighestMatchScore(int playersHighestMatchScore) {
+    void setPlayersHighestMatchScore(int playersHighestMatchScore) {
         this.playersHighestMatchScore = playersHighestMatchScore;
     }
 
-    public int getPlayerId() {
+    int getPlayerId() {
         return playerId;
     }
 
@@ -102,7 +96,7 @@ public class GameDetail {
         this.playerId = playerId;
     }
 
-    public int getWins() {
+    int getWins() {
         return wins;
     }
 
@@ -110,7 +104,7 @@ public class GameDetail {
         this.wins = wins;
     }
 
-    public int getLoss() {
+    int getLoss() {
         return loss;
     }
 
@@ -118,7 +112,7 @@ public class GameDetail {
         this.loss = loss;
     }
 
-    public int getDraw() {
+    int getDraw() {
         return draw;
     }
 
@@ -142,15 +136,15 @@ public class GameDetail {
         this.score = score;
     }
 
-    public int getPlayersTurnOrder() {
+    int getPlayersTurnOrder() {
         return playersTurnOrder;
     }
 
-    public void setPlayersTurnOrder(int playersTurnOrder) {
+    void setPlayersTurnOrder(int playersTurnOrder) {
         this.playersTurnOrder = playersTurnOrder;
     }
 
-    public int getTotalScore() {
+    int getTotalScore() {
         return totalScore;
     }
 
@@ -158,7 +152,7 @@ public class GameDetail {
         this.totalScore = totalScore;
     }
 
-    public int getMaxScore() {
+    int getMaxScore() {
         return maxScore;
     }
 
@@ -166,15 +160,15 @@ public class GameDetail {
         this.maxScore = maxScore;
     }
 
-    public int getResult() {
+    int getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    void setResult(int result) {
         this.result = result;
     }
 
-    public String getLastScore() {
+    String getLastScore() {
         String lastScore = "0";
         if (!score.isEmpty()) {
 
@@ -193,7 +187,7 @@ public class GameDetail {
         }
     }
 
-    public void addScore(int score) {
+    void addScore(int score) {
         totalScore += score;
         maxScore = score > maxScore ? score : maxScore;
         this.score = this.score + ", " + score;
@@ -203,21 +197,19 @@ public class GameDetail {
         return (this.wins * 3 + this.draw + (this.loss * -1));
     }
 
-    public void incrementWin() {
+    void incrementWin() {
         this.wins++;
-
     }
 
-    public void incrementDraw() {
+    void incrementDraw() {
         this.draw++;
-
     }
 
-    public void incrementLoss() {
+    void incrementLoss() {
         this.loss++;
-
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "GameDetail{" +

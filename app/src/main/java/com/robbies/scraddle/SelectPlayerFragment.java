@@ -1,75 +1,63 @@
 package com.robbies.scraddle;
 
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener, View.OnClickListener {
+public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener, View.OnClickListener, SelectPlayerDialog.SelectPlayerDialogOnClickListener {
 
-
-    private final String TAG = this.getClass().getSimpleName();
-    private RecyclerView mRecyclerViewAllPlayers;
     private ItemTouchHelper mItemTouchHelper;
     private SelectPlayerAdapter mAllPlayerAdapter;
     private ArrayList<Player> mCachedAllPlayers;
     private ArrayList<Player> mSelectedPlayers;
-    private EditText editText;
-    private Button addPlayerButton;
-    private SharedPreferences sharedPreferences;
-    private FragmentSwitcher fragmentSwitcher;
-    private ScoringViewModel scoringViewModel;
+    private SharedPreferences mSharedPreferences;
+    private FragmentSwitcher mFragmentSwitcher;
+    private ScoringViewModel mScoringViewModel;
 
-
-    public SelectPlayerFragment(FragmentSwitcher fragmentSwitcher) {
-        this.fragmentSwitcher = fragmentSwitcher;
+    SelectPlayerFragment(FragmentSwitcher fragmentSwitcher) {
+        this.mFragmentSwitcher = fragmentSwitcher;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_select_players, container, false);
-        sharedPreferences = getContext().getSharedPreferences("Match", 0);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
 
-        scoringViewModel = ViewModelProviders.of(getActivity()).get(ScoringViewModel.class);
+        mScoringViewModel = ViewModelProviders.of(requireActivity()).get(ScoringViewModel.class);
 
         //addPlayerButton = view.findViewById(R.id.buttonAddPlayers);
 
         mSelectedPlayers = new ArrayList<>();
 
-        scoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        mScoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 mCachedAllPlayers = (ArrayList) players;
 
-                //mAllPlayerAdapter.setPlayers(mCachedAllPlayers);
                 if (players.size() > 0) {
-                    //addPlayerButton.setVisibility(View.VISIBLE);
 
                     //Add 1-2 players
                     if (mSelectedPlayers.isEmpty()) {
@@ -85,10 +73,10 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
         view.findViewById(R.id.buttonStartScoring).setOnClickListener(this);
 
-        mRecyclerViewAllPlayers = view.findViewById(R.id.recyclerviewPlayers);
+        RecyclerView recyclerViewAllPlayers = view.findViewById(R.id.recyclerviewPlayers);
         mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
-        mRecyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
-        mRecyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
+        recyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(
@@ -109,120 +97,77 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
                 mSelectedPlayers.remove(from);
 
                 mAllPlayerAdapter.notifyItemRemoved(from);
-
 //                        .setAction("Action", null).show();
             }
         });
 
-        mItemTouchHelper.attachToRecyclerView(mRecyclerViewAllPlayers);
+        mItemTouchHelper.attachToRecyclerView(recyclerViewAllPlayers);
 
         return view;
-
     }
 
 
     @Override
     public void onPlayerClick(int position) {
+        //reserved for future actions
     }
 
 
-    public void startScoring() {
+    private void startScoring() {
 
         if (mSelectedPlayers.size() > 0) {
 
-            long matchId = scoringViewModel.getCurrentMatchId();
+            long matchId = mScoringViewModel.getCurrentMatchId();
             int order = 0;
             for (Player player : mSelectedPlayers) {
-                scoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
+                mScoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
             }
 
-            sharedPreferences.edit().putLong("matchId", matchId).apply();
-
-            fragmentSwitcher.switchFragment(new ScoringFragment());
-
+            mSharedPreferences.edit().putLong("matchId", matchId).apply();
+            mFragmentSwitcher.switchFragment(new ScoringFragment());
+        } else {
+            Snackbar.make(requireView(), "Try Selecting Players, it's going to be lonely otherwise", Snackbar.LENGTH_SHORT)
+                    .show();
         }
     }
 
-    public void addPlayers() {
+    private void selectPlayers() {
 
-        final List<Integer> selectedItems = new ArrayList<>();
-        String[] items = new String[mCachedAllPlayers.size()];
-        boolean[] checkedItems = new boolean[mCachedAllPlayers.size()];
-        int i = 0;
-        for (Player player : mCachedAllPlayers) {
-            items[i] = player.getName();
-            if (mSelectedPlayers.contains(player)) {
-                checkedItems[i] = true;
-                selectedItems.add(i);
+        int numberOfPlayers = mCachedAllPlayers.size();
+        if (numberOfPlayers > 0) {
+            String[] namesOfPlayers = new String[numberOfPlayers];
+            boolean[] checkedItems = new boolean[numberOfPlayers];
+            for (int i = 0; i < numberOfPlayers; i++) {
+                namesOfPlayers[i] = mCachedAllPlayers.get(i).getName();
+                checkedItems[i] = mSelectedPlayers.contains(mCachedAllPlayers.get(i));
             }
-            checkedItems[i] = mSelectedPlayers.contains(player);
-            i++;
+
+            DialogFragment dialogFragment = SelectPlayerDialog.getInstance("Select Players", namesOfPlayers, checkedItems, this);
+            dialogFragment.show(requireActivity().getSupportFragmentManager(), "selectPlayer");
+
+        } else {
+            Snackbar.make(requireView(), "Try Create a Player First with the icon to the right", Snackbar.LENGTH_SHORT)
+                    .show();
         }
-
-
-        AlertDialog dialog = new AlertDialog.Builder(getContext()).
-                setTitle("Select Your Players").setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int index, boolean isChecked) {
-
-                if (isChecked) {
-                    // If the user checked the item, add it to the selected items
-                    selectedItems.add(index);
-                } else if (selectedItems.contains(index)) {
-                    // Else, if the item is already in the array, remove it
-                    selectedItems.remove(Integer.valueOf(index));
-                }
-
-            }
-        })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int buttonId) {
-                        mSelectedPlayers.clear();
-                        for (Integer i : selectedItems) {
-                            mSelectedPlayers.add(mCachedAllPlayers.get(i));
-                        }
-                        mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-
-        dialog.show();
-
-
     }
+
+    public void doPositiveClick(boolean[] checkedItems) {
+        mSelectedPlayers.clear();
+        int playerIndex = 0;
+        for (boolean item : checkedItems) {
+            if (item) {
+                mSelectedPlayers.add(mCachedAllPlayers.get(playerIndex));
+            }
+            playerIndex++;
+        }
+        mAllPlayerAdapter.setPlayers(mSelectedPlayers);
+    }
+
 
     private void createPlayerPopup() {
 
-
-        editText = new EditText(getContext());
-        editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-        editText.setSingleLine(true);
-
-        editText.setHint("Enter Player Name");
-        AlertDialog dialog = new AlertDialog.Builder(getContext())
-                .setTitle("Create New Player")
-                .setMessage("Enter new players name below")
-                .setView(editText)
-
-                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                        String editTextInput = editText.getText().toString().trim();
-
-
-                        Player player = new Player(editTextInput);
-                        //First two created players will automatically be added to every game
-
-                        scoringViewModel.savePlayer(player);
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
-
+        DialogFragment popup = new CreatePlayerDialog();
+        popup.show(requireActivity().getSupportFragmentManager(), "createPlayer");
     }
 
 
@@ -232,7 +177,7 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
         int id = item.getItemId();
         switch (id) {
             case (R.id.menuSelectPlayers):
-                addPlayers();
+                selectPlayers();
                 break;
             case (R.id.menuCreatePlayer):
                 createPlayerPopup();
@@ -244,21 +189,12 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-
         mItemTouchHelper.startDrag(viewHolder);
     }
 
     @Override
     public void onClick(View view) {
-
-        if (view.getId() == R.id.buttonStartScoring) {
-            startScoring();
-        }
-
-    }
-
-    public interface FragmentSwitcher {
-        void switchFragment(Fragment fragment);
+        if (view.getId() == R.id.buttonStartScoring) startScoring();
     }
 
 }

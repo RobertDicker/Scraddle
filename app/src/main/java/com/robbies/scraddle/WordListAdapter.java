@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -21,14 +22,15 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         mInflater = LayoutInflater.from(context);
     }
 
+    @NonNull
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public WordViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = mInflater.inflate(R.layout.recycler_view_word_item, parent, false);
         return new WordViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(WordViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
 
         if (mWords != null) {
             Word current = mWords.get(position);
@@ -39,7 +41,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
             holder.wordItemView.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
         } else {
-            holder.wordItemView.setText("No Words");
+            holder.wordItemView.setText(R.string.no_words);
         }
     }
 

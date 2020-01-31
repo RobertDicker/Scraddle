@@ -1,21 +1,35 @@
 package com.robbies.scraddle;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity implements MainMenuFragment.FragmentSwitcher, LeaderboardFragment.OnFragmentInteractionListener {
 
     FragmentManager fragmentManager;
 
+    public static void setDayNightTheme(SharedPreferences prefs) {
+        int currentTheme = prefs.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
+        AppCompatDelegate.setDefaultNightMode(currentTheme);
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //  SharedPreferences sP = getSharedPreferences("Match", 0);
+        SharedPreferences sP = PreferenceManager.getDefaultSharedPreferences(this);
+
+        setDayNightTheme(sP);
+
         setContentView(R.layout.activity_main_menu);
 
         // Instantiate the fragment.
@@ -28,17 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
         // Add the SimpleFragment.
         fragmentTransaction.add(R.id.content,
                 mainMenuFragment).commit();
-
-   /*
-            //Set The Navigation Bar to transparent===============================
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-           // ===============================
-
-*/
-
     }
-
 
     @Override
     public void switchFragment(Fragment fragment) {
@@ -55,10 +59,10 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
         else super.onBackPressed();
     }
 
-
-
     @Override
     public void onFragmentInteraction(View view) {
-        Toast.makeText(this, view.getId() + "", Toast.LENGTH_SHORT);
+
     }
+
+
 }

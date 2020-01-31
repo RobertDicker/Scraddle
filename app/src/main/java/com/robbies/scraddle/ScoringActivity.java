@@ -1,8 +1,8 @@
 package com.robbies.scraddle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 
-public class ScoringActivity extends AppCompatActivity implements SelectPlayerFragment.FragmentSwitcher {
+public class ScoringActivity extends AppCompatActivity implements FragmentSwitcher {
+
 
     private long matchId;
-    private EditText editText;
     private ScoringViewModel scoringViewModel;
 
     @Override
@@ -23,7 +23,8 @@ public class ScoringActivity extends AppCompatActivity implements SelectPlayerFr
         setContentView(R.layout.activity_scoring);
         scoringViewModel = ViewModelProviders.of(this).get(ScoringViewModel.class);
 
-        matchId = getIntent().getIntExtra("lastMatchId", -1);
+        matchId = getIntent().getLongExtra("lastMatchId", -1);
+        scoringViewModel.setCurrentMatchId(matchId);
 
         Fragment matchFragment = matchId == -1 ?
                 new SelectPlayerFragment(this)
@@ -35,19 +36,21 @@ public class ScoringActivity extends AppCompatActivity implements SelectPlayerFr
 
         // Add the SimpleFragment.
         fragmentTransaction.add(R.id.fragment,
-                matchFragment).addToBackStack(null).commit();
+                matchFragment).commit();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_players, menu);
-
         return true;
     }
 
@@ -60,23 +63,22 @@ public class ScoringActivity extends AppCompatActivity implements SelectPlayerFr
         }
 
         return super.onPrepareOptionsMenu(menu);
-
     }
 
     @Override
     public void switchFragment(Fragment fragment) {
         matchId = scoringViewModel.getCurrentMatchId();
         invalidateOptionsMenu();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment, fragment).addToBackStack(null)
-                .commit();
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment, fragment)
+                .commit();
     }
 
-
-
-
-
-
-
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 }

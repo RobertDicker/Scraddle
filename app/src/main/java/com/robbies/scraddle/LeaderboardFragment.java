@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -17,14 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link LeaderboardFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
 public class LeaderboardFragment extends Fragment {
 
-    private GameViewModel gameViewModel;
     private List<Player> allPlayers;
     private OnFragmentInteractionListener mListener;
 
@@ -32,25 +31,24 @@ public class LeaderboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_leader_board, container, false);
-        final PlayerDetailAdapter playerDetailAdapter;
+        View view = inflater.inflate(R.layout.fragment_leader_board, container, false);
+        final LeaderBoardAdapter playerDetailAdapter;
         RecyclerView recyclerView;
         allPlayers = new ArrayList<>();
 
-        gameViewModel = ViewModelProviders.of(this).get(GameViewModel.class);
+        ScoringViewModel scoringViewModel = ViewModelProviders.of(this).get(ScoringViewModel.class);
 
 
         recyclerView = view.findViewById(R.id.rVLeaderBoard);
-        playerDetailAdapter = new PlayerDetailAdapter();
+        playerDetailAdapter = new LeaderBoardAdapter();
         recyclerView.setAdapter(playerDetailAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        gameViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        scoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 allPlayers = players;
@@ -65,6 +63,7 @@ public class LeaderboardFragment extends Fragment {
         return view;
     }
 
+
     public void onButtonPressed(View view) {
         if (mListener != null) {
             mListener.onFragmentInteraction(view);
@@ -72,7 +71,7 @@ public class LeaderboardFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -89,16 +88,6 @@ public class LeaderboardFragment extends Fragment {
     }
 
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(View view);
