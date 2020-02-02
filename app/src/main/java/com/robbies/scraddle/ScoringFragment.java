@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,15 +75,15 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
-        scoringViewModel = ViewModelProviders.of(requireActivity()).get(ScoringViewModel.class);
+        scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
         matchId = scoringViewModel.getCurrentMatchId();
 
-        scoringViewModel.getPlayersDetails(matchId).observe(this, new Observer<List<GameDetail>>() {
+        scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override
             public void onChanged(List<GameDetail> gameDetails) {
 
-                playerDetails = (ArrayList) gameDetails;
+                playerDetails = (ArrayList<GameDetail>) gameDetails;
 
                 playerAdapter.setAllPlayers(playerDetails);
 
@@ -238,7 +238,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             else if (winners.contains(playerDetails.get(i).getPlayerId()) & winners.size() > 1) {
                 playerDetails.get(i).incrementDraw();
                 playerDetails.get(i).setResult(1);
-                winner = tidyStringFormatterHelper.addToItemStringWithCommasAnd(winner, playerDetails.get(i).getName());
+                winner = TidyStringFormatterHelper.addToItemStringWithCommasAnd(winner, playerDetails.get(i).getName());
                 winnerText = String.format("Its a Tie between %s with a total\nScore: %s ", winner, playerDetails.get(i).getTotalScore());
             }
             //loss

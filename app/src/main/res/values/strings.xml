@@ -12,7 +12,7 @@
     <!-- Messages Preferences -->
 
     <!-- Anagram Preferences -->
-    <string name="maxAnagramLetters">12</string>
+    <string name="maxAnagramLetters">16</string>
 
     <!-- Select Player and Scoring -->
     <string name="title_activity_score">Score Activity</string>
@@ -20,11 +20,45 @@
 
     <!-- Settings Screen -->
     <string name="deleteAllTitle">Delete All</string>
-    <string name="deleteAllKey">deleteAll</string>
     <string name="createPlayer">createPlayer</string>
     <string name="deletePlayer">Delete Players</string>
     <string name="scraddle_logo">Scraddle Logo</string>
     <string name="no_words">No Words Available</string>
+    <string name="drag_handle">drag handle</string>
+    <string name="dividing_line_content_description">dividing line</string>
+    <string name="anagramEnterTextHint">Enter your letters</string>
+    <string name="all_words_button">All Words</string>
+    <string name="anagram_button_2">2</string>
+    <string name="anagram_button_3">3</string>
+    <string name="anagram_button_4">4</string>
+    <string name="anagram_button_5">5</string>
+    <string name="anagram_button_6">6</string>
+    <string name="anagram_button_7">7</string>
+    <string name="anagram_button_8_or_more">8+</string>
+    <string name="leader_board_heading">Leader Board</string>
+    <string name="initial_heading_above_calc_before_first_move">Start adding values to begin...</string>
+    <string name="button_clear">C</string>
+    <string name="button_minus_one">-1</string>
+    <string name="scoring_button_plus_one">+1</string>
+    <string name="scoring_button_plus_five">+5</string>
+    <string name="scoring_button_plus_ten">+10</string>
+    <string name="scoring_button_add_no_score">Next</string>
+    <string name="select_players_start_scoring_button">Start Scoring</string>
+    <string name="menu_select_players">Select Players</string>
+    <string name="menu_create_player">Create Player</string>
+    <string name="leaderboard_games_played_label">Games Played:</string>
+    <string name="leaderboard_games_won_label">Won:</string>
+    <string name="leaderboard_games_lost_label">Lost:</string>
+    <string name="leaderboard_games_drawn_label">Drawn:</string>
+    <string name="leaderboard_games_highest_match_score_label">Highest Match Score</string>
+    <string name="leaderboard_games_largest_word_score_label">Largest Word Score</string>
+    <string name="scorecard_last_score_label">Last Score</string>
+    <string name="scorecard_best_score_label">Best Score</string>
+    <string name="scorecard_personal_best_label">Personal Best</string>
+    <string name="menu_scoring_undo_button_label">Undo</string>
+    <string name="menu_scoring_save_button_label">Save</string>
+    <string name="menu_scoring_finish_button_label">Finish</string>
+    <string name="menu_scoring_delete_button_label">Delete</string>
 
 
 </resources>

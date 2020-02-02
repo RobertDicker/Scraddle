@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import java.util.Calendar;
 
 @Entity(tableName = "player_table")
-public class Player implements Comparable {
+class Player implements Comparable {
 
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")

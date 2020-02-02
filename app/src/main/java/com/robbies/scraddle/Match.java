@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 import java.util.Calendar;
 
 @Entity(tableName = "match_table")
-public class Match {
+class Match {
 
     @PrimaryKey(autoGenerate = true)
     private long matchId;

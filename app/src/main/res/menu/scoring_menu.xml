@@ -6,20 +6,20 @@
     <item
         android:id="@+id/menuButtonUndo"
         android:icon="@drawable/ic_undo_black_24dp"
-        android:title="Undo"
+        android:title="@string/menu_scoring_undo_button_label"
         android:visible="true"
         app:showAsAction="always" />
     <item
         android:id="@+id/menuButtonSave"
         android:icon="@drawable/ic_save_black_24dp"
-        android:title="Save"
+        android:title="@string/menu_scoring_save_button_label"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menuButtonEndGame"
-        android:title="    Finish    "
+        android:title="@string/menu_scoring_finish_button_label"
         app:showAsAction="always" />
     <item
         android:id="@+id/menuButtonDeleteMatch"
-        android:title="Delete"
+        android:title="@string/menu_scoring_delete_button_label"
         app:showAsAction="never|collapseActionView" />
 </menu>

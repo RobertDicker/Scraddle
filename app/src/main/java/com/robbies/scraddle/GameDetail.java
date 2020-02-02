@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
-public class GameDetail {
+class GameDetail {
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;

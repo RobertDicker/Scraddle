@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 public class ScoringActivity extends AppCompatActivity implements FragmentSwitcher {
 
@@ -21,7 +21,7 @@ public class ScoringActivity extends AppCompatActivity implements FragmentSwitch
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_scoring);
-        scoringViewModel = ViewModelProviders.of(this).get(ScoringViewModel.class);
+        scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
         matchId = getIntent().getLongExtra("lastMatchId", -1);
         scoringViewModel.setCurrentMatchId(matchId);

@@ -44,12 +44,11 @@ public class CheckWordIsAnagram implements Callable<Boolean> {
         BigInteger result = anagramPrimeValue.mod(wordValue);
 
         if (result.equals(BigInteger.ZERO)) {
-            if (word == null) {
+            if(word == null){
                 Log.d("broke", "here");
             }
-            if (word != null) {
-                allMatchingWords.add(word);
-            }
+            if(word != null){
+                allMatchingWords.add(word);}
 
         }
 

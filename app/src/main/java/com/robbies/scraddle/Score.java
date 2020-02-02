@@ -15,7 +15,7 @@ import static androidx.room.ForeignKey.CASCADE;
                 @Index("matchId"),
                 @Index("playerId")
         })
-public class Score {
+class Score {
 
     private long matchId;
 

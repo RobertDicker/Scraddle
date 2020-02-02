@@ -2,6 +2,7 @@ package com.robbies.scraddle;
 
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 class PrimeValue {
@@ -35,12 +36,18 @@ class PrimeValue {
                 101,
                 103};
 
-        BigInteger wordNumber = new BigInteger("1");
+        BigDecimal wordNumber = new BigDecimal(1);
 
-        char[] wordAsCharArray = word.toCharArray();
+        char[] wordAsCharArray = word.toLowerCase().toCharArray();
 
         for (char letter : wordAsCharArray) {
-            BigInteger charValue = new BigInteger(Integer.toString(primeNumbers[Character.getNumericValue(letter) - 10]));
+
+            char letters = letter;
+            int lettervalue = Character.getNumericValue(letter);
+            int lettervalueminus10 = Character.getNumericValue(letter)-10;
+            int primeletterminus10 = primeNumbers[lettervalueminus10];
+
+            BigDecimal charValue = new BigDecimal(primeNumbers[Character.getNumericValue(letter) - 10]);
 
             // Multiply each letter by eachothers prime number value
             // Words that contain the specific letter or word will be divisible with no remainder.
@@ -48,7 +55,9 @@ class PrimeValue {
 
             wordNumber = wordNumber.multiply(charValue);
             Log.d("--------", wordNumber.toString());
+
         }
+        Log.d("--------", "Prime Digits:" + wordNumber.toString().length());
         return wordNumber.toString();
 
 

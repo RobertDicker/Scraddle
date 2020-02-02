@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class ScoringViewModel extends AndroidViewModel {
 
-    private GameRepository gameRepository;
+    private final GameRepository gameRepository;
     private LiveData<List<Player>> mAllPlayers;
     private long mCurrentMatchId;
 

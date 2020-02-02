@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -25,10 +25,9 @@ import java.util.List;
 public class Settings extends PreferenceFragmentCompat implements SelectPlayerDialog.SelectPlayerDialogOnClickListener {
 
     static final String KEY_PREF_NIGHT_MODE = "switchNightMode";
-    private ScoringViewModel scoringViewModel;
     private List<Player> mAllPlayers;
     private SharedPreferences sharedPreferences;
-
+    ScoringViewModel mScoringViewModel;
     public Settings() {
         // Required empty public constructor
     }
@@ -50,9 +49,9 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.app_preferences);
-        scoringViewModel = ViewModelProviders.of(requireActivity()).get(ScoringViewModel.class);
+        mScoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
-        scoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 mAllPlayers = players;
@@ -77,7 +76,7 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    scoringViewModel.deleteAll();
+                                    mScoringViewModel.deleteAll();
                                     sharedPreferences.edit().clear().apply();
                                     Intent intent = new Intent(getContext(), MainActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -141,7 +140,7 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
         String playersToDelete = "";
         for (int i = 0; i < checkedItems.length; i++) {
             if (checkedItems[i]) {
-                playersToDelete = tidyStringFormatterHelper.addToItemStringWithCommasAnd(playersToDelete, mAllPlayers.get(i).getName());
+                playersToDelete = TidyStringFormatterHelper.addToItemStringWithCommasAnd(playersToDelete, mAllPlayers.get(i).getName());
             }
         }
 
@@ -154,7 +153,7 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
                         for (int i = 0; i < checkedItems.length; i++) {
 
                             if (checkedItems[i]) {
-                                scoringViewModel.deletePlayer(mAllPlayers.get(i).getPlayerId());
+                                mScoringViewModel.deletePlayer(mAllPlayers.get(i).getPlayerId());
                             }
                         }
                         sharedPreferences.edit().putLong("matchId", -1).apply();

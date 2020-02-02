@@ -35,4 +35,9 @@ public class WordViewModel extends AndroidViewModel {
     }
 
 
+    public LiveData<List<Word>> getAllWords(int minWordLength, int maxWordLength) {
+
+        return  mRepository.getAllWords(minWordLength, maxWordLength);
+
+    }
 }

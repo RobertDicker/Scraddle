@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:labelFor="@id/textViewLastScore"
-                android:text="Last Score"
+                android:text="@string/scorecard_last_score_label"
                 android:textStyle="bold" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:labelFor="@id/textViewBestScore"
-                android:text="Best Score"
+                android:text="@string/scorecard_best_score_label"
                 android:textStyle="bold"
                 tools:text="Best Score" />
 
@@ -84,7 +84,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:labelFor="@id/textViewPersonalBest"
-                android:text="Personal Best"
+                android:text="@string/scorecard_personal_best_label"
                 android:textStyle="bold" />
 
             <TextView
@@ -100,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#009688"
-            android:contentDescription="Divider"
+            android:contentDescription="@string/dividing_line_content_description"
             app:srcCompat="?attr/dividerVertical" />
 
         <TextView
@@ -119,6 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="#009688"
+        android:contentDescription="@string/dividing_line_content_description"
         android:visibility="gone"
         app:srcCompat="?attr/dividerHorizontal"
         tools:visibility="visible" />
@@ -133,11 +134,12 @@
         tools:visibility="visible" />
 
     <ImageView
-        android:id="@+id/scoreCardTallyDividerTop"
+        android:id="@+id/scoreCardTallyDividerBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="#009688"
+        android:contentDescription="@string/dividing_line_content_description"
         android:visibility="visible"
         app:srcCompat="?attr/dividerHorizontal"
         tools:visibility="visible" />

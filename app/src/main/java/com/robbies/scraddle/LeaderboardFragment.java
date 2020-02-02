@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +41,7 @@ public class LeaderboardFragment extends Fragment {
         RecyclerView recyclerView;
         allPlayers = new ArrayList<>();
 
-        ScoringViewModel scoringViewModel = ViewModelProviders.of(this).get(ScoringViewModel.class);
+        ScoringViewModel scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
 
         recyclerView = view.findViewById(R.id.rVLeaderBoard);
@@ -48,7 +49,7 @@ public class LeaderboardFragment extends Fragment {
         recyclerView.setAdapter(playerDetailAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        scoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        scoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 allPlayers = players;

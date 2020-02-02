@@ -35,10 +35,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         if (mWords != null) {
             Word current = mWords.get(position);
             holder.wordItemView.setText(current.getWord());
+            holder.scrabbleScore.setText(String.format("%spts",current.getScrabbleValue()));
 
             String backgroundColorOfWord = COLOUR_CHOICES[0];
             backgroundColorOfWord = current.getWord().length() <= 8 ? COLOUR_CHOICES[current.getWord().length()] : backgroundColorOfWord;
 
+            holder.scrabbleScore.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
             holder.wordItemView.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
         } else {
             holder.wordItemView.setText(R.string.no_words);
@@ -47,7 +49,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
 
     void setWords(List<Word> words) {
+
         mWords = words;
+
         notifyDataSetChanged();
     }
 
@@ -58,10 +62,12 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
     class WordViewHolder extends RecyclerView.ViewHolder {
         private final TextView wordItemView;
+        private final TextView scrabbleScore;
 
         private WordViewHolder(View itemView) {
             super(itemView);
             wordItemView = itemView.findViewById(R.id.textViewSingleWordAnagramItem);
+            scrabbleScore = itemView.findViewById(R.id.anagramTextViewScrabbleScore);
         }
     }
 }

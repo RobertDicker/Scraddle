@@ -2,6 +2,6 @@ package com.robbies.scraddle;
 
 import androidx.fragment.app.Fragment;
 
-public interface FragmentSwitcher {
+interface FragmentSwitcher {
     void switchFragment(Fragment fragment);
 }

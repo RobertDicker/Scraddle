@@ -6,13 +6,13 @@
     <item
         android:id="@+id/menuSelectPlayers"
         android:orderInCategory="100"
-        android:title="Select Players"
+        android:title="@string/menu_select_players"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/menuCreatePlayer"
         android:icon="@drawable/ic_add_for_fab"
         android:orderInCategory="100"
-        android:title="Create Player"
+        android:title="@string/menu_create_player"
         app:showAsAction="ifRoom" />
 
 

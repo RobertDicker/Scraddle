@@ -13,9 +13,9 @@ import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity implements MainMenuFragment.FragmentSwitcher, LeaderboardFragment.OnFragmentInteractionListener {
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
-    public static void setDayNightTheme(SharedPreferences prefs) {
+    private static void setDayNightTheme(SharedPreferences prefs) {
         int currentTheme = prefs.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
         AppCompatDelegate.setDefaultNightMode(currentTheme);
 

@@ -38,7 +38,7 @@
         android:background="@drawable/buttonripple"
         android:backgroundTint="#70009688"
 
-        android:text="Start Scoring"
+        android:text="@string/select_players_start_scoring_button"
         android:textSize="30sp" />
 
 

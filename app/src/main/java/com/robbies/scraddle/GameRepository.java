@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 
 class GameRepository {
 
-    private GameDao gameDao;
+    private final GameDao gameDao;
     private LiveData<List<Player>> allPlayers;
 
 

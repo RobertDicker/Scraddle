@@ -12,19 +12,23 @@ public class Word {
 
     @PrimaryKey
     @NonNull
-
-    @ColumnInfo(name = "word")
+    @ColumnInfo(name = "Word")
     private String word;
 
     @NonNull
-    @ColumnInfo(name = "primeValue")
+    @ColumnInfo(name = "PrimeValue")
     private String primeValue;
 
+    @NonNull
+    @ColumnInfo(name = "ScrabbleValue")
+    private String scrabbleValue;
 
-    public Word(@NonNull String word) {
-        Log.d("creating word", word);
+
+    public Word(@NonNull String word, String primeValue, String scrabbleValue) {
+       // Log.d("creating word", word);
         this.word = word;
-        this.primeValue = PrimeValue.calculatePrimeValue(word) + "";
+        this.primeValue = primeValue;
+        this.scrabbleValue = scrabbleValue;
     }
 
     @NonNull
@@ -43,5 +47,13 @@ public class Word {
 
     public long getPrimeValueLong() {
         return Long.parseLong(this.primeValue);
+    }
+
+    public String getScrabbleValue() {
+        return scrabbleValue;
+    }
+
+    public void setScrabbleValue(String scrabbleValue) {
+        this.scrabbleValue = scrabbleValue;
     }
 }

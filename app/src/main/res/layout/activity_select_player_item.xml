@@ -20,6 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical|end"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_drag_handle_24dp" />
+        android:src="@drawable/ic_drag_handle_24dp"
+        android:contentDescription="@string/drag_handle"/>
 
 </LinearLayout>

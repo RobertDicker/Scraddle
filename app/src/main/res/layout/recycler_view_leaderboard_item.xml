@@ -50,7 +50,7 @@
     <TextView
         android:id="@+id/textView6"
         style="@style/leaderboard_text"
-        android:text="Games Played:"
+        android:text="@string/leaderboard_games_played_label"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/lBdivider2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +74,7 @@
 
         style="@style/leaderboard_text"
         android:layout_marginEnd="8dp"
-        android:text="Won:"
+        android:text="@string/leaderboard_games_won_label"
         app:layout_constraintEnd_toStartOf="@+id/tVLBWins"
         app:layout_constraintTop_toBottomOf="@+id/lBdivider1" />
 
@@ -91,7 +91,7 @@
 
         style="@style/leaderboard_text"
         android:layout_marginEnd="8dp"
-        android:text="Lost:"
+        android:text="@string/leaderboard_games_lost_label"
         app:layout_constraintEnd_toStartOf="@+id/tVLBLoss"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -110,7 +110,7 @@
 
         style="@style/leaderboard_text"
         android:layout_marginEnd="8dp"
-        android:text="Drawn:"
+        android:text="@string/leaderboard_games_drawn_label"
         app:layout_constraintEnd_toStartOf="@+id/tVLBDraws"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -140,7 +140,7 @@
         android:id="@+id/textView4"
         style="@style/leaderboard_text"
         android:layout_marginStart="16dp"
-        android:text="Highest Match Score"
+        android:text="@string/leaderboard_games_highest_match_score_label"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tVLBMatchHighScore" />
@@ -162,7 +162,7 @@
         android:id="@+id/textView5"
         style="@style/leaderboard_text"
         android:layout_marginEnd="16dp"
-        android:text="Largest Word Score"
+        android:text="@string/leaderboard_games_largest_word_score_label"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvLBHighestWordScore" />

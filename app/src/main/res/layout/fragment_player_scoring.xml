@@ -34,7 +34,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Start adding values to begin..."
+        android:text="@string/initial_heading_above_calc_before_first_move"
         tools:text="Start adding values to begin.." />
 
     <LinearLayout
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F44336"
 
-                android:text="C" />
+                android:text="@string/button_clear" />
 
             <Button
                 android:id="@+id/buttonMinusOne"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#E91E63"
 
-                android:text="-1" />
+                android:text="@string/button_minus_one" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#CDDC39"
 
-                android:text="+1" />
+                android:text="@string/scoring_button_plus_one" />
 
             <Button
                 android:id="@+id/buttonAddFive"
@@ -94,7 +94,7 @@
                 android:layout_height="match_parent"
                 android:backgroundTint="#CDDC39"
 
-                android:text="+5" />
+                android:text="@string/scoring_button_plus_five" />
         </LinearLayout>
 
         <Button
@@ -105,7 +105,7 @@
             android:layout_weight="2"
             android:backgroundTint="#8BC34A"
 
-            android:text="+10" />
+            android:text="@string/scoring_button_plus_ten" />
 
         <Button
             android:id="@+id/buttonAddToPlayer"
@@ -116,7 +116,7 @@
             android:backgroundTint="#4CAF50"
             android:lines="2"
 
-            android:text="Next "
+            android:text="@string/scoring_button_add_no_score"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 

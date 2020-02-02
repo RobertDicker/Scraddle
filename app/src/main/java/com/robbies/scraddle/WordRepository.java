@@ -33,7 +33,12 @@ class WordRepository {
     }
 
     LiveData<List<Word>> getMatchingPrimeWords(String anagramPrimeValue, int minimumLength, int maxLength) {
+
         return mWordDao.getMatchingPrimeWords(anagramPrimeValue, minimumLength, maxLength);
+    }
+
+    public LiveData<List<Word>> getAllWords(int minWordLength, int maxWordLength) {
+        return mWordDao.getAllWords(minWordLength, maxWordLength);
     }
 
 

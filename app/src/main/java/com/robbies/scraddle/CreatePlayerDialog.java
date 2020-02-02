@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
-public class CreatePlayerDialog extends DialogFragment {
+class CreatePlayerDialog extends DialogFragment {
 
     public CreatePlayerDialog() {
     }

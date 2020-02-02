@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,12 +25,12 @@ import java.util.List;
 
 public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener, View.OnClickListener, SelectPlayerDialog.SelectPlayerDialogOnClickListener {
 
+    private final FragmentSwitcher mFragmentSwitcher;
     private ItemTouchHelper mItemTouchHelper;
     private SelectPlayerAdapter mAllPlayerAdapter;
     private ArrayList<Player> mCachedAllPlayers;
     private ArrayList<Player> mSelectedPlayers;
     private SharedPreferences mSharedPreferences;
-    private FragmentSwitcher mFragmentSwitcher;
     private ScoringViewModel mScoringViewModel;
 
     SelectPlayerFragment(FragmentSwitcher fragmentSwitcher) {
@@ -46,16 +46,16 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
 
-        mScoringViewModel = ViewModelProviders.of(requireActivity()).get(ScoringViewModel.class);
+        mScoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
         //addPlayerButton = view.findViewById(R.id.buttonAddPlayers);
 
         mSelectedPlayers = new ArrayList<>();
 
-        mScoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
+        mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
-                mCachedAllPlayers = (ArrayList) players;
+                mCachedAllPlayers = (ArrayList<Player>) players;
 
                 if (players.size() > 0) {
 
