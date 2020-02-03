@@ -2,11 +2,11 @@ package com.robbies.scraddle;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -18,8 +18,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robbies.scraddle.WordComparators.LengthComparator;
+import com.robbies.scraddle.WordComparators.LexicographicComparator;
+import com.robbies.scraddle.WordComparators.ScrabbleValueComparator;
+
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -40,12 +45,15 @@ public class AnagramChecker extends AppCompatActivity {
 
 
     private ProgressBar indeterminateProgressBar;
-
+    private List<Word> matchingWords;
     private TextView numberOfWords;
+    private Button sortButton;
 
 
     private Comparator defaultSortOrder;
-    private ThreadPoolExecutor pool;
+    private List<Comparator> sortMethods;
+
+    private boolean reverse = false;
 
 
     @Override
@@ -53,37 +61,53 @@ public class AnagramChecker extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anagram_checker);
 
-
         //Set The Navigation Bar to transparent===============================
         Window w = getWindow(); // in Activity's onCreate() for instance
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         // ===============================
 
-
+        // ========== DATA ==========
         mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
-        letters = findViewById(R.id.editTextLettersToSolve);
+        matchingWords = new ArrayList<>();
 
+        // =========DISPLAY =====================
+
+        letters = findViewById(R.id.editTextLettersToSolve);
         indeterminateProgressBar = findViewById(R.id.progressBarIndeterminate);
         numberOfWords = findViewById(R.id.anagramTextViewNumberOfWords);
-        defaultSortOrder = new ScrabbleValueComparator();
-
-
 
         RecyclerView recyclerView = findViewById(R.id.rVWords);
         adapter = new WordListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-      /*  mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-            @Override
-            public void onChanged(List<Word> words) {
-
-                Log.d("===========>", "Words loaded");
-            }
-        });*/
-
         letters.requestFocus();
 
+        // =========SORTING ===========================
+
+        sortMethods = new ArrayList<>();
+        sortMethods.addAll(Arrays.asList(
+                new ScrabbleValueComparator(),
+                new LexicographicComparator(),
+                new LengthComparator()
+        ));
+        defaultSortOrder = sortMethods.get(0);
+        sortButton = findViewById(R.id.anagramChangeSortButton);
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showHideIndeterminateProgressBar();
+
+                //if reverse is now false, change sort method
+
+                Collections.rotate(sortMethods, 1);
+                defaultSortOrder = sortMethods.get(0);
+
+                sortWords();
+                updateUI();
+            }
+        });
 
     }
 
@@ -92,12 +116,6 @@ public class AnagramChecker extends AppCompatActivity {
 
         numberOfWords.setText("");
         showHideIndeterminateProgressBar();
-
-        if (pool != null && !pool.isTerminated()) {
-            pool.shutdown();
-        }
-        // new Thread(updateProgress).start();
-
 
         int[] buttons = {0, R.id.button_allWords, R.id.buttonTwoWords, R.id.buttonThree, R.id.buttonFour, R.id.buttonFive, R.id.buttonSix, R.id.buttonSeven, R.id.buttonEight};
         int minWordLength = 0;
@@ -110,14 +128,11 @@ public class AnagramChecker extends AppCompatActivity {
             }
         }
 
-
         //Hide Keyboard
-
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-
 
         final String anagramToSolve = letters.getText().toString().toLowerCase();
         final String anagramPrimeValue = PrimeValue.calculatePrimeValue(anagramToSolve);
@@ -129,13 +144,10 @@ public class AnagramChecker extends AppCompatActivity {
                 @Override
                 public void onChanged(@Nullable final List<Word> words) {
 
-                    List<Word> mMatchingWords = words;
-                    if (words != null) {
-
-                        //       Collections.sort(mMatchingWords, defaultSortOrder);
-                        adapter.setWords(words);
-                        showHideIndeterminateProgressBar();
-                        numberOfWords.setText(String.format("Words: %s", mMatchingWords.size()));
+                    matchingWords = words;
+                    if (matchingWords != null) {
+                        sortWords();
+                        updateUI();
                     }
                 }
             });
@@ -151,36 +163,43 @@ public class AnagramChecker extends AppCompatActivity {
                     @Override
                     public void onChanged(List<Word> words) {
 
-                        pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_CORES);
-
-                        List<Word> allMatchingWords = solveWord(words, anagramPrimeValue);
-                        Collections.sort(allMatchingWords, defaultSortOrder);
-                        adapter.setWords(allMatchingWords);
-
-                        numberOfWords.setText(String.format("Words: %s", allMatchingWords.size()));
-
+                        matchingWords = getAnagrams(words, anagramPrimeValue);
+                        sortWords();
+                        updateUI();
                     }
                 });
             } else {
-                startTimer = System.nanoTime();
+                //   startTimer = System.nanoTime();
                 mWordViewModel.getAllWords(minWordLength, maxWordLength).observe(this, new Observer<List<Word>>() {
                     @Override
                     public void onChanged(List<Word> words) {
 
-                        pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_CORES);
-
-                        List<Word> allMatchingWords = solveWord(words, anagramPrimeValue);
-                        Collections.sort(allMatchingWords, defaultSortOrder);
-                        adapter.setWords(allMatchingWords);
-
-                        numberOfWords.setText(String.format("Words: %s", allMatchingWords.size()));
-
+                        matchingWords = getAnagrams(words, anagramPrimeValue);
+                        sortWords();
+                        updateUI();
                     }
                 });
             }
         }
     }
 
+    private void sortWords() {
+
+        if (reverse) {
+            Collections.sort(matchingWords, defaultSortOrder);
+            Collections.reverse(matchingWords);
+        } else {
+            Collections.sort(matchingWords, defaultSortOrder);
+        }
+    }
+
+    private void updateUI() {
+        adapter.setWords(matchingWords);
+        numberOfWords.setText(String.format("Words: %s", matchingWords.size()));
+        showHideIndeterminateProgressBar();
+        String sortButtonText = defaultSortOrder instanceof ScrabbleValueComparator ? "Scrabble Value" : defaultSortOrder instanceof LexicographicComparator ? "A - Z" : "Word Length";
+        sortButton.setText(sortButtonText);
+    }
 
 /*    private void timer(){
         long startTime = System.nanoTime();
@@ -191,8 +210,9 @@ public class AnagramChecker extends AppCompatActivity {
 
     }*/
 
-    private List<Word> solveWord(List<Word> words, String anagramPrimeValue) {
+    private List<Word> getAnagrams(List<Word> words, String anagramPrimeValue) {
         List<Word> allMatchingWords = new ArrayList<>();
+        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_CORES);
 
         allMatchingWords = Collections.synchronizedList(allMatchingWords);
 
@@ -215,7 +235,6 @@ public class AnagramChecker extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        showHideIndeterminateProgressBar();
         return allMatchingWords;
 
     }
@@ -224,34 +243,18 @@ public class AnagramChecker extends AppCompatActivity {
         int visibility = indeterminateProgressBar.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
         indeterminateProgressBar.setVisibility(visibility);
     }
-}
 
-class LexicographicComparator implements Comparator<Word> {
-    @Override
-    public int compare(Word a, Word b) {
-        return a.getWord().compareToIgnoreCase(b.getWord());
+    public void reverse(View view) {
+        showHideIndeterminateProgressBar();
+        reverse = !reverse;
+        sortWords();
+        view.setRotation(reverse ? 180 : 0);
+        updateUI();
+
+
     }
 }
 
-class lengthComparator implements Comparator<Word> {
-    @Override
-    public int compare(Word a, Word b) {
-        return Integer.compare(a.getWord().length(), b.getWord().length());
-    }
-}
 
-class ScrabbleValueComparator implements Comparator<Word> {
-    @Override
-    public int compare(Word a, Word b) {
 
-        try {
-            return Integer.compare(Integer.parseInt(b.getScrabbleValue()), Integer.parseInt(a.getScrabbleValue()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            String c = b == null ? "word b null" : b.getWord() + b.getScrabbleValue();
-            String d = a == null ? " word a null" : a.getWord() + a.getScrabbleValue();
-            Log.d("BROKE HERE", c + " " + d);
-        }
-        return -1;
-    }
-}
+

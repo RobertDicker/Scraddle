@@ -29,12 +29,41 @@
         app:layout_constraintTop_toBottomOf="@+id/anagramTextViewNumberOfWords"
         tools:text="word" />
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/buttonripple"
+        android:backgroundTint="#009688"
+        android:onClick="reverse"
+        app:layout_constraintBottom_toBottomOf="@+id/anagramChangeSortButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/anagramChangeSortButton"
+        app:srcCompat="@drawable/ic_arrow_down_24dp" />
+
+    <Button
+        android:id="@+id/anagramChangeSortButton"
+        style="@style/anagramButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/buttonripple"
+        android:backgroundTint="#00BCD4"
+        android:text="SORT"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="8dp"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextLettersToSolve">
 
         <Button
@@ -111,32 +140,17 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/anagramProgressBar"
-        style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="8dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="0"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rVWords"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/anagramProgressBar">
+        app:layout_constraintTop_toBottomOf="@+id/anagramChangeSortButton">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -151,7 +165,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/anagramProgressBar"
+        app:layout_constraintTop_toTopOf="@+id/rVWords"
         tools:visibility="visible" />
 
     <TextView
