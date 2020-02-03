@@ -64,6 +64,24 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // ========================= DATA =====================
+
+        mWordViewModel = new ViewModelProvider(getActivity()).get(WordViewModel.class);
+        matchingWords = new ArrayList<>();
+        sortMethods = new ArrayList<>();
+        sortMethods.addAll(Arrays.asList(
+                new ScrabbleValueComparator(),
+                new LexicographicComparator(),
+                new LengthComparator()
+        ));
+        defaultSortOrder = sortMethods.get(0);
+        adapter = new WordListAdapter(requireContext());
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,10 +89,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.activity_anagram_checker, container, false);
 
-        // ========================= DATA =====================
-
-        mWordViewModel = new ViewModelProvider(getActivity()).get(WordViewModel.class);
-        matchingWords = new ArrayList<>();
 
         // ===================DISPLAY =========================
 
@@ -83,27 +97,20 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         numberOfWords = view.findViewById(R.id.anagramTextViewNumberOfWords);
 
         RecyclerView recyclerView = view.findViewById(R.id.rVWords);
-        adapter = new WordListAdapter(requireContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         letters.requestFocus();
+        InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
 
         //================== SORTING ========================
 
-        sortMethods = new ArrayList<>();
-        sortMethods.addAll(Arrays.asList(
-                new ScrabbleValueComparator(),
-                new LexicographicComparator(),
-                new LengthComparator()
-        ));
-        defaultSortOrder = sortMethods.get(0);
 
         //Register onclick listeners
         for (int button : anagramFragmentButtons) {
-
             view.findViewById(button).setOnClickListener(this);
-
         }
 
         return view;

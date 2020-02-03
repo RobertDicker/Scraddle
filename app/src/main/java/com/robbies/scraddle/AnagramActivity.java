@@ -1,11 +1,13 @@
 package com.robbies.scraddle;
 
+import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.os.Bundle;
 
 import com.robbies.scraddle.WordComparators.LoadingFragment;
 
@@ -31,17 +33,31 @@ public class AnagramActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Word> words) {
 
-                if(words !=null){
+                if (words != null) {
 
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.content, new AnagramFragment())
                             .commit();
                 }
 
-                }
+            }
 
 
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        EditText tv = findViewById(R.id.editTextLettersToSolve);
+
+        if (tv.getText().toString().isEmpty()) {
+            super.onBackPressed();
+        } else {
+            tv.setText("");
+            tv.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.showSoftInput(tv, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 }
