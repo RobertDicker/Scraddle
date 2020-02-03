@@ -78,7 +78,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
 
             case R.id.buttonAnagramSolver:
-                startActivity(new Intent(getContext(), AnagramChecker.class));
+                startActivity(new Intent(getContext(), AnagramActivity.class));
                 break;
             case R.id.buttonStartNewGame:
                 startActivity(new Intent(getContext(), ScoringActivity.class));
