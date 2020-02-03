@@ -20,6 +20,10 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
+import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.ScoringViewModel;
+import com.robbies.scraddle.Utilities.TidyStringFormatterHelper;
+
 import java.util.List;
 
 public class Settings extends PreferenceFragmentCompat implements SelectPlayerDialog.SelectPlayerDialogOnClickListener {
@@ -51,7 +55,7 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
         addPreferencesFromResource(R.xml.app_preferences);
         mScoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
-        mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
+        mScoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
                 mAllPlayers = players;

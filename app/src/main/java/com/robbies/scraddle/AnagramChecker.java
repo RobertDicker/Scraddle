@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robbies.scraddle.Utilities.PrimeValue;
 import com.robbies.scraddle.WordComparators.LengthComparator;
 import com.robbies.scraddle.WordComparators.LexicographicComparator;
 import com.robbies.scraddle.WordComparators.ScrabbleValueComparator;
@@ -38,22 +39,21 @@ public class AnagramChecker extends AppCompatActivity {
 
     private static int NUMBER_OF_CORES =
             Runtime.getRuntime().availableProcessors();
-    long startTimer;
+
     private EditText letters;
+    private TextView numberOfWords;
+
     private WordViewModel mWordViewModel;
     private WordListAdapter adapter;
-
-
-    private ProgressBar indeterminateProgressBar;
     private List<Word> matchingWords;
-    private TextView numberOfWords;
-    private Button sortButton;
-
 
     private Comparator defaultSortOrder;
     private List<Comparator> sortMethods;
 
+    private ProgressBar indeterminateProgressBar;
     private boolean reverse = false;
+
+
 
 
     @Override
@@ -66,11 +66,12 @@ public class AnagramChecker extends AppCompatActivity {
         w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         // ===============================
 
-        // ========== DATA ==========
+        // ========================= DATA =====================
+
         mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
         matchingWords = new ArrayList<>();
 
-        // =========DISPLAY =====================
+        // ===================DISPLAY =========================
 
         letters = findViewById(R.id.editTextLettersToSolve);
         indeterminateProgressBar = findViewById(R.id.progressBarIndeterminate);
@@ -83,7 +84,7 @@ public class AnagramChecker extends AppCompatActivity {
 
         letters.requestFocus();
 
-        // =========SORTING ===========================
+        //================== SORTING ========================
 
         sortMethods = new ArrayList<>();
         sortMethods.addAll(Arrays.asList(
@@ -92,25 +93,35 @@ public class AnagramChecker extends AppCompatActivity {
                 new LengthComparator()
         ));
         defaultSortOrder = sortMethods.get(0);
-        sortButton = findViewById(R.id.anagramChangeSortButton);
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                showHideIndeterminateProgressBar();
-
-                //if reverse is now false, change sort method
-
-                Collections.rotate(sortMethods, 1);
-                defaultSortOrder = sortMethods.get(0);
-
-                sortWords();
-                updateUI();
-            }
-        });
 
     }
 
+
+    //================== Button Handlers =======================
+
+    public void reverse(View view) {
+        showHideIndeterminateProgressBar();
+        reverse = !reverse;
+        sortWords();
+        view.setRotation(reverse ? 180 : 0);
+        updateUI();
+    }
+
+    public void changeSortOrder(View view) {
+
+
+
+        showHideIndeterminateProgressBar();
+        Collections.rotate(sortMethods, 1);
+        defaultSortOrder = sortMethods.get(0);
+
+        Button b = findViewById(view.getId());
+        String sortButtonText = defaultSortOrder instanceof ScrabbleValueComparator ? "Scrabble Value" : defaultSortOrder instanceof LexicographicComparator ? "A - Z" : "Word Length";
+        b.setText(sortButtonText);
+
+        sortWords();
+        updateUI();
+    }
 
     public void solveAnagram(View view) {
 
@@ -157,7 +168,7 @@ public class AnagramChecker extends AppCompatActivity {
             //Words are too large to be searched for in Room so Get all the words and iterate over them to determine value in default sort order
             //    mMatchingWords.clear();
             if (view.getId() == R.id.button_allWords) {
-                startTimer = System.nanoTime();
+
                 mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
 
                     @Override
@@ -183,6 +194,8 @@ public class AnagramChecker extends AppCompatActivity {
         }
     }
 
+    //=====================  METHODS =================
+
     private void sortWords() {
 
         if (reverse) {
@@ -197,14 +210,14 @@ public class AnagramChecker extends AppCompatActivity {
         adapter.setWords(matchingWords);
         numberOfWords.setText(String.format("Words: %s", matchingWords.size()));
         showHideIndeterminateProgressBar();
-        String sortButtonText = defaultSortOrder instanceof ScrabbleValueComparator ? "Scrabble Value" : defaultSortOrder instanceof LexicographicComparator ? "A - Z" : "Word Length";
-        sortButton.setText(sortButtonText);
+
+
     }
 
 /*    private void timer(){
-        long startTime = System.nanoTime();
-        long stopTime = System.nanoTime();
-        double algoTimerInSeconds = (double) (stopTime - startTime) / 1_000_000_000.0;
+
+
+
         Log.d("==COMPLETE==", "ALL COMPLETED ================================================");
         Log.d("=====COMPLETED====", "Total Time: " + otherTimer + "Algo Time: " + algoTimerInSeconds);
 
@@ -236,7 +249,6 @@ public class AnagramChecker extends AppCompatActivity {
         }
 
         return allMatchingWords;
-
     }
 
     private void showHideIndeterminateProgressBar() {
@@ -244,15 +256,7 @@ public class AnagramChecker extends AppCompatActivity {
         indeterminateProgressBar.setVisibility(visibility);
     }
 
-    public void reverse(View view) {
-        showHideIndeterminateProgressBar();
-        reverse = !reverse;
-        sortWords();
-        view.setRotation(reverse ? 180 : 0);
-        updateUI();
 
-
-    }
 }
 
 

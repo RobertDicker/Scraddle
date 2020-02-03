@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.robbies.scraddle.Data.ScoringViewModel;
+
 public class ScoringActivity extends AppCompatActivity implements FragmentSwitcher {
 
 

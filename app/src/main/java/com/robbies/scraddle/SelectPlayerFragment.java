@@ -2,6 +2,7 @@ package com.robbies.scraddle;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.robbies.scraddle.Data.Match;
+import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.Score;
+import com.robbies.scraddle.Data.ScoringViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,9 +51,7 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
 
-        mScoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
-
-        //addPlayerButton = view.findViewById(R.id.buttonAddPlayers);
+        mScoringViewModel = new ViewModelProvider(getActivity()).get(ScoringViewModel.class);
 
         mSelectedPlayers = new ArrayList<>();
 
@@ -65,7 +68,6 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
                             mSelectedPlayers.add(mCachedAllPlayers.get(i));
                         }
                     }
-
                     mAllPlayerAdapter.setPlayers(mSelectedPlayers);
                 }
             }
@@ -115,12 +117,14 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
     private void startScoring() {
 
+        long matchId = mScoringViewModel.insertMatch(new Match());
         if (mSelectedPlayers.size() > 0) {
 
-            long matchId = mScoringViewModel.getCurrentMatchId();
             int order = 0;
             for (Player player : mSelectedPlayers) {
-                mScoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
+
+                Log.d("====PLAYER== " , player.toString());
+                mScoringViewModel.saveScore(new Score(player.getPlayerId(),matchId, order++));
             }
 
             mSharedPreferences.edit().putLong("matchId", matchId).apply();

@@ -1,4 +1,4 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 import android.app.Application;
 import android.os.AsyncTask;
@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-class GameRepository {
+public class GameRepository {
 
     private final GameDao gameDao;
     private LiveData<List<Player>> allPlayers;
@@ -110,7 +110,6 @@ class GameRepository {
 
         @Override
         protected Void doInBackground(final Score... scores) {
-
             mAsyncTaskDao.insert(scores[0]);
             return null;
         }

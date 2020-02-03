@@ -1,11 +1,11 @@
 package com.robbies.scraddle;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.robbies.scraddle.Utilities.PrimeValue;
 
 @Entity(tableName = "word_table")
 public class Word {

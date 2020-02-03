@@ -1,13 +1,13 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Utilities;
 
 import android.util.Log;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-class PrimeValue {
+public class PrimeValue {
 
-    static String calculatePrimeValue(String word) {
+    public static String calculatePrimeValue(String word) {
 
         int[] primeNumbers = new int[]{3,
                 5,

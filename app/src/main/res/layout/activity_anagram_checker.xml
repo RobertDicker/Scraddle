@@ -51,6 +51,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/buttonripple"
         android:backgroundTint="#00BCD4"
+        android:onClick="changeSortOrder"
         android:text="SORT"
         app:layout_constraintEnd_toStartOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent"

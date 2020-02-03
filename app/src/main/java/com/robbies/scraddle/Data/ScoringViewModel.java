@@ -1,4 +1,4 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 import android.app.Application;
 import android.util.Log;
@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+
 import java.util.List;
 
 
@@ -15,7 +16,7 @@ public class ScoringViewModel extends AndroidViewModel {
 
     private final GameRepository gameRepository;
     private LiveData<List<Player>> mAllPlayers;
-    private long mCurrentMatchId;
+    private long mCurrentMatchId = -1;
 
     public ScoringViewModel(@NonNull Application application) {
         super(application);
@@ -24,11 +25,11 @@ public class ScoringViewModel extends AndroidViewModel {
 
     //GETTERS
 
-    LiveData<List<GameDetail>> getPlayersDetails(long matchId) {
+    public LiveData<List<GameDetail>> getPlayersDetails(long matchId) {
         return gameRepository.getGameDetails(matchId);
     }
 
-    LiveData<List<Player>> getAllPlayers() {
+    public LiveData<List<Player>> getAllPlayers() {
 
         if (mAllPlayers == null) {
             this.mAllPlayers = gameRepository.getAllPlayers();
@@ -36,31 +37,28 @@ public class ScoringViewModel extends AndroidViewModel {
         return mAllPlayers;
     }
 
-    long getCurrentMatchId() {
-        if (mCurrentMatchId == -1) {
-            mCurrentMatchId = insertMatch(new Match());
-        }
+    public long getCurrentMatchId() {
         return mCurrentMatchId;
     }
 
 
     //INSERTS
 
-    void setCurrentMatchId(long mCurrentMatchId) {
+    public void setCurrentMatchId(long mCurrentMatchId) {
         this.mCurrentMatchId = mCurrentMatchId;
     }
 
-    private long insertMatch(Match match) {
+    public long insertMatch(Match match) {
         this.mCurrentMatchId = gameRepository.insertMatch(match);
         return mCurrentMatchId;
     }
 
-    void savePlayer(Player player) {
+    public void savePlayer(Player player) {
         gameRepository.insertPlayer(player);
         Log.d("==SAVING===>", "saving" + player.toString());
     }
 
-    void saveScore(Score score) {
+    public void saveScore(Score score) {
         gameRepository.insertScore(score);
         Log.d("==SAVING===>", "saving" + score.toString());
     }
@@ -68,15 +66,15 @@ public class ScoringViewModel extends AndroidViewModel {
     //DELETES
 
     //Deletes matching scores and match from data
-    void deleteMatch(long matchId) {
+    public void deleteMatch(long matchId) {
         gameRepository.deleteMatch(matchId);
     }
 
-    void deletePlayer(int playerId) {
+    public void deletePlayer(int playerId) {
         gameRepository.deletePlayer(playerId);
     }
 
-    void deleteAll() {
+    public void deleteAll() {
         gameRepository.deleteAll();
     }
 

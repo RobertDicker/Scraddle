@@ -1,14 +1,16 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
 
 @Entity(tableName = "match_table")
-class Match {
+public class Match {
 
+    @ColumnInfo(name = "matchId")
     @PrimaryKey(autoGenerate = true)
     private long matchId;
 

@@ -1,10 +1,10 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
-class GameDetail {
+public class GameDetail {
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;
@@ -59,7 +59,7 @@ class GameDetail {
         this.result = result;
     }
 
-    GameDetail(GameDetail gameDetail) {
+    public GameDetail(GameDetail gameDetail) {
         this(gameDetail.name, gameDetail.personalBest, gameDetail.playersHighestMatchScore, gameDetail.playerId, gameDetail.wins, gameDetail.loss, gameDetail.draw, gameDetail.matchId, gameDetail.score, gameDetail.playersTurnOrder, gameDetail.totalScore, gameDetail.getMaxScore(), gameDetail.result);
     }
 
@@ -72,23 +72,23 @@ class GameDetail {
         this.name = name;
     }
 
-    int getPersonalBest() {
+    public int getPersonalBest() {
         return personalBest;
     }
 
-    void setPersonalBest(int personalBest) {
+    public void setPersonalBest(int personalBest) {
         this.personalBest = personalBest;
     }
 
-    int getPlayersHighestMatchScore() {
+    public int getPlayersHighestMatchScore() {
         return playersHighestMatchScore;
     }
 
-    void setPlayersHighestMatchScore(int playersHighestMatchScore) {
+    public void setPlayersHighestMatchScore(int playersHighestMatchScore) {
         this.playersHighestMatchScore = playersHighestMatchScore;
     }
 
-    int getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
@@ -136,15 +136,15 @@ class GameDetail {
         this.score = score;
     }
 
-    int getPlayersTurnOrder() {
+    public int getPlayersTurnOrder() {
         return playersTurnOrder;
     }
 
-    void setPlayersTurnOrder(int playersTurnOrder) {
+    public void setPlayersTurnOrder(int playersTurnOrder) {
         this.playersTurnOrder = playersTurnOrder;
     }
 
-    int getTotalScore() {
+    public int getTotalScore() {
         return totalScore;
     }
 
@@ -152,7 +152,7 @@ class GameDetail {
         this.totalScore = totalScore;
     }
 
-    int getMaxScore() {
+    public int getMaxScore() {
         return maxScore;
     }
 
@@ -164,11 +164,11 @@ class GameDetail {
         return result;
     }
 
-    void setResult(int result) {
+    public void setResult(int result) {
         this.result = result;
     }
 
-    String getLastScore() {
+    public String getLastScore() {
         String lastScore = "0";
         if (!score.isEmpty()) {
 
@@ -187,7 +187,7 @@ class GameDetail {
         }
     }
 
-    void addScore(int score) {
+    public void addScore(int score) {
         totalScore += score;
         maxScore = score > maxScore ? score : maxScore;
         this.score = this.score + ", " + score;
@@ -197,15 +197,15 @@ class GameDetail {
         return (this.wins * 3 + this.draw + (this.loss * -1));
     }
 
-    void incrementWin() {
+    public void incrementWin() {
         this.wins++;
     }
 
-    void incrementDraw() {
+    public void incrementDraw() {
         this.draw++;
     }
 
-    void incrementLoss() {
+    public void incrementLoss() {
         this.loss++;
     }
 

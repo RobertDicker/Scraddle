@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robbies.scraddle.Data.Player;
+
 import java.util.List;
 
 public class SelectPlayerAdapter extends RecyclerView.Adapter<SelectPlayerAdapter.PlayerViewHolder> {

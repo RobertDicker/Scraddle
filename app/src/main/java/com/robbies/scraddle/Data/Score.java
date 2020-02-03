@@ -1,4 +1,4 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -8,17 +8,20 @@ import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "score_table", primaryKeys = {"matchId", "playerId"}, foreignKeys = {
+@Entity(tableName = "score_table", primaryKeys = {"matchId", "playerId"}, foreignKeys ={
         @ForeignKey(onDelete = CASCADE, entity = Match.class,
-                parentColumns = "matchId", childColumns = "matchId"), @ForeignKey(onDelete = CASCADE, entity = Player.class, parentColumns = "playerId", childColumns = "playerId")},
+                parentColumns = "matchId",childColumns = "matchId"), @ForeignKey(onDelete =CASCADE, entity = Player.class, parentColumns = "playerId", childColumns = "playerId")},
         indices = {
                 @Index("matchId"),
                 @Index("playerId")
         })
-class Score {
+public class Score {
 
+
+    @NonNull
     private long matchId;
 
+    @NonNull
     private int playerId;
 
     @ColumnInfo(defaultValue = "", name = "score")

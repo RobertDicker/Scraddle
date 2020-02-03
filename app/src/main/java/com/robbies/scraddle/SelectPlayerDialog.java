@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-class SelectPlayerDialog extends DialogFragment {
+public class SelectPlayerDialog extends DialogFragment {
 
     private SelectPlayerDialogOnClickListener selectPlayerDialogOnClickListener;
 

@@ -1,4 +1,4 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 
 import android.content.Context;
@@ -6,6 +6,7 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
 
 @Database(entities = {Player.class, Match.class, Score.class}, version = 1)
 

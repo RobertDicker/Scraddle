@@ -1,8 +1,8 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Utilities;
 
 import java.util.List;
 
-class TidyStringFormatterHelper {
+public class TidyStringFormatterHelper {
 
 
     public static String formatNamesArrayWithCommasAnd(List<String> items) {
@@ -24,7 +24,7 @@ class TidyStringFormatterHelper {
 
     }
 
-    static String addToItemStringWithCommasAnd(String originalString, String itemToAdd) {
+    public static String addToItemStringWithCommasAnd(String originalString, String itemToAdd) {
         if (itemToAdd.isEmpty()) return originalString;
 
         StringBuilder sb = new StringBuilder();

@@ -1,4 +1,4 @@
-package com.robbies.scraddle;
+package com.robbies.scraddle.Data;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 import java.util.Calendar;
 
 @Entity(tableName = "player_table")
-class Player implements Comparable {
+public class Player implements Comparable {
 
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
@@ -69,7 +69,7 @@ class Player implements Comparable {
         this.name = name;
     }
 
-    int getPersonalBest() {
+    public int getPersonalBest() {
         return personalBest;
     }
 
@@ -77,7 +77,7 @@ class Player implements Comparable {
         this.personalBest = personalBest;
     }
 
-    int getPlayersHighestMatchScore() {
+    public int getPlayersHighestMatchScore() {
         return playersHighestMatchScore;
     }
 
@@ -85,7 +85,7 @@ class Player implements Comparable {
         this.playersHighestMatchScore = playersHighestMatchScore;
     }
 
-    int getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
@@ -93,7 +93,7 @@ class Player implements Comparable {
         this.playerId = playerId;
     }
 
-    int getWins() {
+    public int getWins() {
         return wins;
     }
 
@@ -101,7 +101,7 @@ class Player implements Comparable {
         this.wins = wins;
     }
 
-    int getLoss() {
+    public int getLoss() {
         return loss;
     }
 
@@ -109,7 +109,7 @@ class Player implements Comparable {
         this.loss = loss;
     }
 
-    int getDraw() {
+    public int getDraw() {
         return draw;
     }
 

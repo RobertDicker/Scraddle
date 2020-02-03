@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,6 +23,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.robbies.scraddle.Data.GameDetail;
+import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.Score;
+import com.robbies.scraddle.Data.ScoringViewModel;
+import com.robbies.scraddle.Utilities.TidyStringFormatterHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +82,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
-        scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
+        scoringViewModel = new ViewModelProvider(getActivity()).get(ScoringViewModel.class);
 
         matchId = scoringViewModel.getCurrentMatchId();
 

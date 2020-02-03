@@ -4,6 +4,7 @@ package com.robbies.scraddle;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import androidx.preference.PreferenceManager;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MainMenuFragment extends Fragment implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public final class MainMenuFragment extends Fragment implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private final int[] registeredMenuButtons = {R.id.buttonAnagramSolver, R.id.buttonStartNewGame, R.id.buttonLeaderBoard, R.id.buttonContinue, R.id.buttonSettings};
     private long lastMatch = -1;
@@ -36,9 +37,9 @@ public class MainMenuFragment extends Fragment implements View.OnClickListener, 
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
 
-
         sP = PreferenceManager.getDefaultSharedPreferences(requireContext());
         lastMatch = sP.getLong("matchId", -1);
+        Log.d("lastmatch: ", ""+ lastMatch);
 
         if (getFragmentManager() != null && getFragmentManager().getBackStackEntryCount() > 0) {
             getFragmentManager().popBackStack();

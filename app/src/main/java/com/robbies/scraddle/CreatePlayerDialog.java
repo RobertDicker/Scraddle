@@ -13,7 +13,10 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 
-class CreatePlayerDialog extends DialogFragment {
+import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.ScoringViewModel;
+
+public class CreatePlayerDialog extends DialogFragment {
 
     public CreatePlayerDialog() {
     }
