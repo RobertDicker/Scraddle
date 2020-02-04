@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.robbies.scraddle.Data.Player;
@@ -33,7 +34,7 @@ public class CreatePlayerDialog extends DialogFragment {
         final EditText editText = new EditText(getActivity());
         editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         editText.setSingleLine(true);
-        final ScoringViewModel scoringViewModel = ViewModelProviders.of(requireActivity()).get(ScoringViewModel.class);
+        final ScoringViewModel scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
 
         editText.setHint("Enter Player Name");
         return new AlertDialog.Builder(requireContext())

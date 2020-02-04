@@ -26,10 +26,10 @@ public class AnagramActivity extends AppCompatActivity {
 
         // Add the SimpleFragment.
         fragmentTransaction.add(R.id.content,
-                new LoadingFragment()).commit();
+                new AnagramFragment()).commit();
 
         WordViewModel mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
-        mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
+       /* mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
             @Override
             public void onChanged(List<Word> words) {
 
@@ -43,7 +43,7 @@ public class AnagramActivity extends AppCompatActivity {
             }
 
 
-        });
+        });*/
 
     }
 

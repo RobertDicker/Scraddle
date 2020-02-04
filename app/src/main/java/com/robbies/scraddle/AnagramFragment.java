@@ -2,6 +2,7 @@ package com.robbies.scraddle;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +53,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private WordViewModel mWordViewModel;
     private WordListAdapter adapter;
     private List<Word> matchingWords;
-
+    private List<Word> mAllWords;
     private Comparator defaultSortOrder;
     private List<Comparator> sortMethods;
 
@@ -70,7 +71,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
         // ========================= DATA =====================
 
-        mWordViewModel = new ViewModelProvider(getActivity()).get(WordViewModel.class);
+        mWordViewModel = new ViewModelProvider(requireActivity()).get(WordViewModel.class);
         matchingWords = new ArrayList<>();
         sortMethods = new ArrayList<>();
         sortMethods.addAll(Arrays.asList(
@@ -81,6 +82,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         defaultSortOrder = sortMethods.get(0);
         adapter = new WordListAdapter(requireContext());
 
+
     }
 
     @Override
@@ -89,6 +91,14 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.activity_anagram_checker, container, false);
 
+        mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
+            @Override
+            public void onChanged(List<Word> words) {
+                mAllWords = words;
+                Log.d("WORDS", words.toString());
+
+            }
+        });
 
         // ===================DISPLAY =========================
 
@@ -102,7 +112,10 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
         letters.requestFocus();
         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        if (imm != null) {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
 
 
         //================== SORTING ========================
@@ -119,7 +132,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
     //================== Button Handlers =======================
 
-    public void reverse(View view) {
+    private void reverse(View view) {
 
         reverse = !reverse;
         sortWords();
@@ -127,7 +140,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         updateUI();
     }
 
-    public void changeSortOrder(View view) {
+    private void changeSortOrder(View view) {
 
         Collections.rotate(sortMethods, 1);
         defaultSortOrder = sortMethods.get(0);
@@ -140,10 +153,10 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         updateUI();
     }
 
-    public void solveAnagram(int buttonValue) {
+    private void solveAnagram(int buttonWordLength) {
 
-        int minWordLength = buttonValue;
-        int maxWordLength = buttonValue == 0 | buttonValue == 8 ? R.string.maxAnagramLetters : buttonValue;
+
+        int maxWordLength = buttonWordLength == 0 | buttonWordLength == 8 ? R.string.maxAnagramLetters : buttonWordLength;
         numberOfWords.setText("");
 
         final String anagramToSolve = letters.getText().toString().toLowerCase();
@@ -151,7 +164,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
         //Words can be searched as numbers
         if (anagramPrimeValue.length() < 19) {
-            mWordViewModel.getAnagramsOf(anagramPrimeValue, minWordLength, maxWordLength).observe(this, new Observer<List<Word>>() {
+            mWordViewModel.getAnagramsOf(anagramPrimeValue, buttonWordLength, maxWordLength).observe(this, new Observer<List<Word>>() {
                 @Override
                 public void onChanged(@Nullable final List<Word> words) {
 
@@ -166,23 +179,34 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         } else {
 
             //Words are too large to be searched for in Room so Get all the words and iterate over them to determine value in default sort order
-            //    mMatchingWords.clear();
-            if (buttonValue == 0) {
+            if (buttonWordLength == 0) {
 
-                mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-
+                new Thread(new Runnable() {
                     @Override
-                    public void onChanged(List<Word> words) {
-
-                        matchingWords = getAnagrams(words, anagramPrimeValue);
+                    public void run() {
+                        while (mAllWords == null) {
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        matchingWords = getAnagrams(mAllWords, anagramPrimeValue);
                         sortWords();
-                        updateUI();
+                        requireActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateUI();
+
+                            }
+                        });
+
                     }
-                });
+                }).start();
 
             } else {
                 //   startTimer = System.nanoTime();
-                mWordViewModel.getAllWords(minWordLength, maxWordLength).observe(this, new Observer<List<Word>>() {
+                mWordViewModel.getAllWords(buttonWordLength, maxWordLength).observe(this, new Observer<List<Word>>() {
                     @Override
                     public void onChanged(List<Word> words) {
 
@@ -200,6 +224,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private void sortWords() {
 
         if (reverse) {
+
             Collections.sort(matchingWords, defaultSortOrder);
             Collections.reverse(matchingWords);
         } else {

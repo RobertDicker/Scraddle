@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -43,42 +44,12 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_select_players, container, false);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-
-        //Enable control of the toolbar within the fragment and not main activity
-        setHasOptionsMenu(true);
-
-        mScoringViewModel = new ViewModelProvider(getActivity()).get(ScoringViewModel.class);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mScoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
+        mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
 
         mSelectedPlayers = new ArrayList<>();
-
-        mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
-            @Override
-            public void onChanged(List<Player> players) {
-                mCachedAllPlayers = (ArrayList<Player>) players;
-
-                if (players.size() > 0) {
-
-                    //Add 1-2 players
-                    if (mSelectedPlayers.isEmpty()) {
-                        for (int i = 0; i < mCachedAllPlayers.size() && i < 2; i++) {
-                            mSelectedPlayers.add(mCachedAllPlayers.get(i));
-                        }
-                    }
-                    mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-                }
-            }
-        });
-
-        view.findViewById(R.id.buttonStartScoring).setOnClickListener(this);
-
-        RecyclerView recyclerViewAllPlayers = view.findViewById(R.id.recyclerviewPlayers);
-        mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
-        recyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
-        recyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(
@@ -97,11 +68,56 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int from = viewHolder.getAdapterPosition();
                 mSelectedPlayers.remove(from);
-
                 mAllPlayerAdapter.notifyItemRemoved(from);
 //                        .setAction("Action", null).show();
             }
         });
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_select_players, container, false);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+
+        //Enable control of the toolbar within the fragment and not main activity
+        setHasOptionsMenu(true);
+
+
+
+        mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
+            @Override
+            public void onChanged(List<Player> players) {
+
+
+                mCachedAllPlayers = (ArrayList<Player>) players;
+                if(!mCachedAllPlayers.isEmpty()){
+                    //Add the most recently modified player
+                    mSelectedPlayers.add(mCachedAllPlayers.get(0));
+                    // Make sure there is at least two players
+                    if(mSelectedPlayers.size() < 2){
+                     mSelectedPlayers.add(mCachedAllPlayers.get(1));
+
+                    }
+                }
+
+
+
+
+                    mAllPlayerAdapter.setPlayers(mSelectedPlayers);
+
+
+
+            }
+        });
+
+        view.findViewById(R.id.buttonStartScoring).setOnClickListener(this);
+
+        RecyclerView recyclerViewAllPlayers = view.findViewById(R.id.recyclerviewPlayers);
+
+        recyclerViewAllPlayers.setAdapter(mAllPlayerAdapter);
+        recyclerViewAllPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mItemTouchHelper.attachToRecyclerView(recyclerViewAllPlayers);
 

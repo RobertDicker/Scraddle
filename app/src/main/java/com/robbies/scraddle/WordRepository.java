@@ -2,6 +2,7 @@ package com.robbies.scraddle;
 
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -11,17 +12,28 @@ class WordRepository {
 
     private WordDao mWordDao;
     private LiveData<List<Word>> mAllWords;
+    private static WordRepository INSTANCE = null;
 
     WordRepository(Application application) {
 
         WordRoomDatabase db = WordRoomDatabase.getDatabase(application);
-
+        Log.d("WORD REPOSITORY", "CREATED A NEW WORD REPO");
         this.mWordDao = db.wordDao();
         this.mAllWords = mWordDao.getAllWords();
 
     }
 
+    public static WordRepository getInstance(Application application){
+        if(INSTANCE == null){
+            INSTANCE = new WordRepository(application);
+        }
+        return INSTANCE;
+
+    }
+
     LiveData<List<Word>> getAllWords() {
+
+        Log.d("WORD REPOSITORY", "CREATED A NEW WORD ALLWOIRDS");
         return mAllWords;
     }
 

@@ -50,7 +50,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/buttonripple"
         android:backgroundTint="#00BCD4"
-        android:text="SORT"
+        android:text="DEFAULT SORT ORDER"
         app:layout_constraintEnd_toStartOf="@+id/anagramSortDirectionImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />

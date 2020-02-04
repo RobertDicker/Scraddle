@@ -9,11 +9,14 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity implements MainMenuFragment.FragmentSwitcher, LeaderboardFragment.OnFragmentInteractionListener {
 
     private FragmentManager fragmentManager;
+
 
     private static void setDayNightTheme(SharedPreferences prefs) {
         int currentTheme = prefs.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;

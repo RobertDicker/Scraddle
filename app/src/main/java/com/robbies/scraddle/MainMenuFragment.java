@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -32,20 +33,27 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
-
+        setRetainInstance(true);
         sP = PreferenceManager.getDefaultSharedPreferences(requireContext());
         lastMatch = sP.getLong("matchId", -1);
-        Log.d("lastmatch: ", ""+ lastMatch);
 
-        if (getFragmentManager() != null && getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
+
+        if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            requireActivity().getSupportFragmentManager().popBackStack();
         }
-
         changeBack();
+
+
         //Alter Continue button if there are no games to continue
         if (lastMatch == -1) {
             view.findViewById(R.id.buttonContinue).setVisibility(View.GONE);
