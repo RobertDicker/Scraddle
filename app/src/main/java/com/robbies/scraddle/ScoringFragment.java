@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -34,9 +34,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPlayerListener, View.OnClickListener {
 
     //CONSTANTS
@@ -68,6 +65,12 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,12 +80,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
-
-        //Data
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-
-        scoringViewModel = new ViewModelProvider(getActivity()).get(ScoringViewModel.class);
 
         matchId = scoringViewModel.getCurrentMatchId();
 
@@ -101,10 +98,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                     for (GameDetail gameDetail : gameDetails) {
                         backupPlayerDetails.add(gameDetail);
                     }
-
-
                 }
-
             }
         });
 
@@ -165,9 +159,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
         mRecyclerViewPlayers.setAdapter(null);
         saveData(REVERT_DATA);
-
-        // backupPlayerDetails.clear();
-        //  backupPlayerDetails = null;
         returnToMain();
     }
 
@@ -175,7 +166,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     public void onPlayerClick(View view) {
         TextView scoreTally = view.findViewById(R.id.tVScoreTally);
         ImageView topDivider = view.findViewById(R.id.scoreCardTallyDividerTop);
-
 
         if (!scoreTally.getText().toString().isEmpty()) {
 
@@ -225,21 +215,17 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
     private void endMatch() {
 
-
         List<Integer> winners = determineWinner();
         String winnerText = "";
         String winner = "";
 
-
         for (int i = 0; i < playerDetails.size(); i++) {
-
 
             //Win
             if (winners.contains(playerDetails.get(i).getPlayerId()) & winners.size() == 1) {
                 playerDetails.get(i).incrementWin();
                 playerDetails.get(i).setResult(3);
                 winnerText = String.format("The winner is %s, with a score of %s", playerDetails.get(i).getName(), playerDetails.get(i).getTotalScore());
-                /*                winnerText = "The Winner is " + playerDetails.get(i).getName() + "\nScore: " + playerDetails.get(i).getTotalScore();*/
             }
             //Draw
             else if (winners.contains(playerDetails.get(i).getPlayerId()) & winners.size() > 1) {
@@ -258,14 +244,10 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                 playerDetails.get(i).setPlayersHighestMatchScore(playerDetails.get(i).getTotalScore());
             }
 
-
             saveData(FINAL_SAVE);
-
         }
 
         showEndMatchDialog(winnerText);
-
-
     }
 
     private void showEndMatchDialog(String endMatchText) {

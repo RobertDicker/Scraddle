@@ -4,7 +4,6 @@ package com.robbies.scraddle;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,9 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
 
     private final int[] registeredMenuButtons = {R.id.buttonAnagramSolver, R.id.buttonStartNewGame, R.id.buttonLeaderBoard, R.id.buttonContinue, R.id.buttonSettings};
     private long lastMatch = -1;
-    private FragmentSwitcher fragmentSwitcher;
     private SharedPreferences sP;
 
     public MainMenuFragment() {
-    }
-
-    MainMenuFragment(FragmentSwitcher fragmentSwitcher) {
-        this.fragmentSwitcher = fragmentSwitcher;
     }
 
     @Override
@@ -92,7 +86,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 startActivity(new Intent(getContext(), ScoringActivity.class));
                 break;
             case R.id.buttonLeaderBoard:
-                fragmentSwitcher.switchFragment(new LeaderboardFragment());
+                requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new LeaderboardFragment()).addToBackStack(null).commit();
                 break;
             case R.id.buttonContinue:
                 Intent intent = new Intent(getContext(), ScoringActivity.class);
@@ -100,7 +94,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 startActivity(intent);
                 break;
             case R.id.buttonSettings:
-                fragmentSwitcher.switchFragment(new Settings());
+                requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new Settings()).addToBackStack(null).commit();
                 sP.registerOnSharedPreferenceChangeListener(this);
                 break;
         }
@@ -119,9 +113,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         }
 
         if (s.equals(Settings.KEY_PREF_NIGHT_MODE)) {
-            /* int mode = sharedPreferences.getBoolean(s, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;*/
             changeBack();
-            //startActivity(new Intent(getContext(), MainActivity.class));
         }
 
     }

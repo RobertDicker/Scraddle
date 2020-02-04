@@ -5,19 +5,16 @@ public class Timer {
     private long startTime;
     private long endTime;
 
-
-    public void startTimer(){
+    public void startTimer() {
         this.startTime = System.nanoTime();
     }
 
-    public String endTime(){
+    public String stopTimer() {
 
-        long stopTime = System.nanoTime();
-        double algoTimerInSeconds = (double) (stopTime - startTime) / 1_000_000_000.0;
+        endTime = System.nanoTime();
+        double algoTimerInSeconds = (double) (endTime - startTime) / 1_000_000_000.0;
         return algoTimerInSeconds + "";
     }
-
-
 
 
 }

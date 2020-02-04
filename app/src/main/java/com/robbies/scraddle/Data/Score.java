@@ -8,9 +8,9 @@ import androidx.room.Index;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "score_table", primaryKeys = {"matchId", "playerId"}, foreignKeys ={
+@Entity(tableName = "score_table", primaryKeys = {"matchId", "playerId"}, foreignKeys = {
         @ForeignKey(onDelete = CASCADE, entity = Match.class,
-                parentColumns = "matchId",childColumns = "matchId"), @ForeignKey(onDelete =CASCADE, entity = Player.class, parentColumns = "playerId", childColumns = "playerId")},
+                parentColumns = "matchId", childColumns = "matchId"), @ForeignKey(onDelete = CASCADE, entity = Player.class, parentColumns = "playerId", childColumns = "playerId")},
         indices = {
                 @Index("matchId"),
                 @Index("playerId")
@@ -18,10 +18,9 @@ import static androidx.room.ForeignKey.CASCADE;
 public class Score {
 
 
-    @NonNull
     private long matchId;
 
-    @NonNull
+
     private int playerId;
 
     @ColumnInfo(defaultValue = "", name = "score")
@@ -64,12 +63,6 @@ public class Score {
     public void setScore(String score) {
         this.score = score;
     }
-
-/*    public void addScore(int score) {
-        totalScore += score;
-        maxScore = score > maxScore ? score : maxScore;
-        this.score = this.score + ", " + score;
-    }*/
 
     int getPlayerId() {
         return this.playerId;

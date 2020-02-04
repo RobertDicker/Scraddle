@@ -29,12 +29,12 @@
         android:background="@android:drawable/dark_header"
         android:backgroundTint="#5DC0AB"
         android:gravity="center"
+        android:text="@string/initial_heading_above_calc_before_first_move"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/initial_heading_above_calc_before_first_move"
         tools:text="Start adding values to begin.." />
 
     <LinearLayout

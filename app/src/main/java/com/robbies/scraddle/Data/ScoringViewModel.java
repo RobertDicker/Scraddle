@@ -1,13 +1,10 @@
 package com.robbies.scraddle.Data;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 
 import java.util.List;
 
@@ -55,12 +52,12 @@ public class ScoringViewModel extends AndroidViewModel {
 
     public void savePlayer(Player player) {
         gameRepository.insertPlayer(player);
-        Log.d("==SAVING===>", "saving" + player.toString());
+
     }
 
     public void saveScore(Score score) {
         gameRepository.insertScore(score);
-        Log.d("==SAVING===>", "saving" + score.toString());
+
     }
 
     //DELETES

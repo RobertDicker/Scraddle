@@ -2,7 +2,6 @@ package com.robbies.scraddle;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -85,28 +84,24 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
         setHasOptionsMenu(true);
 
 
-
         mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
 
 
                 mCachedAllPlayers = (ArrayList<Player>) players;
-                if(!mCachedAllPlayers.isEmpty()){
+                if (!mCachedAllPlayers.isEmpty()) {
                     //Add the most recently modified player
                     mSelectedPlayers.add(mCachedAllPlayers.get(0));
                     // Make sure there is at least two players
-                    if(mSelectedPlayers.size() < 2){
-                     mSelectedPlayers.add(mCachedAllPlayers.get(1));
+                    if (mSelectedPlayers.size() < 2) {
+                        mSelectedPlayers.add(mCachedAllPlayers.get(1));
 
                     }
                 }
 
 
-
-
-                    mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-
+                mAllPlayerAdapter.setPlayers(mSelectedPlayers);
 
 
             }
@@ -139,8 +134,7 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             int order = 0;
             for (Player player : mSelectedPlayers) {
 
-                Log.d("====PLAYER== " , player.toString());
-                mScoringViewModel.saveScore(new Score(player.getPlayerId(),matchId, order++));
+                mScoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
             }
 
             mSharedPreferences.edit().putLong("matchId", matchId).apply();

@@ -7,8 +7,8 @@
     android:background="#000000"
     android:backgroundTint="#393A3A"
     android:clickable="true"
-    tools:context=".MainActivity"
-    android:focusable="true">
+    android:focusable="true"
+    tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/tVLeaderBoardLabel"

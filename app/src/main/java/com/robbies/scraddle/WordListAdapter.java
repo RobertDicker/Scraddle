@@ -10,13 +10,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robbies.scraddle.WordData.Word;
+
 import java.util.List;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<Word> mWords; // Cached copy of words
     private final String[] COLOUR_CHOICES = {"#F44336", "#F44336", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722"};
+    private List<Word> mWords; // Cached copy of words
 
     WordListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -35,7 +37,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         if (mWords != null) {
             Word current = mWords.get(position);
             holder.wordItemView.setText(current.getWord());
-            holder.scrabbleScore.setText(String.format("%spts",current.getScrabbleValue()));
+            holder.scrabbleScore.setText(String.format("%spts", current.getScrabbleValue()));
 
             String backgroundColorOfWord = COLOUR_CHOICES[0];
             backgroundColorOfWord = current.getWord().length() <= 8 ? COLOUR_CHOICES[current.getWord().length()] : backgroundColorOfWord;

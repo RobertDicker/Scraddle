@@ -10,7 +10,11 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".AnagramActivity"></activity>
+        <activity
+            android:name=".AnagramActivity"
+            android:label="Anagram Activity"
+            android:parentActivityName=".MainActivity"><intent-filter>
+            <action android:name="android.intent.action.VIEW" /></intent-filter></activity>
         <activity
             android:name=".ScoringActivity"
             android:label="@string/title_activity_score"
@@ -18,12 +22,12 @@
             android:theme="@style/NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.robbies.scraddle.MainActivity" />
+                android:value=".MainActivity" />
         </activity>
-        <activity android:name=".AnagramChecker" />
         <activity
             android:name=".MainActivity"
-            android:clearTaskOnLaunch="true">
+            android:clearTaskOnLaunch="true"
+            android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,5 +39,4 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>

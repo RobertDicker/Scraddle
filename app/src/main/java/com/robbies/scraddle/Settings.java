@@ -29,9 +29,10 @@ import java.util.List;
 public class Settings extends PreferenceFragmentCompat implements SelectPlayerDialog.SelectPlayerDialogOnClickListener {
 
     static final String KEY_PREF_NIGHT_MODE = "switchNightMode";
+    private ScoringViewModel mScoringViewModel;
     private List<Player> mAllPlayers;
     private SharedPreferences sharedPreferences;
-    ScoringViewModel mScoringViewModel;
+
     public Settings() {
         // Required empty public constructor
     }

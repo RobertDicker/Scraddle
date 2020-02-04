@@ -36,31 +36,34 @@ public class SelectPlayerDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        String title = getArguments().getString("title", "");
-        String[] items = getArguments().getStringArray("items");
-        final boolean[] checkedItems = getArguments().getBooleanArray("checkedItems");
 
-        return new AlertDialog.Builder(requireActivity()).
-                setTitle(title).setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int index, boolean isChecked) {
+        if (getArguments() != null) {
+            String title = getArguments().getString("title", "");
+            String[] items = getArguments().getStringArray("items");
+            final boolean[] checkedItems = getArguments().getBooleanArray("checkedItems");
 
-                if (checkedItems != null) {
-                    checkedItems[index] = isChecked;
-                }
 
-            }
-        })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int buttonId) {
-                        selectPlayerDialogOnClickListener.doPositiveClick(checkedItems);
+            return new AlertDialog.Builder(requireActivity()).
+                    setTitle(title).setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index, boolean isChecked) {
+
+                    if (checkedItems != null) {
+                        checkedItems[index] = isChecked;
                     }
-                })
-                .setNegativeButton("Cancel", null)
-                .create();
 
-
+                }
+            })
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int buttonId) {
+                            selectPlayerDialogOnClickListener.doPositiveClick(checkedItems);
+                        }
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .create();
+        }
+        return null;
     }
 
     public interface SelectPlayerDialogOnClickListener {

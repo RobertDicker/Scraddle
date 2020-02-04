@@ -2,7 +2,6 @@ package com.robbies.scraddle;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,33 +18,29 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robbies.scraddle.Utilities.CheckWordIsAnagram;
 import com.robbies.scraddle.Utilities.PrimeValue;
 import com.robbies.scraddle.WordComparators.LengthComparator;
 import com.robbies.scraddle.WordComparators.LexicographicComparator;
 import com.robbies.scraddle.WordComparators.ScrabbleValueComparator;
+import com.robbies.scraddle.WordData.Word;
+import com.robbies.scraddle.WordData.WordViewModel;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * interface
- * to handle interaction events.
- */
 public class AnagramFragment extends Fragment implements View.OnClickListener {
 
     // private OnFragmentInteractionListener mListener;
-    private static int NUMBER_OF_CORES =
+    private static final int NUMBER_OF_CORES =
             Runtime.getRuntime().availableProcessors();
     private final int[] anagramFragmentButtons = {R.id.anagramChangeSortButton, R.id.button_allWords, R.id.buttonTwoWords, R.id.buttonThree, R.id.buttonFour, R.id.buttonFive, R.id.buttonSix, R.id.buttonSeven, R.id.buttonEight, R.id.anagramSortDirectionImageView};
     private EditText letters;
@@ -59,7 +54,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
     private ProgressBar indeterminateProgressBar;
     private boolean reverse = false;
-
 
     public AnagramFragment() {
         // Required empty public constructor
@@ -81,8 +75,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         ));
         defaultSortOrder = sortMethods.get(0);
         adapter = new WordListAdapter(requireContext());
-
-
     }
 
     @Override
@@ -95,7 +87,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onChanged(List<Word> words) {
                 mAllWords = words;
-                Log.d("WORDS", words.toString());
 
             }
         });
@@ -110,15 +101,13 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+
+        //Focus Keyboard and bring up the soft keyboard
         letters.requestFocus();
         InputMethodManager imm = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-
         if (imm != null) {
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
         }
-
-
-        //================== SORTING ========================
 
 
         //Register onclick listeners
@@ -240,14 +229,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
     }
 
-/*    private void timer(){
-
-
-
-        Log.d("==COMPLETE==", "ALL COMPLETED ================================================");
-        Log.d("=====COMPLETED====", "Total Time: " + otherTimer + "Algo Time: " + algoTimerInSeconds);
-
-    }*/
 
     private List<Word> getAnagrams(List<Word> words, String anagramPrimeValue) {
         List<Word> allMatchingWords = new ArrayList<>();
@@ -258,10 +239,11 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         BigInteger anagramPrimeValueBigInt = new BigInteger(anagramPrimeValue);
 
         synchronized (allMatchingWords) {
-            Iterator<Word> wordIterator = words.iterator();
-            while (wordIterator.hasNext()) {
 
-                Callable worker = new CheckWordIsAnagram(wordIterator.next(), anagramPrimeValueBigInt, allMatchingWords);
+
+            for (Word word : words) {
+
+                Callable worker = new CheckWordIsAnagram(word, anagramPrimeValueBigInt, allMatchingWords);
                 pool.submit(worker);
             }
         }
@@ -280,6 +262,16 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private void showHideIndeterminateProgressBar() {
         int visibility = indeterminateProgressBar.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
         indeterminateProgressBar.setVisibility(visibility);
+    }
+
+    private void hideKeyboard() {
+        //Hide Keyboard
+
+        InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
+        }
+
     }
 
     @Override
@@ -319,50 +311,10 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
                 solveAnagram(8);
                 break;
         }
-
-        //Hide Keyboard
         if (view.getId() != R.id.anagramChangeSortButton || view.getId() != R.id.anagramSortDirectionImageView) {
-            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.hideSoftInputFromWindow(requireView().getWindowToken(), 0);
-            }
+            hideKeyboard();
         }
 
-
-
-
-/*
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }*/
-    }
 }

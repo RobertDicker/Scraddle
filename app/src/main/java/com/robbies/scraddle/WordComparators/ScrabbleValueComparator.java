@@ -1,8 +1,6 @@
 package com.robbies.scraddle.WordComparators;
 
-import android.util.Log;
-
-import com.robbies.scraddle.Word;
+import com.robbies.scraddle.WordData.Word;
 
 import java.util.Comparator;
 
@@ -14,7 +12,6 @@ public class ScrabbleValueComparator implements Comparator<Word> {
             return Integer.compare(Integer.parseInt(b.getScrabbleValue()), Integer.parseInt(a.getScrabbleValue()));
         } catch (Exception e) {
             e.printStackTrace();
-            Log.d("ScrabbleValueComparator", "probable Null value word - check list");
         }
         return 0;
     }

@@ -1,5 +1,6 @@
 package com.robbies.scraddle;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +39,7 @@ public class SelectPlayerAdapter extends RecyclerView.Adapter<SelectPlayerAdapte
     }
 
     //Replace contents of view
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final PlayerViewHolder holder, int position) {
 
@@ -49,12 +51,13 @@ public class SelectPlayerAdapter extends RecyclerView.Adapter<SelectPlayerAdapte
         holder.handleView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                view.performClick();
+
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     mDragStartListener.onStartDrag(holder);
                 }
                 return false;
             }
+
         });
     }
 

@@ -36,7 +36,7 @@
     <string name="anagram_button_7">7</string>
     <string name="anagram_button_8_or_more">8+</string>
     <string name="leader_board_heading">Leader Board</string>
-    <string name="initial_heading_above_calc_before_first_move">Start adding values to begin...</string>
+    <string name="initial_heading_above_calc_before_first_move">Start adding values to begin…</string>
     <string name="button_clear">C</string>
     <string name="button_minus_one">-1</string>
     <string name="scoring_button_plus_one">+1</string>
@@ -61,11 +61,8 @@
     <string name="menu_scoring_delete_button_label">Delete</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_anagram">AnagramActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="sortdirectionarrow">Sort Direction Arrow</string>
+    <string name="default_sort_order_button_text">DEFAULT SORT ORDER</string>
 
 
 </resources>

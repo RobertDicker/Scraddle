@@ -19,8 +19,8 @@
         android:layout_width="?listPreferredItemHeight"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical|end"
+        android:contentDescription="@string/drag_handle"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_drag_handle_24dp"
-        android:contentDescription="@string/drag_handle"/>
+        android:src="@drawable/ic_drag_handle_24dp" />
 
 </LinearLayout>

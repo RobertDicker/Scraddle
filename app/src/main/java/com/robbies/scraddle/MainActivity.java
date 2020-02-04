@@ -2,21 +2,15 @@ package com.robbies.scraddle;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.preference.PreferenceManager;
 
-public class MainActivity extends AppCompatActivity implements MainMenuFragment.FragmentSwitcher, LeaderboardFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
-    private FragmentManager fragmentManager;
-
+    private final static String FRAGMENT_TAG_STRING = "MainMenu";
+    private MainMenuFragment mainMenuFragment;
 
     private static void setDayNightTheme(SharedPreferences prefs) {
         int currentTheme = prefs.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
@@ -28,43 +22,25 @@ public class MainActivity extends AppCompatActivity implements MainMenuFragment.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //  SharedPreferences sP = getSharedPreferences("Match", 0);
         SharedPreferences sP = PreferenceManager.getDefaultSharedPreferences(this);
-
         setDayNightTheme(sP);
-
         setContentView(R.layout.activity_main_menu);
 
-        // Instantiate the fragment.
-        MainMenuFragment mainMenuFragment = new MainMenuFragment(this);
-        // Get the FragmentManager and start a transaction.
-        fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
 
-        // Add the SimpleFragment.
-        fragmentTransaction.add(R.id.content,
-                mainMenuFragment).commit();
-    }
-
-    @Override
-    public void switchFragment(Fragment fragment) {
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.content, fragment).addToBackStack(null)
-                .commit();
+        if (savedInstanceState == null) {
+            mainMenuFragment = new MainMenuFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.content,
+                    mainMenuFragment, FRAGMENT_TAG_STRING).commit();
+        } else {
+            mainMenuFragment = (MainMenuFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_STRING);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        if (fragmentManager.getBackStackEntryCount() > 0)
-            fragmentManager.popBackStackImmediate();
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+            getSupportFragmentManager().popBackStackImmediate();
         else super.onBackPressed();
-    }
-
-    @Override
-    public void onFragmentInteraction(View view) {
-
     }
 
 

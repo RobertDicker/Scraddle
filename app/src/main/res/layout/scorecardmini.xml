@@ -37,7 +37,8 @@
             android:layout_marginBottom="8dp"
             android:background="@color/inactivePlayer"
             android:fontFamily="sans-serif-condensed-medium"
-            android:paddingRight="32dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="32dp"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
@@ -61,9 +62,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:background="#009688"
+        android:contentDescription="@string/dividing_line_content_description"
         android:visibility="gone"
         app:srcCompat="?attr/dividerHorizontal"
-        tools:visibility="visible"
-        android:contentDescription="@string/dividing_line_content_description"/>
+        tools:visibility="visible" />
 
 </LinearLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    tools:context=".AnagramChecker">
+    tools:context=".AnagramActivity">
 
     <EditText
         android:id="@+id/editTextLettersToSolve"
@@ -19,10 +19,11 @@
         android:fontFamily="@font/sigmar_one"
         android:hint="@string/anagramEnterTextHint"
         android:imeOptions="actionDone"
+        android:importantForAutofill="no"
         android:inputType="textPersonName"
         android:maxLength="@string/maxAnagramLetters"
-        android:paddingBottom="8dp"
 
+        android:paddingBottom="8dp"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,10 +37,11 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/buttonripple"
         android:backgroundTint="#009688"
+        android:contentDescription="@string/sortdirectionarrow"
         app:layout_constraintBottom_toBottomOf="@+id/anagramChangeSortButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/anagramChangeSortButton"
-        app:srcCompat="@drawable/ic_arrow_down_24dp" />
+        app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
 
     <Button
         android:id="@+id/anagramChangeSortButton"
@@ -50,7 +52,7 @@
         android:layout_marginTop="12dp"
         android:background="@drawable/buttonripple"
         android:backgroundTint="#00BCD4"
-        android:text="DEFAULT SORT ORDER"
+        android:text="@string/default_sort_order_button_text"
         app:layout_constraintEnd_toStartOf="@+id/anagramSortDirectionImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
@@ -69,7 +71,6 @@
             android:id="@+id/button_allWords"
             style="@style/anagramButton"
             android:backgroundTint="#E91E63"
-            android:onClick="solveAnagram"
             android:text="@string/all_words_button"
             android:textSize="16sp" />
 

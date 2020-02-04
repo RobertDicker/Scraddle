@@ -1,17 +1,13 @@
 package com.robbies.scraddle;
 
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
-import com.robbies.scraddle.WordComparators.LoadingFragment;
-
-import java.util.List;
 
 public class AnagramActivity extends AppCompatActivity {
 
@@ -19,6 +15,13 @@ public class AnagramActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anagram);
+
+
+        //Set The Navigation Bar to transparent===============================
+        Window w = getWindow(); // in Activity's onCreate() for instance
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        // ===============================
+
 
         // Get the FragmentManager and start a transaction.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
@@ -28,22 +31,11 @@ public class AnagramActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.content,
                 new AnagramFragment()).commit();
 
-        WordViewModel mWordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
-       /* mWordViewModel.getAllWords().observe(this, new Observer<List<Word>>() {
-            @Override
-            public void onChanged(List<Word> words) {
+    }
 
-                if (words != null) {
-
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.content, new AnagramFragment())
-                            .commit();
-                }
-
-            }
-
-
-        });*/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
     }
 
@@ -57,7 +49,9 @@ public class AnagramActivity extends AppCompatActivity {
             tv.setText("");
             tv.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            imm.showSoftInput(tv, InputMethodManager.SHOW_IMPLICIT);
+            if (imm != null) {
+                imm.showSoftInput(tv, InputMethodManager.SHOW_IMPLICIT);
+            }
         }
     }
 }
