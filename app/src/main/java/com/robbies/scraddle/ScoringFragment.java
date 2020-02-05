@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -82,6 +83,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         setHasOptionsMenu(true);
 
         matchId = scoringViewModel.getCurrentMatchId();
+        Log.d("matchid", "===============================" + matchId);
 
         scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override

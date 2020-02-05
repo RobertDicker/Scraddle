@@ -12,7 +12,7 @@
     <!-- Messages Preferences -->
 
     <!-- Anagram Preferences -->
-    <string name="maxAnagramLetters">16</string>
+    <string name="maxAnagramLetters">17</string>
 
     <!-- Select Player and Scoring -->
     <string name="title_activity_score">Score Activity</string>

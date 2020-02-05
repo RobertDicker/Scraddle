@@ -37,11 +37,12 @@ public class SelectPlayerDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
 
+
         if (getArguments() != null) {
+
             String title = getArguments().getString("title", "");
             String[] items = getArguments().getStringArray("items");
             final boolean[] checkedItems = getArguments().getBooleanArray("checkedItems");
-
 
             return new AlertDialog.Builder(requireActivity()).
                     setTitle(title).setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
@@ -63,7 +64,7 @@ public class SelectPlayerDialog extends DialogFragment {
                     .setNegativeButton("Cancel", null)
                     .create();
         }
-        return null;
+        return new AlertDialog.Builder(requireActivity()).setTitle("Something Went Wrong").create();
     }
 
     public interface SelectPlayerDialogOnClickListener {

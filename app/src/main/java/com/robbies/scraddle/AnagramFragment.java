@@ -49,8 +49,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private WordListAdapter adapter;
     private List<Word> matchingWords;
     private List<Word> mAllWords;
-    private Comparator defaultSortOrder;
-    private List<Comparator> sortMethods;
+    private Comparator<Word> defaultSortOrder;
+    private List<Comparator<Word>> sortMethods;
 
     private ProgressBar indeterminateProgressBar;
     private boolean reverse = false;

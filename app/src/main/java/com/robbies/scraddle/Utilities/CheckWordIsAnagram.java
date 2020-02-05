@@ -22,20 +22,16 @@ public class CheckWordIsAnagram implements Callable<Boolean> {
     @Override
     public Boolean call() {
 
-        BigInteger wordValue = new BigInteger(word.getPrimeValue());
+        if (word !=null) {
+            BigInteger wordValue = new BigInteger(word.getPrimeValue());
 
-        BigInteger result = anagramPrimeValue.mod(wordValue);
+            BigInteger result = anagramPrimeValue.mod(wordValue);
 
-        if (result.equals(BigInteger.ZERO)) {
-            if (word == null) {
+            if (result.equals(BigInteger.ZERO)) {
 
+                    allMatchingWords.add(word);
             }
-            if (word != null) {
-                allMatchingWords.add(word);
-            }
-
         }
-
-        return null;
+        return true;
     }
 }
