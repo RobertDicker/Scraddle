@@ -2,6 +2,7 @@ package com.robbies.scraddle;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,7 +95,8 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
                     //Add the most recently modified player
                     mSelectedPlayers.add(mCachedAllPlayers.get(0));
                     // Make sure there is at least two players
-                    if (mSelectedPlayers.size() < 2) {
+                    if (mCachedAllPlayers.size() >= 2 & mSelectedPlayers.size() < 2) {
+
                         mSelectedPlayers.add(mCachedAllPlayers.get(1));
 
                     }
@@ -143,6 +145,8 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             Snackbar.make(requireView(), "Try Selecting Players, it's going to be lonely otherwise", Snackbar.LENGTH_SHORT)
                     .show();
         }
+
+        Log.d("matchid", "===============================" + matchId);
     }
 
     private void selectPlayers() {
