@@ -14,6 +14,7 @@
         android:fontFamily="sans-serif-smallcaps"
         android:gravity="center_vertical"
         android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:textStyle="bold"

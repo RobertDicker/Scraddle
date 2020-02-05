@@ -51,10 +51,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp"
             android:layout_weight="1"
-            android:background="@drawable/ic_scraddlevert"
+            android:background="@drawable/ic_scraddle_vertical_logo"
             android:contentDescription="@string/scraddle_logo"
             android:scaleX=".5"
             android:scaleY="1" />
