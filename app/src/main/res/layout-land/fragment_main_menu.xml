@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainMenuFragment">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_weight="0"
+        android:background="@drawable/ic_scraddlehorizontal"
+        android:contentDescription="@string/scraddle_logo"
+        android:scaleX=".5"
+        android:scaleY="1" />
+
+    <Button
+        android:id="@+id/buttonStartNewGame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+
+        android:backgroundTint="#F44336"
+        android:fontFamily="@font/sigmar_one"
+        android:lineSpacingExtra="-35dp"
+
+        android:text="@string/start_new_game_text"
+
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="12dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonLeaderBoard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#FFEB3B"
+            android:fontFamily="@font/sigmar_one"
+            android:lineSpacingExtra="-10dp"
+
+            android:text="@string/leaderboardButtonLabelLandscape"
+
+            app:autoSizeMaxTextSize="50dp"
+            app:autoSizeMinTextSize="12dp"
+            app:autoSizeStepGranularity="2dp"
+            app:autoSizeTextType="uniform" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/buttonContinue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+
+                android:backgroundTint="#4CAF50"
+                android:fontFamily="@font/sigmar_one"
+                android:lineSpacingExtra="-10dp"
+
+                android:text="@string/continueButtonLabelLandscape"
+                app:autoSizeMaxTextSize="50dp"
+                app:autoSizeMinTextSize="12dp"
+                app:autoSizeStepGranularity="2dp"
+                app:autoSizeTextType="uniform" />
+
+            <Button
+                android:id="@+id/buttonSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+
+                android:backgroundTint="#FF5722"
+                android:fontFamily="@font/sigmar_one"
+                android:maxLines="1"
+
+                android:text="@string/settings_button_text"
+                app:autoSizeMaxTextSize="100dp"
+                app:autoSizeMinTextSize="12dp"
+                app:autoSizeStepGranularity="2dp"
+                app:autoSizeTextType="uniform" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonAnagramSolver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:backgroundTint="#008AD4"
+        android:fontFamily="@font/sigmar_one"
+        android:lineSpacingExtra="-20dp"
+        android:text="@string/anagram_solver_button_text"
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="12dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform" />
+
+</LinearLayout>

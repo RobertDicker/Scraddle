@@ -1,9 +1,11 @@
 package com.robbies.scraddle;
 
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -11,9 +13,11 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.robbies.scraddle.Data.GameDetail;
 import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.PlayerRecord;
 import com.robbies.scraddle.Data.Score;
 import com.robbies.scraddle.Data.ScoringViewModel;
 import com.robbies.scraddle.Utilities.TidyStringFormatterHelper;
@@ -62,16 +67,25 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     private PlayerListAdapter playerAdapter;
 
 
-    public ScoringFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
+
         scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
+        requireActivity().invalidateOptionsMenu();
     }
+
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("has observers? ", scoringViewModel.getPlayersDetails(matchId).hasObservers() + "");
+        scoringViewModel.getPlayersDetails(matchId).removeObservers(getViewLifecycleOwner());
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,12 +99,14 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         matchId = scoringViewModel.getCurrentMatchId();
         Log.d("matchid", "===============================" + matchId);
 
+
+
         scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override
             public void onChanged(List<GameDetail> gameDetails) {
 
                 playerDetails = (ArrayList<GameDetail>) gameDetails;
-
+                Log.d("players", "===============================" + playerDetails);
                 playerAdapter.setAllPlayers(playerDetails);
 
                 //Sets the initial starting values of each player in order to revert transaction on cancelled match.
@@ -105,6 +121,11 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         });
 
 
+
+
+        Log.d("has observers? ", scoringViewModel.getPlayersDetails(matchId).hasActiveObservers() + "");
+
+
         //Display
         tvCurrentPlayerTurn = view.findViewById(R.id.textViewCurrentPlayerTurn);
         addToPlayerButton = view.findViewById(R.id.buttonAddToPlayer);
@@ -112,8 +133,13 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         mRecyclerViewPlayers = view.findViewById(R.id.rVPlayers);
         playerAdapter = new PlayerListAdapter(playerDetails, this);
         mRecyclerViewPlayers.setAdapter(playerAdapter);
-        mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        if(requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+        mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
+        } else {
+
+            mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false ));
+        }
         for (int button : onClickRegisteredButtons) {
             view.findViewById(button).setOnClickListener(this);
         }

@@ -1,5 +1,8 @@
 package com.robbies.scraddle.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
@@ -9,54 +12,35 @@ import androidx.room.PrimaryKey;
 import java.util.Calendar;
 
 @Entity(tableName = "player_table")
-public class Player implements Comparable {
+public class Player implements Parcelable {
 
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;
 
-    @ColumnInfo(name = "personalBest", defaultValue = "0")
-    private int personalBest;
-
-    @ColumnInfo(name = "highestMatchScore", defaultValue = "0")
-    private int playersHighestMatchScore;
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "playerId")
-    private int playerId;
-
-    @ColumnInfo(name = "wins", defaultValue = "0")
-    private int wins;
-
-    @ColumnInfo(name = "loss", defaultValue = "0")
-    private int loss;
-
-    @ColumnInfo(name = "draw", defaultValue = "0")
-    private int draw;
+    private long playerId;
 
     @NonNull
     @ColumnInfo(name = "lastPlayed")
     private String lastPlayed;
 
-
     public Player(@NonNull String name) {
-        personalBest = 0;
-        playersHighestMatchScore = 0;
-        wins = 0;
-        loss = 0;
-        draw = 0;
         lastPlayed = Calendar.getInstance().getTime().toString();
         this.name = name;
     }
 
+    protected Player(Parcel in) {
+        this.name = in.readString();
+        this.playerId = in.readInt();
+        this.lastPlayed = in.readString();
+    }
+
     public Player(GameDetail gameDetail) {
+        new PlayerRecord(gameDetail.getPlayerId(), gameDetail.getPersonalBest(), gameDetail.getPlayersHighestMatchScore(), gameDetail.getWins(), gameDetail.getLoss(), gameDetail.getDraw());
         this.name = gameDetail.getName();
-        this.personalBest = gameDetail.getPersonalBest();
-        this.playersHighestMatchScore = gameDetail.getPlayersHighestMatchScore();
         this.playerId = gameDetail.getPlayerId();
-        this.wins = gameDetail.getWins();
-        this.loss = gameDetail.getLoss();
-        this.draw = gameDetail.getDraw();
         lastPlayed = Calendar.getInstance().getTime().toString();
     }
 
@@ -69,54 +53,13 @@ public class Player implements Comparable {
         this.name = name;
     }
 
-    public int getPersonalBest() {
-        return personalBest;
-    }
-
-    void setPersonalBest(int personalBest) {
-        this.personalBest = personalBest;
-    }
-
-    public int getPlayersHighestMatchScore() {
-        return playersHighestMatchScore;
-    }
-
-    void setPlayersHighestMatchScore(int playersHighestMatchScore) {
-        this.playersHighestMatchScore = playersHighestMatchScore;
-    }
-
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    void setPlayerId(int playerId) {
+    void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
-
-    public int getWins() {
-        return wins;
-    }
-
-    void setWins(int wins) {
-        this.wins = wins;
-    }
-
-    public int getLoss() {
-        return loss;
-    }
-
-    void setLoss(int loss) {
-        this.loss = loss;
-    }
-
-    public int getDraw() {
-        return draw;
-    }
-
-    void setDraw(int draw) {
-        this.draw = draw;
-    }
-
 
     @NonNull
     String getLastPlayed() {
@@ -127,21 +70,13 @@ public class Player implements Comparable {
         this.lastPlayed = lastPlayed;
     }
 
-    private int getRank() {
-        return (this.wins * 3 + this.draw + (this.loss * -1));
-    }
-
     @NonNull
     @Override
     public String toString() {
         return "Player{" +
                 "name='" + name + '\'' +
-                ", personalBest=" + personalBest +
-                ", playersHighestMatchScore=" + playersHighestMatchScore +
                 ", playerId=" + playerId +
-                ", wins=" + wins +
-                ", loss=" + loss +
-                ", draw=" + draw +
+
                 '}';
     }
 
@@ -155,11 +90,22 @@ public class Player implements Comparable {
             }
         }
         return result;
-
-
     }
 
+    public static final Creator<Player> CREATOR = new Creator<Player>() {
+        @Override
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
+        }
 
+        @Override
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
+
+
+/*
     @Override
     public int compareTo(@NonNull Object o) {
 
@@ -174,5 +120,17 @@ public class Player implements Comparable {
         }
 
         return i;
+    }*/
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.name);
+        parcel.writeLong(this.playerId);
+        parcel.writeString(this.lastPlayed);
     }
 }

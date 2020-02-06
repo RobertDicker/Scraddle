@@ -1,5 +1,7 @@
 package com.robbies.scraddle.Data;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
@@ -44,6 +46,7 @@ public class GameDetail {
     private int result;
 
     GameDetail(@NonNull String name, int personalBest, int playersHighestMatchScore, int playerId, int wins, int loss, int draw, long matchId, String score, int playersTurnOrder, int totalScore, int maxScore, int result) {
+
         this.name = name;
         this.personalBest = personalBest;
         this.playersHighestMatchScore = playersHighestMatchScore;
@@ -60,7 +63,7 @@ public class GameDetail {
     }
 
     public GameDetail(GameDetail gameDetail) {
-        this(gameDetail.name, gameDetail.personalBest, gameDetail.playersHighestMatchScore, gameDetail.playerId, gameDetail.wins, gameDetail.loss, gameDetail.draw, gameDetail.matchId, gameDetail.score, gameDetail.playersTurnOrder, gameDetail.totalScore, gameDetail.getMaxScore(), gameDetail.result);
+        this(gameDetail.name, gameDetail.personalBest, gameDetail.playersHighestMatchScore, gameDetail.playerId, gameDetail.wins, gameDetail.loss, gameDetail.draw, gameDetail.matchId, gameDetail.score, gameDetail.playersTurnOrder, gameDetail.totalScore, gameDetail.maxScore, gameDetail.result);
     }
 
     @NonNull

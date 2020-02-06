@@ -8,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 
-@Database(entities = {Player.class, Match.class, Score.class}, version = 1)
+@Database(entities = {Player.class, Match.class, Score.class, PlayerRecord.class}, version = 1)
 
 public abstract class GameRoomDatabase extends RoomDatabase {
 
@@ -34,4 +34,11 @@ public abstract class GameRoomDatabase extends RoomDatabase {
 
     public abstract GameDao gameDao();
 
+    public abstract PlayerDao playerDao();
+
+    public abstract ScoreDao scoreDao();
+
+    public abstract MatchDao matchDao();
+
+    public abstract PlayerRecordDao playerRecordDao();
 }

@@ -63,6 +63,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="sortdirectionarrow">Sort Direction Arrow</string>
     <string name="default_sort_order_button_text">DEFAULT SORT ORDER</string>
+    <string name="leaderboardButtonLabelLandscape">Leaderboard</string>
+    <string name="continueButtonLabelLandscape">continue</string>
+    <string name="personalBestLabel">Highest Match Score</string>
 
 
 </resources>

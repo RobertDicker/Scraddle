@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.PlayerRecord;
 import com.robbies.scraddle.Data.ScoringViewModel;
 
 public class CreatePlayerDialog extends DialogFragment {
@@ -47,8 +48,8 @@ public class CreatePlayerDialog extends DialogFragment {
                         if (!editText.getText().toString().isEmpty()) {
                             String editTextInput = editText.getText().toString().substring(0, 1).toUpperCase() + editText.getText().toString().trim().substring(1);
 
-                            scoringViewModel.savePlayer(new Player(editTextInput));
-
+                            int playerId =(int) scoringViewModel.insertPlayer(new Player(editTextInput));
+                            scoringViewModel.newPlayerRecord(new PlayerRecord(playerId));
                         }
                     }
                 })

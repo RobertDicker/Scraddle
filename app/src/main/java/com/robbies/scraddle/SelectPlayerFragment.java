@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.robbies.scraddle.Data.Match;
 import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.PlayerRecord;
 import com.robbies.scraddle.Data.Score;
 import com.robbies.scraddle.Data.ScoringViewModel;
 
@@ -31,7 +32,7 @@ import java.util.List;
 
 public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapter.OnPlayerListener, SelectPlayerAdapter.OnStartDragListener, View.OnClickListener, SelectPlayerDialog.SelectPlayerDialogOnClickListener {
 
-    private final FragmentSwitcher mFragmentSwitcher;
+
     private ItemTouchHelper mItemTouchHelper;
     private SelectPlayerAdapter mAllPlayerAdapter;
     private ArrayList<Player> mCachedAllPlayers;
@@ -39,17 +40,21 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
     private SharedPreferences mSharedPreferences;
     private ScoringViewModel mScoringViewModel;
 
-    SelectPlayerFragment(FragmentSwitcher fragmentSwitcher) {
-        this.mFragmentSwitcher = fragmentSwitcher;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
+        Log.d("thisinstanceofviewmodel", "============SELECTPLAYER================VIEW MODEL   " + mScoringViewModel.toString());
         mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
 
         mSelectedPlayers = new ArrayList<>();
+
+        if(savedInstanceState != null){
+            mSelectedPlayers = savedInstanceState.getParcelableArrayList("players");
+        }
+
+
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
                 .SimpleCallback(
@@ -92,20 +97,19 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
                 mCachedAllPlayers = (ArrayList<Player>) players;
                 if (!mCachedAllPlayers.isEmpty()) {
-                    //Add the most recently modified player
+
+                    // Add the most recently modified player
+
                     mSelectedPlayers.add(mCachedAllPlayers.get(0));
-                    // Make sure there is at least two players
+
+
+                    // Make sure there is at least two players by default
                     if (mCachedAllPlayers.size() >= 2 & mSelectedPlayers.size() < 2) {
-
                         mSelectedPlayers.add(mCachedAllPlayers.get(1));
-
                     }
                 }
 
-
                 mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-
-
             }
         });
 
@@ -137,16 +141,25 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             for (Player player : mSelectedPlayers) {
 
                 mScoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
+
+                Log.d("SAVING NEW PLAYER SCORE", player.toString() + " match id: " + matchId);
             }
 
             mSharedPreferences.edit().putLong("matchId", matchId).apply();
-            mFragmentSwitcher.switchFragment(new ScoringFragment());
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new ScoringFragment()).commit();
         } else {
             Snackbar.make(requireView(), "Try Selecting Players, it's going to be lonely otherwise", Snackbar.LENGTH_SHORT)
                     .show();
         }
 
         Log.d("matchid", "===============================" + matchId);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("players", mSelectedPlayers);
+
     }
 
     private void selectPlayers() {

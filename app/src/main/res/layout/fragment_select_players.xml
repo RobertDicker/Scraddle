@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        tools:listitem="@layout/activity_select_player_item">
+        tools:listitem="@layout/select_player_single_item">
 
     </androidx.recyclerview.widget.RecyclerView>
 

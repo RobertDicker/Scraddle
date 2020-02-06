@@ -1,44 +1,52 @@
 package com.robbies.scraddle;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+
 
 import com.robbies.scraddle.Data.ScoringViewModel;
 
-public class ScoringActivity extends AppCompatActivity implements FragmentSwitcher {
+public class ScoringActivity extends AppCompatActivity {
 
-
+    private final String FRAGMENT_TAG_STRING = "ScoringActivity";
     private long matchId;
-    private ScoringViewModel scoringViewModel;
+
+
+    Fragment matchFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_scoring);
-        scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
         matchId = getIntent().getLongExtra("lastMatchId", -1);
-        scoringViewModel.setCurrentMatchId(matchId);
 
-        Fragment matchFragment = matchId == -1 ?
-                new SelectPlayerFragment(this)
-                : new ScoringFragment();
+        if(savedInstanceState == null){
 
-        // Get the FragmentManager and start a transaction.
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                .beginTransaction();
+            final ScoringViewModel scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
+            scoringViewModel.setCurrentMatchId(matchId);
 
-        // Add the SimpleFragment.
-        fragmentTransaction.add(R.id.fragment,
-                matchFragment).commit();
+            matchFragment = matchId == -1 ?
+                    new SelectPlayerFragment()
+                    : new ScoringFragment();
+
+            getSupportFragmentManager().beginTransaction().add(R.id.fragment,
+                    matchFragment).commit();
+        }
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,6 +58,8 @@ public class ScoringActivity extends AppCompatActivity implements FragmentSwitch
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_players, menu);
@@ -59,22 +69,12 @@ public class ScoringActivity extends AppCompatActivity implements FragmentSwitch
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        if (matchId != -1) {
+        if (getSupportFragmentManager().getFragments().get(0) instanceof ScoringFragment) {
             menu.clear();
             getMenuInflater().inflate(R.menu.scoring_menu, menu);
         }
 
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
-    public void switchFragment(Fragment fragment) {
-        matchId = scoringViewModel.getCurrentMatchId();
-        invalidateOptionsMenu();
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment, fragment)
-                .commit();
     }
 
     @Override

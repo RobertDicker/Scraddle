@@ -14,6 +14,7 @@ public class Match {
     @PrimaryKey(autoGenerate = true)
     private long matchId;
 
+    @ColumnInfo(name = "datePlayed")
     @NonNull
     private String datePlayed;
 

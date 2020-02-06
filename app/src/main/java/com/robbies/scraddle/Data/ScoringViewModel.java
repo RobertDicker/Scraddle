@@ -1,6 +1,7 @@
 package com.robbies.scraddle.Data;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -20,9 +21,11 @@ public class ScoringViewModel extends AndroidViewModel {
         gameRepository = new GameRepository(application);
     }
 
+
     //GETTERS
 
     public LiveData<List<GameDetail>> getPlayersDetails(long matchId) {
+        Log.d("getting the data", "=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         return gameRepository.getGameDetails(matchId);
     }
 
@@ -55,10 +58,15 @@ public class ScoringViewModel extends AndroidViewModel {
 
     }
 
+    public long insertPlayer(Player player){
+       return gameRepository.insertPlayer(player);
+    }
+
     public void saveScore(Score score) {
         gameRepository.insertScore(score);
 
     }
+
 
     //DELETES
 
@@ -67,7 +75,7 @@ public class ScoringViewModel extends AndroidViewModel {
         gameRepository.deleteMatch(matchId);
     }
 
-    public void deletePlayer(int playerId) {
+    public void deletePlayer(long playerId) {
         gameRepository.deletePlayer(playerId);
     }
 
@@ -75,4 +83,7 @@ public class ScoringViewModel extends AndroidViewModel {
         gameRepository.deleteAll();
     }
 
+    public void newPlayerRecord(PlayerRecord playerRecord) {
+        gameRepository.insertPlayerRecord(playerRecord);
+    }
 }

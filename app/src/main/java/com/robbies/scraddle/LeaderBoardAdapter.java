@@ -63,12 +63,12 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         holder.playerNameTextView.setText(player.getName());
 
         holder.playerRankTextView.setText(String.format("%s", position + 1));
-        holder.playerGamesPlayedTextView.setText(String.format("%s", player.getDraw() + player.getLoss() + player.getWins()));
+   /*     holder.playerGamesPlayedTextView.setText(String.format("%s", player.getDraw() + player.getLoss() + player.getWins()));
         holder.playerWinsTextView.setText(String.format("%s", player.getWins()));
         holder.playerDrawsTextView.setText(String.format("%s", player.getDraw()));
         holder.playerLossTextView.setText(String.format("%s", player.getLoss()));
         holder.playerMatchHighScoreTextView.setText(String.format("%s", player.getPlayersHighestMatchScore()));
-        holder.playerWordHighScoreTextView.setText(String.format("%s", player.getPersonalBest()));
+        holder.playerWordHighScoreTextView.setText(String.format("%s", player.getPersonalBest()));*/
     }
 
     void setPlayers(List<Player> players) {

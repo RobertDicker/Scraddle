@@ -34,7 +34,7 @@ public class SelectPlayerAdapter extends RecyclerView.Adapter<SelectPlayerAdapte
     public PlayerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         //Create the new view
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_select_player_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.select_player_single_item, parent, false);
         return new PlayerViewHolder(view, mOnPlayerListener);
     }
 

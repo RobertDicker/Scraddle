@@ -21,7 +21,7 @@ public class Score {
     private long matchId;
 
 
-    private int playerId;
+    private long playerId;
 
     @ColumnInfo(defaultValue = "", name = "score")
     private String score;
@@ -36,7 +36,7 @@ public class Score {
     @ColumnInfo(defaultValue = "404", name = "result")
     private int result;
 
-    public Score(int playerId, long matchId, int playersTurnOrder) {
+    public Score(long playerId, long matchId, int playersTurnOrder) {
         this.score = "";
         this.matchId = matchId;
         this.playerId = playerId;
@@ -64,11 +64,11 @@ public class Score {
         this.score = score;
     }
 
-    int getPlayerId() {
+    long getPlayerId() {
         return this.playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 

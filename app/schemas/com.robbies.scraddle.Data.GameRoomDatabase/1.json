@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "463d5358739c8f90308d30bee7f4a1df",
+    "identityHash": "40f247ad73facfac48e32bda1a38b518",
     "entities": [
       {
         "tableName": "player_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL DEFAULT 'Unknown Player', `personalBest` INTEGER NOT NULL DEFAULT 0, `highestMatchScore` INTEGER NOT NULL DEFAULT 0, `playerId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `wins` INTEGER NOT NULL DEFAULT 0, `loss` INTEGER NOT NULL DEFAULT 0, `draw` INTEGER NOT NULL DEFAULT 0, `lastPlayed` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL DEFAULT 'Unknown Player', `playerId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `lastPlayed` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "name",
@@ -16,45 +16,10 @@
             "defaultValue": "'Unknown Player'"
           },
           {
-            "fieldPath": "personalBest",
-            "columnName": "personalBest",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
-          },
-          {
-            "fieldPath": "playersHighestMatchScore",
-            "columnName": "highestMatchScore",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
-          },
-          {
             "fieldPath": "playerId",
             "columnName": "playerId",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "wins",
-            "columnName": "wins",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
-          },
-          {
-            "fieldPath": "loss",
-            "columnName": "loss",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
-          },
-          {
-            "fieldPath": "draw",
-            "columnName": "draw",
-            "affinity": "INTEGER",
-            "notNull": true,
-            "defaultValue": "0"
           },
           {
             "fieldPath": "lastPlayed",
@@ -196,12 +161,88 @@
             ]
           }
         ]
+      },
+      {
+        "tableName": "player_record_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`personalBest` INTEGER NOT NULL DEFAULT 0, `highestMatchScore` INTEGER NOT NULL DEFAULT 0, `playerId` INTEGER NOT NULL, `wins` INTEGER NOT NULL DEFAULT 0, `loss` INTEGER NOT NULL DEFAULT 0, `draw` INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(`playerId`), FOREIGN KEY(`playerId`) REFERENCES `player_table`(`playerId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "personalBest",
+            "columnName": "personalBest",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "playersHighestMatchScore",
+            "columnName": "highestMatchScore",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "playerId",
+            "columnName": "playerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wins",
+            "columnName": "wins",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "loss",
+            "columnName": "loss",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          },
+          {
+            "fieldPath": "draw",
+            "columnName": "draw",
+            "affinity": "INTEGER",
+            "notNull": true,
+            "defaultValue": "0"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "playerId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_player_record_table_playerId",
+            "unique": false,
+            "columnNames": [
+              "playerId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_player_record_table_playerId` ON `${TABLE_NAME}` (`playerId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "player_table",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "playerId"
+            ],
+            "referencedColumns": [
+              "playerId"
+            ]
+          }
+        ]
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '463d5358739c8f90308d30bee7f4a1df')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '40f247ad73facfac48e32bda1a38b518')"
     ]
   }
 }

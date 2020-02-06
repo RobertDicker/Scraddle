@@ -11,6 +11,11 @@ import java.util.concurrent.ExecutionException;
 public class GameRepository {
 
     private final GameDao gameDao;
+    private final PlayerDao playerDao;
+    private final MatchDao matchDao;
+    private final ScoreDao scoreDao;
+    private final PlayerRecordDao playerRecordDao;
+
     private LiveData<List<Player>> allPlayers;
 
 
@@ -18,7 +23,12 @@ public class GameRepository {
 
         GameRoomDatabase db = GameRoomDatabase.getDatabase(application);
         gameDao = db.gameDao();
-        this.allPlayers = gameDao.getAllPlayers();
+        playerDao = db.playerDao();
+        scoreDao = db.scoreDao();
+        matchDao = db.matchDao();
+        playerRecordDao = db.playerRecordDao();
+
+        this.allPlayers = playerDao.getAllPlayers();
 
     }
 
@@ -27,7 +37,7 @@ public class GameRepository {
     }
 
     LiveData<Match> getLastMatch() {
-        return gameDao.getLastMatch();
+        return matchDao.getLastMatch();
     }
 
     LiveData<List<GameDetail>> getGameDetails(long matchId) {
@@ -36,15 +46,27 @@ public class GameRepository {
 
     //INSERTS
 
-    void insertPlayer(Player player) {
-        new insertPlayerAsyncTask(gameDao).execute(player);
+    long insertPlayer(Player player)
+    {
+        long playerId = -1;
+
+        try {
+           playerId = new insertPlayerAsyncTask(playerDao).execute(player).get();
+        } catch (ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return playerId;
+    }
+
+    void insertPlayerRecord(PlayerRecord playerRecord) {
+        new insertPlayerRecordAsyncTask(playerRecordDao).execute(playerRecord);
     }
 
     long insertMatch(Match match) {
 
         long matchId = 0;
         try {
-            matchId = new insertMatchAsyncTask(gameDao).execute(match).get();
+            matchId = new insertMatchAsyncTask(matchDao).execute(match).get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -52,45 +74,62 @@ public class GameRepository {
     }
 
     void insertScore(Score score) {
-        new insertScoreAsyncTask(gameDao).execute(score);
+        new insertScoreAsyncTask(scoreDao).execute(score);
     }
 
     void deleteMatch(long matchId) {
-        new deleteMatchAsyncTask(gameDao).execute(matchId);
+        new deleteMatchAsyncTask(matchDao).execute(matchId);
     }
 
-    void deletePlayer(int playerId) {
-        new deletePlayerAsyncTask(gameDao).execute(playerId);
+    void deletePlayer(long playerId) {
+        new deletePlayerAsyncTask(playerDao).execute(playerId);
     }
 
     void deleteAll() {
-        new deleteAll(gameDao).execute();
+        new deleteAll(matchDao, playerDao).execute();
     }
 
 
-    private static class insertPlayerAsyncTask extends AsyncTask<Player, Void, Void> {
+    private static class insertPlayerAsyncTask extends AsyncTask<Player, Void, Long> {
 
-        private GameDao mAsyncTaskDao;
+        private PlayerDao mAsyncTaskDao;
 
-        insertPlayerAsyncTask(GameDao gameDao) {
-            this.mAsyncTaskDao = gameDao;
+        insertPlayerAsyncTask(PlayerDao player) {
+            this.mAsyncTaskDao = player;
         }
 
         @Override
-        protected Void doInBackground(final Player... players) {
+        protected Long doInBackground(final Player... players) {
 
-            mAsyncTaskDao.insert(players[0]);
+            return mAsyncTaskDao.insert(players[0]);
+
+        }
+    }
+
+
+    private static class insertPlayerRecordAsyncTask extends AsyncTask<PlayerRecord, Void, Void> {
+
+        private PlayerRecordDao mAsyncTaskDao;
+
+        insertPlayerRecordAsyncTask(PlayerRecordDao playerRecordDao) {
+            this.mAsyncTaskDao = playerRecordDao;
+        }
+
+        @Override
+        protected Void doInBackground(final PlayerRecord... playersRecord) {
+            mAsyncTaskDao.insert(playersRecord[0]);
             return null;
         }
     }
 
 
+
     private static class insertMatchAsyncTask extends AsyncTask<Match, Void, Long> {
 
-        private GameDao mAsyncTaskDao;
+        private MatchDao mAsyncTaskDao;
 
-        insertMatchAsyncTask(GameDao gameDao) {
-            this.mAsyncTaskDao = gameDao;
+        insertMatchAsyncTask(MatchDao matchDao) {
+            this.mAsyncTaskDao = matchDao;
         }
 
         @Override
@@ -102,10 +141,10 @@ public class GameRepository {
 
     private static class insertScoreAsyncTask extends AsyncTask<Score, Void, Void> {
 
-        private GameDao mAsyncTaskDao;
+        private ScoreDao mAsyncTaskDao;
 
-        insertScoreAsyncTask(GameDao gameDao) {
-            this.mAsyncTaskDao = gameDao;
+        insertScoreAsyncTask(ScoreDao scoreDao) {
+            this.mAsyncTaskDao = scoreDao;
         }
 
         @Override
@@ -118,10 +157,10 @@ public class GameRepository {
 
     private static class deleteMatchAsyncTask extends AsyncTask<Long, Void, Void> {
 
-        private GameDao mAsyncTaskDao;
+        private MatchDao mAsyncTaskDao;
 
-        deleteMatchAsyncTask(GameDao gameDao) {
-            this.mAsyncTaskDao = gameDao;
+        deleteMatchAsyncTask(MatchDao matchDao) {
+            this.mAsyncTaskDao = matchDao;
         }
 
         @Override
@@ -132,36 +171,40 @@ public class GameRepository {
     }
 
 
-    private static class deletePlayerAsyncTask extends AsyncTask<Integer, Void, Void> {
+    private static class deletePlayerAsyncTask extends AsyncTask<Long, Void, Void> {
 
-        private GameDao mAsyncTaskDao;
+        private PlayerDao mAsyncTaskDao;
 
-        deletePlayerAsyncTask(GameDao gameDao) {
-            this.mAsyncTaskDao = gameDao;
+        deletePlayerAsyncTask(PlayerDao playerDao) {
+            this.mAsyncTaskDao = playerDao;
         }
 
         @Override
-        protected Void doInBackground(Integer... integers) {
-            mAsyncTaskDao.deletePlayer(integers[0]);
+        protected Void doInBackground(Long... playerIds) {
+            mAsyncTaskDao.deletePlayer(playerIds[0]);
             return null;
         }
     }
 
     private static class deleteAll extends AsyncTask<Void, Void, Void> {
 
-        private GameDao mAsyncTaskDao;
+        private MatchDao matchAsyncTaskDao;
+        private PlayerDao playerAsyncTaskDao;
 
-        deleteAll(GameDao gameDao) {
-            this.mAsyncTaskDao = gameDao;
+        deleteAll(MatchDao matchDao, PlayerDao playerDao) {
+
+            this.matchAsyncTaskDao = matchDao;
+            this.playerAsyncTaskDao = playerDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            mAsyncTaskDao.deleteAllPlayers();
-            mAsyncTaskDao.deleteAllMatches();
+            playerAsyncTaskDao.deleteAllPlayers();
+            matchAsyncTaskDao.deleteAllMatches();
             return null;
         }
     }
+
 
 
 }
