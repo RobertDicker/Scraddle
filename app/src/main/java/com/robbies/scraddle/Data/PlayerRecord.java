@@ -57,6 +57,16 @@ public class PlayerRecord {
         this.loss = loss;
     }
 
+    public PlayerRecord(GameDetail gameDetail) {
+        this.playerId = gameDetail.getPlayerId();
+        this.personalBest = gameDetail.getPersonalBest();
+        this.playersHighestMatchScore = gameDetail.getPlayersHighestMatchScore();
+        this.wins = gameDetail.getWins();
+        this.draw = gameDetail.getDraw();
+        this.loss = gameDetail.getLoss();
+
+    }
+
 
     public int getPersonalBest() {
         return personalBest;

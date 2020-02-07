@@ -43,6 +43,10 @@ public class GameRepository {
     LiveData<List<GameDetail>> getGameDetails(long matchId) {
         return gameDao.getGameDetails(matchId);
     }
+    LiveData<List<PlayersAndRecords>> getAllPlayersAndRecords() {
+      return gameDao.getAllPlayersAndRecords();
+    }
+
 
     //INSERTS
 
@@ -88,6 +92,8 @@ public class GameRepository {
     void deleteAll() {
         new deleteAll(matchDao, playerDao).execute();
     }
+
+
 
 
     private static class insertPlayerAsyncTask extends AsyncTask<Player, Void, Long> {

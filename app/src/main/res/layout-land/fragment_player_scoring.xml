@@ -19,95 +19,114 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/textViewCurrentPlayerTurn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/dark_header"
+        android:backgroundTint="#5DC0AB"
+        android:gravity="center"
+        android:text="@string/initial_heading_above_calc_before_first_move"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Start adding values to begin.." />
+
     <LinearLayout
-        android:id="@+id/scoringLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#48B6AC"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewCurrentPlayerTurn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/initial_heading_above_calc_before_first_move"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                tools:text="Start adding values to begin.." />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonClear"
-                    style="@style/buttonCalcSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#F44336"
-
-                    android:text="@string/button_clear" />
-
-                <Button
-                    android:id="@+id/buttonMinusOne"
-                    style="@style/buttonCalcSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#E91E63"
-
-                    android:text="@string/button_minus_one" />
-
-                <Button
-                    android:id="@+id/buttonAddOne"
-                    style="@style/buttonCalcSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#CDDC39"
-
-                    android:text="@string/scoring_button_plus_one" />
-
-                <Button
-                    android:id="@+id/buttonAddFive"
-                    style="@style/buttonCalcSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#CDDC39"
-
-                    android:text="@string/scoring_button_plus_five" />
-            </LinearLayout>
-        </LinearLayout>
+        android:background="#009688"
+        android:orientation="horizontal"
+        android:padding="2dp">
 
         <Button
-            android:id="@+id/buttonAddTen"
+            android:id="@+id/buttonClear"
             style="@style/buttonCalcSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:backgroundTint="#8BC34A"
+            android:backgroundTint="#F44336"
+            android:text="@string/button_clear" />
 
-            android:text="@string/scoring_button_plus_ten" />
+        <Button
+            android:id="@+id/buttonAddOne"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FFEB3B"
+            android:text="@string/scoring_button_plus_one" />
+
+        <Button
+            android:id="@+id/buttonAddTwo"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FFEB3B"
+            android:text="@string/buttonAddTwoText"
+
+            />
+
+        <Button
+            android:id="@+id/buttonAddThree"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FFEB3B"
+            android:text="@string/buttonAddThreeText" />
+
+        <Button
+            android:id="@+id/buttonAddFour"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FFC107"
+            android:text="@string/buttonAddFourText" />
+
+        <Button
+            android:id="@+id/buttonAddFive"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FFC107"
+            android:text="@string/scoring_button_plus_five" />
+
+        <Button
+            android:id="@+id/buttonAddSix"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FFC107"
+            android:text="@string/buttonAddSixText" />
+
+        <Button
+            android:id="@+id/buttonAddSeven"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FF9800"
+            android:text="@string/buttonAddSevenText" />
+
+        <Button
+            android:id="@+id/buttonAddEight"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FF9800"
+            android:text="@string/buttonAddEightText" />
+
+        <Button
+            android:id="@+id/buttonAddNine"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FF9800"
+            android:text="@string/buttonAddNineText" />
+
+        <Button
+            android:id="@+id/buttonAddZero"
+            style="@style/buttonCalcSmall"
+            android:backgroundTint="#FF5722"
+            android:text="@string/buttonAddZeroText" />
+
+        <Button
+            android:id="@+id/buttonDeleteLast"
+            style="@style/buttonCalcSmall"
+            android:background="@drawable/ic_backspace_black_24dp"
+            android:backgroundTint="#E91E1E"
+             />
 
         <Button
             android:id="@+id/buttonAddToPlayer"
             style="@style/buttonCalcSmall"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:layout_weight="1"
             android:backgroundTint="#4CAF50"
-            android:lines="2"
-
+            android:lines="1"
             android:text="@string/scoring_button_add_no_score"
             android:textColor="@android:color/white"
-            android:textSize="24sp" />
-
+            tools:text="Add To Player" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.robbies.scraddle;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
@@ -16,20 +17,22 @@ public class AnagramActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anagram);
 
+       if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            //Set The Navigation Bar to transparent===============================
+            Window w = getWindow(); // in Activity's onCreate() for instance
+            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            // ===============================
+        }
 
-        //Set The Navigation Bar to transparent===============================
-        Window w = getWindow(); // in Activity's onCreate() for instance
-        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        // ===============================
-
-
+        if(savedInstanceState == null){
         // Get the FragmentManager and start a transaction.
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
 
         // Add the SimpleFragment.
         fragmentTransaction.add(R.id.content,
-                new AnagramFragment()).commit();
+                new AnagramFragment(), "mainfrag").commit();
+        }
 
     }
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
     android:orientation="vertical">
 
 
@@ -16,9 +17,7 @@
         <TextView
             android:id="@+id/textViewPlayerName"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/inactivePlayer"
             android:fontFamily="sans-serif-condensed-medium"
@@ -31,12 +30,12 @@
         <TextView
             android:id="@+id/textViewminiScore"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_height="match_parent"
 
-            android:layout_marginBottom="8dp"
             android:background="@color/inactivePlayer"
             android:fontFamily="sans-serif-condensed-medium"
+            android:lines="1"
+            android:maxLines="1"
             android:paddingStart="5dp"
             android:paddingEnd="32dp"
             android:textAlignment="center"

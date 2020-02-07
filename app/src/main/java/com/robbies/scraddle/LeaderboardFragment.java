@@ -1,6 +1,7 @@
 package com.robbies.scraddle;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.robbies.scraddle.Data.GameDetail;
 import com.robbies.scraddle.Data.Player;
+import com.robbies.scraddle.Data.PlayersAndRecords;
 import com.robbies.scraddle.Data.ScoringViewModel;
 
 import java.util.ArrayList;
@@ -20,13 +23,10 @@ import java.util.List;
 
 public class LeaderboardFragment extends Fragment {
 
-    private List<Player> allPlayers;
+    private List<PlayersAndRecords> allPlayers;
     private LeaderBoardAdapter playerDetailAdapter;
     private ScoringViewModel scoringViewModel;
 
-    public LeaderboardFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,9 +48,10 @@ public class LeaderboardFragment extends Fragment {
         recyclerView.setAdapter(playerDetailAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        scoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
+        scoringViewModel.getAllPlayersAndRecords().observe(getViewLifecycleOwner(), new Observer<List<PlayersAndRecords>>() {
             @Override
-            public void onChanged(List<Player> players) {
+            public void onChanged(List<PlayersAndRecords> players) {
+                Log.d("===", players.toString());
                 allPlayers = players;
                 playerDetailAdapter.setPlayers(allPlayers);
             }

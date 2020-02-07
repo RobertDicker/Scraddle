@@ -36,13 +36,26 @@
     <string name="anagram_button_7">7</string>
     <string name="anagram_button_8_or_more">8+</string>
     <string name="leader_board_heading">Leader Board</string>
+
+    <!-- CALC  -->
     <string name="initial_heading_above_calc_before_first_move">Start adding values to begin…</string>
     <string name="button_clear">C</string>
-    <string name="button_minus_one">-1</string>
-    <string name="scoring_button_plus_one">+1</string>
-    <string name="scoring_button_plus_five">+5</string>
-    <string name="scoring_button_plus_ten">+10</string>
+
+
+
     <string name="scoring_button_add_no_score">Next</string>
+    <string name="buttonAddZeroText">0</string>
+    <string name="scoring_button_plus_one">1</string>
+    <string name="buttonAddTwoText">2</string>
+    <string name="buttonAddThreeText">3</string>
+    <string name="buttonAddFourText">4</string>
+    <string name="scoring_button_plus_five">5</string>
+    <string name="buttonAddSixText">6</string>
+    <string name="buttonAddSevenText">7</string>
+    <string name="buttonAddEightText">8</string>
+    <string name="buttonAddNineText">9</string>
+
+    <!-- END Calc  -->
     <string name="select_players_start_scoring_button">Start Scoring</string>
     <string name="menu_select_players">Select Players</string>
     <string name="menu_create_player">Create Player</string>
@@ -66,6 +79,8 @@
     <string name="leaderboardButtonLabelLandscape">Leaderboard</string>
     <string name="continueButtonLabelLandscape">continue</string>
     <string name="personalBestLabel">Highest Match Score</string>
+    <string name="anagram_no_words_text">Much Nothing ...</string>
+    <string name="anagram_image_robot_no_items_content_description">Picture of a robot, announcing there is no items</string>
 
 
 </resources>

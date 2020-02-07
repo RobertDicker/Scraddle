@@ -1,7 +1,6 @@
 package com.robbies.scraddle;
 
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,11 +12,9 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +44,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     private static final int SAVE_PLAYER = 0;
     private static final int FINAL_SAVE = 1;
     private static final int REVERT_DATA = -2;
-    private final int[] onClickRegisteredButtons = {R.id.buttonAddOne, R.id.buttonAddFive, R.id.buttonAddTen, R.id.buttonMinusOne, R.id.buttonClear, R.id.buttonAddToPlayer};
+    private final int[] onClickRegisteredButtons = {R.id.buttonAddOne, R.id.buttonAddTwo, R.id.buttonAddThree, R.id.buttonAddFour, R.id.buttonAddFive, R.id.buttonAddSix, R.id.buttonAddSeven, R.id.buttonAddEight, R.id.buttonAddNine, R.id.buttonDeleteLast, R.id.buttonClear, R.id.buttonAddToPlayer};
 
     //DATA
     private SharedPreferences sharedPreferences;
@@ -57,7 +54,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
     //Buttons
     private GameDetail currentPlayer;
-    private int incrementScore;
+    private StringBuilder incrementScore;
     private long matchId;
 
     //View
@@ -71,11 +68,10 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
-
+        incrementScore = new StringBuilder();
         scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
         requireActivity().invalidateOptionsMenu();
     }
-
 
 
     @Override
@@ -100,7 +96,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         Log.d("matchid", "===============================" + matchId);
 
 
-
         scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override
             public void onChanged(List<GameDetail> gameDetails) {
@@ -121,8 +116,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         });
 
 
-
-
         Log.d("has observers? ", scoringViewModel.getPlayersDetails(matchId).hasActiveObservers() + "");
 
 
@@ -134,11 +127,11 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         playerAdapter = new PlayerListAdapter(playerDetails, this);
         mRecyclerViewPlayers.setAdapter(playerAdapter);
 
-        if(requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-        mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
 
-            mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false ));
+            mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
         for (int button : onClickRegisteredButtons) {
             view.findViewById(button).setOnClickListener(this);
@@ -205,26 +198,19 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     }
 
 
-    private void addToPlayer() {
+    private void addToPlayer(int scoreToAdd) {
 
         currentPlayer = playerDetails.get(0);
         //Players state before they take a move
         backupPlayerDetails.add(new GameDetail(currentPlayer));
 
         //First Player is always 0 in the list.
-        if (incrementScore > 0) {
-            currentPlayer.addScore(incrementScore);
+       currentPlayer.addScore(scoreToAdd);
 
             //Check for score records
-            if (currentPlayer.getPersonalBest() < incrementScore) {
-                currentPlayer.setPersonalBest(incrementScore);
+            if (currentPlayer.getPersonalBest() < scoreToAdd) {
+                currentPlayer.setPersonalBest(scoreToAdd);
             }
-        }
-
-        // Next Player clear button text and shuffle list
-        incrementScore = 0;
-        changePlayer(-1);
-        saveData(SAVE_PLAYER);
     }
 
 
@@ -233,11 +219,8 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         if (rotateDistance == -1) {
             playerDetails.get(0).setPlayersTurnOrder(playerDetails.get(0).getPlayersTurnOrder() + playerDetails.size());
         }
-
         Collections.rotate(playerDetails, rotateDistance);
-
         //Set the title to show who's turn it is
-
         tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
     }
 
@@ -316,6 +299,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             case (SAVE_PLAYER):
                 scoringViewModel.savePlayer(new Player(currentPlayer));
                 scoringViewModel.saveScore(new Score(currentPlayer));
+                scoringViewModel.savePlayerRecord(new PlayerRecord(currentPlayer));
                 break;
 
             case (FINAL_SAVE):
@@ -323,6 +307,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                 for (GameDetail player : playerDetails) {
                     scoringViewModel.saveScore(new Score(player));
                     scoringViewModel.savePlayer(new Player(player));
+                    scoringViewModel.savePlayerRecord(new PlayerRecord(player));
                 }
 
                 backupPlayerDetails = null;
@@ -333,7 +318,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             case (UNDO_PLAYER):
                 scoringViewModel.savePlayer(new Player(backupPlayerDetails.get(backupPlayerDetails.size() - 1)));
                 scoringViewModel.saveScore(new Score(backupPlayerDetails.get(backupPlayerDetails.size() - 1)));
-
+                scoringViewModel.savePlayerRecord(new PlayerRecord(backupPlayerDetails.get(backupPlayerDetails.size() - 1)));
                 //Remove their last backup
                 backupPlayerDetails.remove(backupPlayerDetails.size() - 1);
                 break;
@@ -345,6 +330,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                 //Revert the player to their details before the match started
                 for (int i = 0; i < playerDetails.size(); i++) {
                     scoringViewModel.savePlayer(new Player(backupPlayerDetails.get(i)));
+                    scoringViewModel.savePlayerRecord(new PlayerRecord(backupPlayerDetails.get(i)));
                 }
 
                 //Delete the score and match rows from data it will cascade
@@ -385,31 +371,41 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
         if (currentPlayer == null) {
             tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
-
         }
+
+        Button buttonClicked = (Button) view;
+
         switch (view.getId()) {
 
-            case R.id.buttonAddOne:
-                incrementScore++;
-                break;
-            case R.id.buttonAddFive:
-                incrementScore += 5;
-                break;
-            case R.id.buttonAddTen:
-                incrementScore += 10;
-                break;
-            case R.id.buttonMinusOne:
-                incrementScore = incrementScore > 0 ? incrementScore - 1 : 0;
-                break;
             case R.id.buttonClear:
-                incrementScore = 0;
+                incrementScore.setLength(0);
+                break;
+            case R.id.buttonDeleteLast:
+                if(incrementScore.length()>0){
+                    incrementScore.deleteCharAt(incrementScore.length()-1);
+                }
                 break;
             case R.id.buttonAddToPlayer:
-                addToPlayer();
+                if(incrementScore.length() == 0){incrementScore.append("0");}
+
+                addToPlayer(Integer.parseInt(incrementScore.toString()));
+                // Next Player clear button text and shuffle list
+                incrementScore.setLength(0);
+                changePlayer(-1);
+                saveData(SAVE_PLAYER);
+                break;
+            default:
+                if(incrementScore.length() < 3){
+                incrementScore.append(buttonClicked.getText().toString());
+                }
+        }
+        String addAmountString;
+        if(requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+             addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add\n%s", incrementScore);
+        } else {
+             addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add %s", incrementScore);
         }
 
-        String addAmountString = incrementScore == 0 ? "Skip" : String.format("Add\n%s", incrementScore);
         addToPlayerButton.setText(addAmountString);
-
     }
 }

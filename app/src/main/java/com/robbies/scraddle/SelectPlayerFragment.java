@@ -52,6 +52,7 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
         if(savedInstanceState != null){
             mSelectedPlayers = savedInstanceState.getParcelableArrayList("players");
+            mAllPlayerAdapter.setPlayers(mSelectedPlayers);
         }
 
 
@@ -89,19 +90,16 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
 
-
+        if(savedInstanceState == null){
         mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
             @Override
             public void onChanged(List<Player> players) {
 
-
                 mCachedAllPlayers = (ArrayList<Player>) players;
+
                 if (!mCachedAllPlayers.isEmpty()) {
-
                     // Add the most recently modified player
-
                     mSelectedPlayers.add(mCachedAllPlayers.get(0));
-
 
                     // Make sure there is at least two players by default
                     if (mCachedAllPlayers.size() >= 2 & mSelectedPlayers.size() < 2) {
@@ -111,7 +109,15 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
                 mAllPlayerAdapter.setPlayers(mSelectedPlayers);
             }
-        });
+        });} else{
+
+            mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
+                @Override
+                public void onChanged(List<Player> players) {
+                    mCachedAllPlayers = (ArrayList<Player>) players;
+                }
+            });
+        }
 
         view.findViewById(R.id.buttonStartScoring).setOnClickListener(this);
 

@@ -33,9 +33,6 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
     private List<Player> mAllPlayers;
     private SharedPreferences sharedPreferences;
 
-    public Settings() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

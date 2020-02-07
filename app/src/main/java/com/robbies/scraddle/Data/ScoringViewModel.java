@@ -14,6 +14,7 @@ public class ScoringViewModel extends AndroidViewModel {
 
     private final GameRepository gameRepository;
     private LiveData<List<Player>> mAllPlayers;
+
     private long mCurrentMatchId = -1;
 
     public ScoringViewModel(@NonNull Application application) {
@@ -22,11 +23,15 @@ public class ScoringViewModel extends AndroidViewModel {
     }
 
 
+
     //GETTERS
 
     public LiveData<List<GameDetail>> getPlayersDetails(long matchId) {
-        Log.d("getting the data", "=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-");
         return gameRepository.getGameDetails(matchId);
+    }
+
+    public LiveData<List<PlayersAndRecords>> getAllPlayersAndRecords() {
+        return gameRepository.getAllPlayersAndRecords();
     }
 
     public LiveData<List<Player>> getAllPlayers() {
@@ -84,6 +89,11 @@ public class ScoringViewModel extends AndroidViewModel {
     }
 
     public void newPlayerRecord(PlayerRecord playerRecord) {
+        gameRepository.insertPlayerRecord(playerRecord);
+    }
+
+
+    public void savePlayerRecord(PlayerRecord playerRecord) {
         gameRepository.insertPlayerRecord(playerRecord);
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,9 +52,9 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private List<Word> mAllWords;
     private Comparator<Word> defaultSortOrder;
     private List<Comparator<Word>> sortMethods;
-
     private ProgressBar indeterminateProgressBar;
     private boolean reverse = false;
+    LinearLayout noWordsLinearLayout;
 
     public AnagramFragment() {
         // Required empty public constructor
@@ -66,8 +67,11 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         // ========================= DATA =====================
 
         mWordViewModel = new ViewModelProvider(requireActivity()).get(WordViewModel.class);
-        matchingWords = new ArrayList<>();
-        sortMethods = new ArrayList<>();
+
+
+            matchingWords = new ArrayList<>();
+            sortMethods = new ArrayList<>();
+
         sortMethods.addAll(Arrays.asList(
                 new ScrabbleValueComparator(),
                 new LexicographicComparator(),
@@ -75,6 +79,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         ));
         defaultSortOrder = sortMethods.get(0);
         adapter = new WordListAdapter(requireContext());
+
+
     }
 
     @Override
@@ -96,6 +102,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         letters = view.findViewById(R.id.editTextLettersToSolve);
         indeterminateProgressBar = view.findViewById(R.id.progressBarIndeterminate);
         numberOfWords = view.findViewById(R.id.anagramTextViewNumberOfWords);
+        noWordsLinearLayout = view.findViewById(R.id.linearLayoutNoWords);
 
         RecyclerView recyclerView = view.findViewById(R.id.rVWords);
         recyclerView.setAdapter(adapter);
@@ -226,6 +233,11 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         numberOfWords.setText(String.format("Words: %s", matchingWords.size()));
         showHideIndeterminateProgressBar();
 
+        int visibilityNoWordsImage = matchingWords.size() < 1  ? View.VISIBLE : View.GONE;
+        noWordsLinearLayout.setVisibility(visibilityNoWordsImage);
+
+
+
 
     }
 
@@ -263,6 +275,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         int visibility = indeterminateProgressBar.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
         indeterminateProgressBar.setVisibility(visibility);
     }
+
+
 
     private void hideKeyboard() {
         //Hide Keyboard

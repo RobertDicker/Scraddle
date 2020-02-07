@@ -28,7 +28,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/dark_header"
-        android:backgroundTint="#5DC0AB"
+        android:backgroundTint="@color/activePlayer"
         android:gravity="center"
         android:text="@string/initial_heading_above_calc_before_first_move"
         android:textColor="@android:color/white"
@@ -41,85 +41,132 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#48B6AC"
+        android:layout_height="0dp"
+        android:background="#000000"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
+        <Button
+            android:id="@+id/buttonAddToPlayer"
+            style="@style/buttonCalcPortrait"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/calc_buttons"
+
+            android:lines="2"
+            android:text="@string/scoring_button_add_no_score"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            tools:text="Add To Player" />
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/buttonClear"
-                style="@style/buttonCalcSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/buttonDeleteLast"
+                style="@style/buttonCalcPortrait"
+                android:background="@drawable/ic_backspace_black_24dp"
                 android:backgroundTint="#F44336"
-
-                android:text="@string/button_clear" />
+                android:translationX="-3dp" />
 
             <Button
-                android:id="@+id/buttonMinusOne"
-                style="@style/buttonCalcSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#E91E63"
+                android:id="@+id/buttonClear"
+                style="@style/buttonCalcPortrait"
+                android:backgroundTint="#F44336"
+                android:text="@string/button_clear" />
 
-                android:text="@string/button_minus_one" />
+            <!--android:adjustViewBounds="true"
+                android:scaleType="fitCenter"-->
+
+
+            <Button
+                android:id="@+id/buttonAddZero"
+                style="@style/buttonCalcPortrait"
+                android:backgroundTint="#2196F3"
+                android:text="@string/buttonAddZeroText" />
+
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/buttonAddOne"
-                style="@style/buttonCalcSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#CDDC39"
-
+                style="@style/buttonCalcPortrait"
                 android:text="@string/scoring_button_plus_one" />
 
             <Button
-                android:id="@+id/buttonAddFive"
-                style="@style/buttonCalcSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:backgroundTint="#CDDC39"
+                android:id="@+id/buttonAddFour"
+                style="@style/buttonCalcPortrait"
+                android:text="@string/buttonAddFourText" />
 
-                android:text="@string/scoring_button_plus_five" />
+            <Button
+                android:id="@+id/buttonAddSeven"
+                style="@style/buttonCalcPortrait"
+                android:text="@string/buttonAddSevenText" />
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/buttonAddTen"
-            style="@style/buttonCalcSmall"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:backgroundTint="#8BC34A"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            android:text="@string/scoring_button_plus_ten" />
 
-        <Button
-            android:id="@+id/buttonAddToPlayer"
-            style="@style/buttonCalcSmall"
-            android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/buttonAddTwo"
+                style="@style/buttonCalcPortrait"
+                android:backgroundTint="#03A9F4"
+                android:text="@string/buttonAddTwoText" />
+
+            <Button
+                android:id="@+id/buttonAddFive"
+                style="@style/buttonCalcPortrait"
+                android:backgroundTint="#03A9F4"
+                android:text="@string/scoring_button_plus_five" />
+
+            <Button
+                android:id="@+id/buttonAddEight"
+                style="@style/buttonCalcPortrait"
+                android:backgroundTint="#03A9F4"
+                android:text="@string/buttonAddEightText" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:backgroundTint="#4CAF50"
-            android:lines="2"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            android:text="@string/scoring_button_add_no_score"
-            android:textColor="@android:color/white"
-            android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/buttonAddThree"
+                style="@style/buttonCalcPortrait"
+                android:text="@string/buttonAddThreeText" />
+
+            <Button
+                android:id="@+id/buttonAddSix"
+                style="@style/buttonCalcPortrait"
+                android:text="@string/buttonAddSixText" />
+
+            <Button
+                android:id="@+id/buttonAddNine"
+                style="@style/buttonCalcPortrait"
+                android:text="@string/buttonAddNineText" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 

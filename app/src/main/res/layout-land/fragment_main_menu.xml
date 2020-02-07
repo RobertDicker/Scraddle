@@ -24,14 +24,14 @@
         android:id="@+id/buttonStartNewGame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
 
+        android:layout_weight="1"
         android:backgroundTint="#F44336"
         android:fontFamily="@font/sigmar_one"
+
         android:lineSpacingExtra="-35dp"
 
         android:text="@string/start_new_game_text"
-
         app:autoSizeMaxTextSize="50dp"
         app:autoSizeMinTextSize="12dp"
         app:autoSizeStepGranularity="2dp"
@@ -39,8 +39,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:orientation="horizontal">
 
         <Button
@@ -50,10 +50,11 @@
             android:layout_weight="1"
             android:backgroundTint="#FFEB3B"
             android:fontFamily="@font/sigmar_one"
-            android:lineSpacingExtra="-10dp"
+
+
+            android:maxLines="1"
 
             android:text="@string/leaderboardButtonLabelLandscape"
-
             app:autoSizeMaxTextSize="50dp"
             app:autoSizeMinTextSize="12dp"
             app:autoSizeStepGranularity="2dp"
@@ -69,11 +70,11 @@
                 android:id="@+id/buttonContinue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="1"
 
                 android:backgroundTint="#4CAF50"
                 android:fontFamily="@font/sigmar_one"
-                android:lineSpacingExtra="-10dp"
+
 
                 android:text="@string/continueButtonLabelLandscape"
                 app:autoSizeMaxTextSize="50dp"
