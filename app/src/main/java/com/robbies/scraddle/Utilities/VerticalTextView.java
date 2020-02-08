@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.widget.TextView;
+
 
 import androidx.appcompat.widget.AppCompatTextView;
 
@@ -51,7 +51,6 @@ public class VerticalTextView extends AppCompatTextView {
         getLayout().draw(canvas);
         canvas.restore();
     }
-
 
 
 }

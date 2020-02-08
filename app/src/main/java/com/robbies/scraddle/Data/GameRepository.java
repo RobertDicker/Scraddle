@@ -36,26 +36,26 @@ public class GameRepository {
         return this.allPlayers;
     }
 
-    LiveData<Match> getLastMatch() {
+  /*  LiveData<Match> getLastMatch() {
         return matchDao.getLastMatch();
-    }
+    }*/
 
     LiveData<List<GameDetail>> getGameDetails(long matchId) {
         return gameDao.getGameDetails(matchId);
     }
+
     LiveData<List<PlayersAndRecords>> getAllPlayersAndRecords() {
-      return gameDao.getAllPlayersAndRecords();
+        return gameDao.getAllPlayersAndRecords();
     }
 
 
     //INSERTS
 
-    long insertPlayer(Player player)
-    {
+    long insertPlayer(Player player) {
         long playerId = -1;
 
         try {
-           playerId = new insertPlayerAsyncTask(playerDao).execute(player).get();
+            playerId = new insertPlayerAsyncTask(playerDao).execute(player).get();
         } catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -94,8 +94,6 @@ public class GameRepository {
     }
 
 
-
-
     private static class insertPlayerAsyncTask extends AsyncTask<Player, Void, Long> {
 
         private PlayerDao mAsyncTaskDao;
@@ -127,7 +125,6 @@ public class GameRepository {
             return null;
         }
     }
-
 
 
     private static class insertMatchAsyncTask extends AsyncTask<Match, Void, Long> {
@@ -210,7 +207,6 @@ public class GameRepository {
             return null;
         }
     }
-
 
 
 }

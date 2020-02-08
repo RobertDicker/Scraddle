@@ -23,18 +23,22 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
     private long lastMatch = -1;
     private SharedPreferences sP;
 
-    public MainMenuFragment() {
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        View decorView = getActivity().getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
 
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         setRetainInstance(true);
@@ -123,8 +127,4 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         AppCompatDelegate.setDefaultNightMode(currentTheme);
     }
 
-
-    public interface FragmentSwitcher {
-        void switchFragment(Fragment fragment);
-    }
 }

@@ -1,7 +1,6 @@
 package com.robbies.scraddle;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +12,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.robbies.scraddle.Data.GameDetail;
-import com.robbies.scraddle.Data.Player;
 import com.robbies.scraddle.Data.PlayersAndRecords;
 import com.robbies.scraddle.Data.ScoringViewModel;
 
@@ -51,7 +48,6 @@ public class LeaderboardFragment extends Fragment {
         scoringViewModel.getAllPlayersAndRecords().observe(getViewLifecycleOwner(), new Observer<List<PlayersAndRecords>>() {
             @Override
             public void onChanged(List<PlayersAndRecords> players) {
-                Log.d("===", players.toString());
                 allPlayers = players;
                 playerDetailAdapter.setPlayers(allPlayers);
             }

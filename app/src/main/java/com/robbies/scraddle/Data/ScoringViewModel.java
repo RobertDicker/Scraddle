@@ -1,7 +1,6 @@
 package com.robbies.scraddle.Data;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,15 +13,12 @@ public class ScoringViewModel extends AndroidViewModel {
 
     private final GameRepository gameRepository;
     private LiveData<List<Player>> mAllPlayers;
-
     private long mCurrentMatchId = -1;
 
     public ScoringViewModel(@NonNull Application application) {
         super(application);
         gameRepository = new GameRepository(application);
     }
-
-
 
     //GETTERS
 
@@ -46,7 +42,6 @@ public class ScoringViewModel extends AndroidViewModel {
         return mCurrentMatchId;
     }
 
-
     //INSERTS
 
     public void setCurrentMatchId(long mCurrentMatchId) {
@@ -63,8 +58,8 @@ public class ScoringViewModel extends AndroidViewModel {
 
     }
 
-    public long insertPlayer(Player player){
-       return gameRepository.insertPlayer(player);
+    public long insertPlayer(Player player) {
+        return gameRepository.insertPlayer(player);
     }
 
     public void saveScore(Score score) {

@@ -7,20 +7,7 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScoringActivity"
-    tools:showIn="@layout/activity_scoring">
-
-    <!--   <Button
-           android:id="@+id/buttonAddPlayers"
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content"
-           android:background="@android:drawable/bottom_bar"
-           android:backgroundTint="#4CAF50"
-           android:drawableEnd="@drawable/ic_person_black_24dp"
-
-           android:text="Add Player "
-           android:textColor="@android:color/white"
-           android:textSize="30sp"
-           android:visibility="gone" />-->
+  >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerviewPlayers"
@@ -35,9 +22,11 @@
         android:id="@+id/buttonStartScoring"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/buttonripple"
-        android:backgroundTint="#70009688"
+        android:background="@drawable/calc_button_border_blue"
+        android:backgroundTint="@color/activePlayer"
 
+        android:shadowDx="-50"
+        android:shadowRadius="50"
         android:text="@string/select_players_start_scoring_button"
         android:textSize="30sp" />
 

@@ -1,12 +1,13 @@
 package com.robbies.scraddle.Data;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
-public class GameDetail {
+public class GameDetail implements Parcelable {
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;
@@ -19,7 +20,7 @@ public class GameDetail {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "playerId")
-    private int playerId;
+    private long playerId;
 
     @ColumnInfo(name = "wins", defaultValue = "0")
     private int wins;
@@ -45,7 +46,7 @@ public class GameDetail {
     @ColumnInfo(defaultValue = "404", name = "result")
     private int result;
 
-    GameDetail(@NonNull String name, int personalBest, int playersHighestMatchScore, int playerId, int wins, int loss, int draw, long matchId, String score, int playersTurnOrder, int totalScore, int maxScore, int result) {
+    GameDetail(@NonNull String name, int personalBest, int playersHighestMatchScore, long playerId, int wins, int loss, int draw, long matchId, String score, int playersTurnOrder, int totalScore, int maxScore, int result) {
 
         this.name = name;
         this.personalBest = personalBest;
@@ -65,6 +66,36 @@ public class GameDetail {
     public GameDetail(GameDetail gameDetail) {
         this(gameDetail.name, gameDetail.personalBest, gameDetail.playersHighestMatchScore, gameDetail.playerId, gameDetail.wins, gameDetail.loss, gameDetail.draw, gameDetail.matchId, gameDetail.score, gameDetail.playersTurnOrder, gameDetail.totalScore, gameDetail.maxScore, gameDetail.result);
     }
+
+    protected GameDetail(Parcel in){
+
+        this.name = in.readString();
+        this.personalBest = in.readInt();
+        this.playersHighestMatchScore = in.readInt();
+        this.playerId = in.readLong();
+        this.wins = in.readInt();
+        this.loss = in.readInt();
+        this.draw = in.readInt();
+        this.matchId = in.readLong();
+        this.score = in.readString();
+        this.playersTurnOrder = in.readInt();
+        this.totalScore = in.readInt();
+        this.maxScore = in.readInt();
+        this.result = in.readInt();
+    }
+
+    public static final Creator<GameDetail> CREATOR = new Creator<GameDetail>() {
+        @Override
+        public GameDetail createFromParcel(Parcel in) {
+            return new GameDetail(in);
+        }
+
+        @Override
+        public GameDetail[] newArray(int size) {
+            return new GameDetail[size];
+        }
+    };
+
 
     @NonNull
     public String getName() {
@@ -91,11 +122,11 @@ public class GameDetail {
         this.playersHighestMatchScore = playersHighestMatchScore;
     }
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 
@@ -181,14 +212,14 @@ public class GameDetail {
         return lastScore;
     }
 
-    public void removeLastScore() {
+/*    public void removeLastScore() {
 
         if (!score.isEmpty()) {
             String lastScore = getLastScore();
             totalScore -= Integer.parseInt(lastScore);
             score = score.substring(0, (score.lastIndexOf(lastScore) - 2));
         }
-    }
+    }*/
 
     public void addScore(int score) {
         totalScore += score;
@@ -233,4 +264,25 @@ public class GameDetail {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.name);
+        parcel.writeInt(this.personalBest);
+        parcel.writeInt(this.playersHighestMatchScore);
+        parcel.writeLong(this.playerId);
+        parcel.writeInt(this.wins);
+        parcel.writeInt(this.loss);
+        parcel.writeInt(this.draw);
+        parcel.writeLong(this.matchId);
+        parcel.writeString(this.score);
+        parcel.writeInt(this.playersTurnOrder);
+        parcel.writeInt(this.totalScore);
+        parcel.writeInt(this.maxScore);
+        parcel.writeInt(this.result);
+    }
 }

@@ -10,7 +10,6 @@ import androidx.room.Update;
 public abstract class BaseDao<T> {
 
     /**
-     *
      * @param entity
      * @return long
      */

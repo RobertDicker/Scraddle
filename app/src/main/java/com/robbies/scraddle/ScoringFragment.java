@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -70,18 +69,22 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         incrementScore = new StringBuilder();
         scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
-        requireActivity().invalidateOptionsMenu();
-    }
 
+        //Backup Turn data
+        if (savedInstanceState != null) {
+            backupPlayerDetails = savedInstanceState.getParcelableArrayList("backupPlayerTurnData");
+        }
+
+        requireActivity().invalidateOptionsMenu();
+
+    }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.d("has observers? ", scoringViewModel.getPlayersDetails(matchId).hasObservers() + "");
-        scoringViewModel.getPlayersDetails(matchId).removeObservers(getViewLifecycleOwner());
-
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the backup turn data
+        outState.putParcelableArrayList("backupPlayerTurnData", backupPlayerDetails);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,31 +96,27 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         setHasOptionsMenu(true);
 
         matchId = scoringViewModel.getCurrentMatchId();
-        Log.d("matchid", "===============================" + matchId);
-
 
         scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override
             public void onChanged(List<GameDetail> gameDetails) {
 
                 playerDetails = (ArrayList<GameDetail>) gameDetails;
-                Log.d("players", "===============================" + playerDetails);
                 playerAdapter.setAllPlayers(playerDetails);
 
                 //Sets the initial starting values of each player in order to revert transaction on cancelled match.
                 if (backupPlayerDetails == null) {
+
                     backupPlayerDetails = new ArrayList<>();
+
                     //Create backups NOT REFERENCES
                     for (GameDetail gameDetail : gameDetails) {
                         backupPlayerDetails.add(gameDetail);
                     }
                 }
+
             }
         });
-
-
-        Log.d("has observers? ", scoringViewModel.getPlayersDetails(matchId).hasActiveObservers() + "");
-
 
         //Display
         tvCurrentPlayerTurn = view.findViewById(R.id.textViewCurrentPlayerTurn);
@@ -127,12 +126,15 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         playerAdapter = new PlayerListAdapter(playerDetails, this);
         mRecyclerViewPlayers.setAdapter(playerAdapter);
 
+        //Handle screen Rotations
         if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
 
             mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
+
+        //Register the calculator buttons onclick methods
         for (int button : onClickRegisteredButtons) {
             view.findViewById(button).setOnClickListener(this);
         }
@@ -171,13 +173,11 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             //Revert turn order
             changePlayer(1);
             saveData(UNDO_PLAYER);
-
         }
     }
 
 
     private void deleteMatch() {
-
         mRecyclerViewPlayers.setAdapter(null);
         saveData(REVERT_DATA);
         returnToMain();
@@ -205,12 +205,12 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         backupPlayerDetails.add(new GameDetail(currentPlayer));
 
         //First Player is always 0 in the list.
-       currentPlayer.addScore(scoreToAdd);
+        currentPlayer.addScore(scoreToAdd);
 
-            //Check for score records
-            if (currentPlayer.getPersonalBest() < scoreToAdd) {
-                currentPlayer.setPersonalBest(scoreToAdd);
-            }
+        //Check for score records
+        if (currentPlayer.getPersonalBest() < scoreToAdd) {
+            currentPlayer.setPersonalBest(scoreToAdd);
+        }
     }
 
 
@@ -226,20 +226,20 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
     private void endMatch() {
 
-        List<Integer> winners = determineWinner();
+        List<Integer> winnersIndex = getIndexOfWinners();
         String winnerText = "";
         String winner = "";
 
         for (int i = 0; i < playerDetails.size(); i++) {
 
             //Win
-            if (winners.contains(playerDetails.get(i).getPlayerId()) & winners.size() == 1) {
+            if (winnersIndex.contains(i) & winnersIndex.size() == 1) {
                 playerDetails.get(i).incrementWin();
                 playerDetails.get(i).setResult(3);
                 winnerText = String.format("The winner is %s, with a score of %s", playerDetails.get(i).getName(), playerDetails.get(i).getTotalScore());
             }
             //Draw
-            else if (winners.contains(playerDetails.get(i).getPlayerId()) & winners.size() > 1) {
+            else if (winnersIndex.contains(i) & winnersIndex.size() > 1) {
                 playerDetails.get(i).incrementDraw();
                 playerDetails.get(i).setResult(1);
                 winner = TidyStringFormatterHelper.addToItemStringWithCommasAnd(winner, playerDetails.get(i).getName());
@@ -286,7 +286,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                     return true;
                 }
             });
-
             dialog.show();
         }
 
@@ -349,17 +348,21 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     }
 
 
-    private List<Integer> determineWinner() {
+    private List<Integer> getIndexOfWinners() {
         int leaderHighScore = 0;
         List<Integer> winners = new ArrayList<>();
 
         for (GameDetail player : playerDetails) {
+
+            // New Winner Scenario
             if (player.getTotalScore() > leaderHighScore) {
                 leaderHighScore = player.getTotalScore();
                 winners.clear();
-                winners.add(player.getPlayerId());
+                winners.add(playerDetails.indexOf(player));
+
+                // Draw Scenario
             } else if (player.getTotalScore() == leaderHighScore) {
-                winners.add(player.getPlayerId());
+                winners.add(playerDetails.indexOf(player));
             }
         }
         return winners;
@@ -381,12 +384,14 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                 incrementScore.setLength(0);
                 break;
             case R.id.buttonDeleteLast:
-                if(incrementScore.length()>0){
-                    incrementScore.deleteCharAt(incrementScore.length()-1);
+                if (incrementScore.length() > 0) {
+                    incrementScore.deleteCharAt(incrementScore.length() - 1);
                 }
                 break;
             case R.id.buttonAddToPlayer:
-                if(incrementScore.length() == 0){incrementScore.append("0");}
+                if (incrementScore.length() == 0) {
+                    incrementScore.append("0");
+                }
 
                 addToPlayer(Integer.parseInt(incrementScore.toString()));
                 // Next Player clear button text and shuffle list
@@ -395,15 +400,15 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                 saveData(SAVE_PLAYER);
                 break;
             default:
-                if(incrementScore.length() < 3){
-                incrementScore.append(buttonClicked.getText().toString());
+                if (incrementScore.length() < 3) {
+                    incrementScore.append(buttonClicked.getText().toString());
                 }
         }
         String addAmountString;
-        if(requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-             addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add\n%s", incrementScore);
+        if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add\n%s", incrementScore);
         } else {
-             addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add %s", incrementScore);
+            addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add %s", incrementScore);
         }
 
         addToPlayerButton.setText(addAmountString);

@@ -7,7 +7,6 @@ import androidx.room.Query;
 import java.util.List;
 
 
-
 @Dao
 abstract class ScoreDao extends BaseDao<Score> {
 

@@ -44,6 +44,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private static final int NUMBER_OF_CORES =
             Runtime.getRuntime().availableProcessors();
     private final int[] anagramFragmentButtons = {R.id.anagramChangeSortButton, R.id.button_allWords, R.id.buttonTwoWords, R.id.buttonThree, R.id.buttonFour, R.id.buttonFive, R.id.buttonSix, R.id.buttonSeven, R.id.buttonEight, R.id.anagramSortDirectionImageView};
+    LinearLayout noWordsLinearLayout;
     private EditText letters;
     private TextView numberOfWords;
     private WordViewModel mWordViewModel;
@@ -54,7 +55,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
     private List<Comparator<Word>> sortMethods;
     private ProgressBar indeterminateProgressBar;
     private boolean reverse = false;
-    LinearLayout noWordsLinearLayout;
 
     public AnagramFragment() {
         // Required empty public constructor
@@ -69,8 +69,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         mWordViewModel = new ViewModelProvider(requireActivity()).get(WordViewModel.class);
 
 
-            matchingWords = new ArrayList<>();
-            sortMethods = new ArrayList<>();
+        matchingWords = new ArrayList<>();
+        sortMethods = new ArrayList<>();
 
         sortMethods.addAll(Arrays.asList(
                 new ScrabbleValueComparator(),
@@ -233,10 +233,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         numberOfWords.setText(String.format("Words: %s", matchingWords.size()));
         showHideIndeterminateProgressBar();
 
-        int visibilityNoWordsImage = matchingWords.size() < 1  ? View.VISIBLE : View.GONE;
+        int visibilityNoWordsImage = matchingWords.size() < 1 ? View.VISIBLE : View.GONE;
         noWordsLinearLayout.setVisibility(visibilityNoWordsImage);
-
-
 
 
     }
@@ -275,7 +273,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         int visibility = indeterminateProgressBar.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
         indeterminateProgressBar.setVisibility(visibility);
     }
-
 
 
     private void hideKeyboard() {

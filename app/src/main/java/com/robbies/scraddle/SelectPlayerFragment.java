@@ -2,7 +2,6 @@ package com.robbies.scraddle;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.snackbar.Snackbar;
 import com.robbies.scraddle.Data.Match;
 import com.robbies.scraddle.Data.Player;
-import com.robbies.scraddle.Data.PlayerRecord;
 import com.robbies.scraddle.Data.Score;
 import com.robbies.scraddle.Data.ScoringViewModel;
 
@@ -45,16 +43,14 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
-        Log.d("thisinstanceofviewmodel", "============SELECTPLAYER================VIEW MODEL   " + mScoringViewModel.toString());
         mAllPlayerAdapter = new SelectPlayerAdapter(mCachedAllPlayers, this, this);
 
         mSelectedPlayers = new ArrayList<>();
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSelectedPlayers = savedInstanceState.getParcelableArrayList("players");
             mAllPlayerAdapter.setPlayers(mSelectedPlayers);
         }
-
 
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
@@ -90,31 +86,40 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
 
-        if(savedInstanceState == null){
-        mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
-            @Override
-            public void onChanged(List<Player> players) {
+        if (savedInstanceState == null) {
+            mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
+                @Override
+                public void onChanged(List<Player> players) {
 
-                mCachedAllPlayers = (ArrayList<Player>) players;
+                    mCachedAllPlayers = (ArrayList<Player>) players;
 
-                if (!mCachedAllPlayers.isEmpty()) {
-                    // Add the most recently modified player
-                    mSelectedPlayers.add(mCachedAllPlayers.get(0));
+                    if (!mCachedAllPlayers.isEmpty()) {
+                        // Add the most recently modified player
+                        mSelectedPlayers.add(mCachedAllPlayers.get(0));
 
-                    // Make sure there is at least two players by default
-                    if (mCachedAllPlayers.size() >= 2 & mSelectedPlayers.size() < 2) {
-                        mSelectedPlayers.add(mCachedAllPlayers.get(1));
+                        // Make sure there is at least two players by default
+                        if (mCachedAllPlayers.size() >= 2 & mSelectedPlayers.size() < 2) {
+                            mSelectedPlayers.add(mCachedAllPlayers.get(1));
+                        }
                     }
-                }
 
-                mAllPlayerAdapter.setPlayers(mSelectedPlayers);
-            }
-        });} else{
+                    mAllPlayerAdapter.setPlayers(mSelectedPlayers);
+                }
+            });
+        } else {
 
             mScoringViewModel.getAllPlayers().observe(getViewLifecycleOwner(), new Observer<List<Player>>() {
                 @Override
                 public void onChanged(List<Player> players) {
                     mCachedAllPlayers = (ArrayList<Player>) players;
+
+                    if (!mCachedAllPlayers.isEmpty()) {
+
+                        if (!mSelectedPlayers.contains(mCachedAllPlayers.get(0)))
+                            // Add the most recently modified player
+                            mSelectedPlayers.add(mCachedAllPlayers.get(0));
+                    }
+                    mAllPlayerAdapter.setPlayers(mSelectedPlayers);
                 }
             });
         }
@@ -147,8 +152,6 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             for (Player player : mSelectedPlayers) {
 
                 mScoringViewModel.saveScore(new Score(player.getPlayerId(), matchId, order++));
-
-                Log.d("SAVING NEW PLAYER SCORE", player.toString() + " match id: " + matchId);
             }
 
             mSharedPreferences.edit().putLong("matchId", matchId).apply();
@@ -157,8 +160,6 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             Snackbar.make(requireView(), "Try Selecting Players, it's going to be lonely otherwise", Snackbar.LENGTH_SHORT)
                     .show();
         }
-
-        Log.d("matchid", "===============================" + matchId);
     }
 
     @Override

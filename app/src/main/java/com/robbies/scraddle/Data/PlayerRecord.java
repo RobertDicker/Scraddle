@@ -1,13 +1,10 @@
 package com.robbies.scraddle.Data;
 
-import android.util.Log;
-
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -26,7 +23,7 @@ public class PlayerRecord {
     private int playersHighestMatchScore;
 
     @ColumnInfo(name = "playerId")
-    private int playerId;
+    private long playerId;
 
     @ColumnInfo(name = "wins", defaultValue = "0")
     private int wins;
@@ -38,17 +35,17 @@ public class PlayerRecord {
     private int draw;
 
 
-    public PlayerRecord(int playerId) {
-        Log.d("asjdofijasodf", "Creating Game detail" + playerId);
+    public PlayerRecord(long playerId) {
         this.playerId = playerId;
-        this.personalBest=0;
+        this.personalBest = 0;
         this.playersHighestMatchScore = 0;
         this.wins = 0;
         this.loss = 0;
         this.draw = 0;
     }
+
     @Ignore
-    public PlayerRecord(int playerId, int personalBest, int playersHighestMatchScore, int wins, int loss, int draw) {
+    public PlayerRecord(long playerId, int personalBest, int playersHighestMatchScore, int wins, int loss, int draw) {
         this.playerId = playerId;
         this.personalBest = personalBest;
         this.playersHighestMatchScore = playersHighestMatchScore;
@@ -67,7 +64,6 @@ public class PlayerRecord {
 
     }
 
-
     public int getPersonalBest() {
         return personalBest;
     }
@@ -84,11 +80,11 @@ public class PlayerRecord {
         this.playersHighestMatchScore = playersHighestMatchScore;
     }
 
-    public int getPlayerId() {
+    public long getPlayerId() {
         return playerId;
     }
 
-    public void setPlayerId(int playerId) {
+    public void setPlayerId(long playerId) {
         this.playerId = playerId;
     }
 

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginTop="8dp"
+    android:background="@drawable/custom_border_scoring"
     android:orientation="vertical">
 
     <LinearLayout
@@ -16,7 +18,6 @@
             android:id="@+id/textViewPlayerName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
             android:background="@color/activePlayer"
@@ -99,7 +100,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="#009688"
+            android:background="@color/activePlayer"
             android:contentDescription="@string/dividing_line_content_description"
             app:srcCompat="?attr/dividerVertical" />
 
@@ -118,7 +119,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:background="#009688"
+        android:background="@color/activePlayer"
         android:contentDescription="@string/dividing_line_content_description"
         android:visibility="gone"
         app:srcCompat="?attr/dividerHorizontal"
@@ -131,16 +132,6 @@
         android:padding="16dp"
         android:visibility="gone"
         tools:text="4 + 4 +56 +78 +89 +65"
-        tools:visibility="visible" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="#009688"
-        android:contentDescription="@string/dividing_line_content_description"
-        android:visibility="visible"
-        app:srcCompat="?attr/dividerHorizontal"
         tools:visibility="visible" />
 
 

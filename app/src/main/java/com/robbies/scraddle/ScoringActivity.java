@@ -1,39 +1,31 @@
 package com.robbies.scraddle;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-
 import com.robbies.scraddle.Data.ScoringViewModel;
+import com.robbies.scraddle.Utilities.FullScreenMode;
 
 public class ScoringActivity extends AppCompatActivity {
 
-    private final String FRAGMENT_TAG_STRING = "ScoringActivity";
-    private long matchId;
-
-
     Fragment matchFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FullScreenMode.hideToolBr(this);
 
         setContentView(R.layout.activity_scoring);
 
-        matchId = getIntent().getLongExtra("lastMatchId", -1);
+        long matchId = getIntent().getLongExtra("lastMatchId", -1);
 
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
 
             final ScoringViewModel scoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
             scoringViewModel.setCurrentMatchId(matchId);
@@ -47,7 +39,6 @@ public class ScoringActivity extends AppCompatActivity {
         }
 
 
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -57,7 +48,6 @@ public class ScoringActivity extends AppCompatActivity {
         }
 
     }
-
 
 
     @Override

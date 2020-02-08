@@ -38,26 +38,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#009688"
+        android:background="#242020"
         android:orientation="horizontal"
         android:padding="2dp">
 
         <Button
             android:id="@+id/buttonClear"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#F44336"
-            android:text="@string/button_clear" />
+            android:text="@string/button_clear"
+            android:textColor="#F44336" />
 
         <Button
             android:id="@+id/buttonAddOne"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FFEB3B"
             android:text="@string/scoring_button_plus_one" />
 
         <Button
             android:id="@+id/buttonAddTwo"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FFEB3B"
             android:text="@string/buttonAddTwoText"
 
             />
@@ -65,64 +63,54 @@
         <Button
             android:id="@+id/buttonAddThree"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FFEB3B"
             android:text="@string/buttonAddThreeText" />
 
         <Button
             android:id="@+id/buttonAddFour"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FFC107"
             android:text="@string/buttonAddFourText" />
 
         <Button
             android:id="@+id/buttonAddFive"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FFC107"
             android:text="@string/scoring_button_plus_five" />
 
         <Button
             android:id="@+id/buttonAddSix"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FFC107"
             android:text="@string/buttonAddSixText" />
 
         <Button
             android:id="@+id/buttonAddSeven"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FF9800"
             android:text="@string/buttonAddSevenText" />
 
         <Button
             android:id="@+id/buttonAddEight"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FF9800"
             android:text="@string/buttonAddEightText" />
 
         <Button
             android:id="@+id/buttonAddNine"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FF9800"
             android:text="@string/buttonAddNineText" />
 
         <Button
             android:id="@+id/buttonAddZero"
             style="@style/buttonCalcSmall"
-            android:backgroundTint="#FF5722"
             android:text="@string/buttonAddZeroText" />
 
         <Button
             android:id="@+id/buttonDeleteLast"
             style="@style/buttonCalcSmall"
             android:background="@drawable/ic_backspace_black_24dp"
-            android:backgroundTint="#E91E1E"
-             />
+            android:backgroundTint="#E91E1E" />
 
         <Button
             android:id="@+id/buttonAddToPlayer"
             style="@style/buttonCalcSmall"
             android:layout_width="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="#4CAF50"
             android:lines="1"
             android:text="@string/scoring_button_add_no_score"
             android:textColor="@android:color/white"

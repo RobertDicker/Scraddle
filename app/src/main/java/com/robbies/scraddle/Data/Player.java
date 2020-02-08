@@ -14,14 +14,23 @@ import java.util.Calendar;
 @Entity(tableName = "player_table")
 public class Player implements Parcelable {
 
+    public static final Creator<Player> CREATOR = new Creator<Player>() {
+        @Override
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
+        }
+
+        @Override
+        public Player[] newArray(int size) {
+            return new Player[size];
+        }
+    };
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "playerId")
     private long playerId;
-
     @NonNull
     @ColumnInfo(name = "lastPlayed")
     private String lastPlayed;
@@ -38,7 +47,6 @@ public class Player implements Parcelable {
     }
 
     public Player(GameDetail gameDetail) {
-        new PlayerRecord(gameDetail.getPlayerId(), gameDetail.getPersonalBest(), gameDetail.getPlayersHighestMatchScore(), gameDetail.getWins(), gameDetail.getLoss(), gameDetail.getDraw());
         this.name = gameDetail.getName();
         this.playerId = gameDetail.getPlayerId();
         lastPlayed = Calendar.getInstance().getTime().toString();
@@ -91,36 +99,6 @@ public class Player implements Parcelable {
         }
         return result;
     }
-
-    public static final Creator<Player> CREATOR = new Creator<Player>() {
-        @Override
-        public Player createFromParcel(Parcel in) {
-            return new Player(in);
-        }
-
-        @Override
-        public Player[] newArray(int size) {
-            return new Player[size];
-        }
-    };
-
-
-/*
-    @Override
-    public int compareTo(@NonNull Object o) {
-
-        int i = 0;
-        if (o instanceof Player) {
-
-            if (this.getRank() > ((Player) o).getRank()) {
-                i = 1;
-            } else if (this.getRank() < ((Player) o).getRank()) {
-                i = -1;
-            }
-        }
-
-        return i;
-    }*/
 
     @Override
     public int describeContents() {

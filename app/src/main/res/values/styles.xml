@@ -49,27 +49,24 @@
         <item name="android:fontFamily">@font/sarpanch</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/calc_button_border_blue</item>
+        <item name="android:textColor">@color/activePlayer</item>
         <item name="android:radius">55dp</item>
-        <item name="android:background">@drawable/buttonripple</item>
+
         <item name="android:layout_margin">1dp</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
     </style>
 
-    <style name="buttonCalcPortrait">
-        <item name="android:fontFamily">@font/sarpanch</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textStyle">bold</item>
+    <style name="buttonCalcPortrait" parent="buttonCalcSmall">
+
         <item name="android:radius">55dp</item>
-        <item name="android:background">@drawable/calc_buttons</item>
-        <item name="android:backgroundTint">@color/colorPrimary</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
     </style>
-
 
 
     <style name="leaderboard_text">

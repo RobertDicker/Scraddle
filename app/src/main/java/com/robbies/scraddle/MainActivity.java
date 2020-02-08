@@ -1,11 +1,18 @@
 package com.robbies.scraddle;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
+
+import com.robbies.scraddle.Utilities.FullScreenMode;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FullScreenMode.hideToolBr(this);
+        //Set The Navigation Bar to transparent===============================
+        Window w = getWindow(); // in Activity's onCreate() for instance
+        w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        // ===============================
+
+        setContentView(R.layout.activity_scoring);
+
 
         SharedPreferences sP = PreferenceManager.getDefaultSharedPreferences(this);
         setDayNightTheme(sP);

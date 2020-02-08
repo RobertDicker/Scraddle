@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ScoringActivity"
-    >
+    tools:context=".ScoringActivity">
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -28,7 +27,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@android:drawable/dark_header"
-        android:backgroundTint="@color/activePlayer"
+        android:backgroundTint="#00BCD4"
         android:gravity="center"
         android:text="@string/initial_heading_above_calc_before_first_move"
         android:textColor="@android:color/white"
@@ -56,6 +55,7 @@
             android:layout_weight="2"
             android:background="@drawable/calc_buttons"
 
+            android:backgroundTint="@color/activePlayer"
             android:lines="2"
             android:text="@string/scoring_button_add_no_score"
             android:textColor="@android:color/white"
@@ -78,8 +78,8 @@
             <Button
                 android:id="@+id/buttonClear"
                 style="@style/buttonCalcPortrait"
-                android:backgroundTint="#F44336"
-                android:text="@string/button_clear" />
+                android:text="@string/button_clear"
+                android:textColor="#F44336" />
 
             <!--android:adjustViewBounds="true"
                 android:scaleType="fitCenter"-->
@@ -88,7 +88,6 @@
             <Button
                 android:id="@+id/buttonAddZero"
                 style="@style/buttonCalcPortrait"
-                android:backgroundTint="#2196F3"
                 android:text="@string/buttonAddZeroText" />
 
         </LinearLayout>
@@ -126,19 +125,16 @@
             <Button
                 android:id="@+id/buttonAddTwo"
                 style="@style/buttonCalcPortrait"
-                android:backgroundTint="#03A9F4"
                 android:text="@string/buttonAddTwoText" />
 
             <Button
                 android:id="@+id/buttonAddFive"
                 style="@style/buttonCalcPortrait"
-                android:backgroundTint="#03A9F4"
                 android:text="@string/scoring_button_plus_five" />
 
             <Button
                 android:id="@+id/buttonAddEight"
                 style="@style/buttonCalcPortrait"
-                android:backgroundTint="#03A9F4"
                 android:text="@string/buttonAddEightText" />
 
         </LinearLayout>

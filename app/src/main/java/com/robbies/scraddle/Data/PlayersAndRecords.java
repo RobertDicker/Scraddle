@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
-public class PlayersAndRecords implements Comparable<PlayersAndRecords>{
+public class PlayersAndRecords implements Comparable<PlayersAndRecords> {
 
 
     @NonNull
@@ -77,12 +77,12 @@ public class PlayersAndRecords implements Comparable<PlayersAndRecords>{
         return draw;
     }
 
-    public int getRankScore(){
-        return (this.wins * 3 + this.draw + (this.loss * -1));
-    }
-
     public void setDraw(int draw) {
         this.draw = draw;
+    }
+
+    public int getRankScore() {
+        return (this.wins * 3 + this.draw + (this.loss * -1));
     }
 
     public int getPersonalBest() {
@@ -103,8 +103,8 @@ public class PlayersAndRecords implements Comparable<PlayersAndRecords>{
 
     @Override
     public int compareTo(PlayersAndRecords player) {
-       int thisPlayerRank = this.getRankScore();
-       int otherPlayerRank = player.getRankScore();
+        int thisPlayerRank = this.getRankScore();
+        int otherPlayerRank = player.getRankScore();
         return Integer.compare(thisPlayerRank, otherPlayerRank);
     }
 
