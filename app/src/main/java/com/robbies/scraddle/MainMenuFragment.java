@@ -26,31 +26,21 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        View decorView = getActivity().getWindow().getDecorView();
-        // Hide the status bar.
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-
+        sP = PreferenceManager.getDefaultSharedPreferences(requireContext());
+        lastMatch = sP.getLong("matchId", -1);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
         View view = inflater.inflate(R.layout.fragment_main_menu, container, false);
         setRetainInstance(true);
-        sP = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        lastMatch = sP.getLong("matchId", -1);
-
 
         if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
             requireActivity().getSupportFragmentManager().popBackStack();
         }
         changeBack();
-
 
         //Alter Continue button if there are no games to continue
         if (lastMatch == -1) {

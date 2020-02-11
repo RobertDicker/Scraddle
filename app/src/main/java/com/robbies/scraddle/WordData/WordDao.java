@@ -17,7 +17,7 @@ public interface WordDao {
     @Query("DELETE FROM word_table")
     void deleteAll();
 
-    @Query("SELECT * FROM word_table ORDER BY Word DESC")
+    @Query("SELECT * FROM word_table ORDER BY word DESC")
     LiveData<List<Word>> getAllWords();
 
     @Query("SELECT * FROM word_table" +

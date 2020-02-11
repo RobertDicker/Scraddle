@@ -4,9 +4,8 @@ import com.robbies.scraddle.WordData.Word;
 
 import java.math.BigInteger;
 import java.util.List;
-import java.util.concurrent.Callable;
 
-public class CheckWordIsAnagram implements Callable<Boolean> {
+public class CheckWordIsAnagram implements Runnable {
 
     private Word word;
     private BigInteger anagramPrimeValue;
@@ -20,7 +19,7 @@ public class CheckWordIsAnagram implements Callable<Boolean> {
 
 
     @Override
-    public Boolean call() {
+    public void run() {
 
         if (word != null) {
             BigInteger wordValue = new BigInteger(word.getPrimeValue());
@@ -32,6 +31,5 @@ public class CheckWordIsAnagram implements Callable<Boolean> {
                 allMatchingWords.add(word);
             }
         }
-        return true;
     }
 }

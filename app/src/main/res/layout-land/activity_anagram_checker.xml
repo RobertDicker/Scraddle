@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/contraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AnagramActivity">
@@ -21,7 +20,6 @@
 
 
         <ImageView
-            android:id="@+id/imageViewRobot"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -31,7 +29,6 @@
             app:srcCompat="@drawable/ic_robot" />
 
         <TextView
-            android:id="@+id/textView8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -39,7 +36,6 @@
             android:textSize="24sp" />
 
         <ProgressBar
-            android:id="@+id/progressBarNoWords"
             style="@android:style/Widget.Material.Light.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -82,7 +78,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/anagramTextViewNumberOfWords"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rVWords"
         app:layout_constraintTop_toTopOf="parent">
@@ -175,17 +171,6 @@
             app:layout_constraintStart_toEndOf="@+id/buttonFour"
             app:layout_constraintTop_toBottomOf="@+id/buttonThree" />
 
-        <TextView
-            android:id="@+id/anagramTextViewNumberOfWords"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/buttonEight"
-            app:layout_constraintStart_toStartOf="@+id/editTextLettersToSolve"
-            app:layout_constraintTop_toBottomOf="@+id/buttonEight"
-            tools:text="20390942 words" />
-
         <Button
             android:id="@+id/buttonSix"
             android:layout_width="0dp"
@@ -206,21 +191,15 @@
             app:layout_constraintStart_toEndOf="@+id/buttonSix"
             app:layout_constraintTop_toBottomOf="@+id/buttonFive" />
 
-        <EditText
+        <TextView
             android:id="@+id/editTextLettersToSolve"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-
-            android:digits="abcdefghijklmnopqrstuvwxyz"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
 
             android:fontFamily="@font/sigmar_one"
-
-            android:hint="@string/anagramEnterTextHint"
-            android:imeOptions="actionDone"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:maxLength="@string/maxAnagramLetters"
-            android:maxLines="1"
             android:paddingBottom="8dp"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -228,6 +207,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/anagramTextViewNumberOfWords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/linearLayoutNoWords"
+        tools:text="20390942 words" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

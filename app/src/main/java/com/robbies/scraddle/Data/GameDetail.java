@@ -8,41 +8,40 @@ import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
 public class GameDetail implements Parcelable {
+    public static final Creator<GameDetail> CREATOR = new Creator<GameDetail>() {
+        @Override
+        public GameDetail createFromParcel(Parcel in) {
+            return new GameDetail(in);
+        }
+
+        @Override
+        public GameDetail[] newArray(int size) {
+            return new GameDetail[size];
+        }
+    };
     @NonNull
     @ColumnInfo(name = "name", defaultValue = "Unknown Player")
     private String name;
-
     @ColumnInfo(name = "personalBest", defaultValue = "0")
     private int personalBest;
-
     @ColumnInfo(name = "highestMatchScore", defaultValue = "0")
     private int playersHighestMatchScore;
-
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "playerId")
     private long playerId;
-
     @ColumnInfo(name = "wins", defaultValue = "0")
     private int wins;
-
     @ColumnInfo(name = "loss", defaultValue = "0")
     private int loss;
-
     @ColumnInfo(name = "draw", defaultValue = "0")
     private int draw;
-
     private long matchId;
-
     @ColumnInfo(defaultValue = "", name = "score")
     private String score;
-
     //This is the order
     private int playersTurnOrder;
-
     private int totalScore;
-
     private int maxScore;
-
     @ColumnInfo(defaultValue = "404", name = "result")
     private int result;
 
@@ -67,7 +66,7 @@ public class GameDetail implements Parcelable {
         this(gameDetail.name, gameDetail.personalBest, gameDetail.playersHighestMatchScore, gameDetail.playerId, gameDetail.wins, gameDetail.loss, gameDetail.draw, gameDetail.matchId, gameDetail.score, gameDetail.playersTurnOrder, gameDetail.totalScore, gameDetail.maxScore, gameDetail.result);
     }
 
-    protected GameDetail(Parcel in){
+    protected GameDetail(Parcel in) {
 
         this.name = in.readString();
         this.personalBest = in.readInt();
@@ -83,19 +82,6 @@ public class GameDetail implements Parcelable {
         this.maxScore = in.readInt();
         this.result = in.readInt();
     }
-
-    public static final Creator<GameDetail> CREATOR = new Creator<GameDetail>() {
-        @Override
-        public GameDetail createFromParcel(Parcel in) {
-            return new GameDetail(in);
-        }
-
-        @Override
-        public GameDetail[] newArray(int size) {
-            return new GameDetail[size];
-        }
-    };
-
 
     @NonNull
     public String getName() {

@@ -96,7 +96,6 @@
             android:text="@string/buttonAddNineText" />
 
         <Button
-            android:id="@+id/buttonAddZero"
             style="@style/buttonCalcSmall"
             android:text="@string/buttonAddZeroText" />
 
@@ -109,7 +108,7 @@
         <Button
             android:id="@+id/buttonAddToPlayer"
             style="@style/buttonCalcSmall"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_weight="1"
             android:lines="1"
             android:text="@string/scoring_button_add_no_score"

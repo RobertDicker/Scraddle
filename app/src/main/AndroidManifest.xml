@@ -14,8 +14,8 @@
         <activity
             android:name=".AnagramActivity"
             android:label="Anagram Activity"
-            android:theme="@style/NoActionBar"
             android:parentActivityName=".MainActivity"
+            android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -25,9 +25,9 @@
             android:name=".ScoringActivity"
 
             android:label="@string/title_activity_score"
-            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/NoActionBar">
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

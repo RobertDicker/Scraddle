@@ -1,66 +1,79 @@
 package com.robbies.scraddle;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.tabs.TabLayout;
 import com.robbies.scraddle.Utilities.FullScreenMode;
+import com.robbies.scraddle.Utilities.ZoomOutPageTransformer;
+import com.robbies.scraddle.WordData.WordViewModel;
 
-public class AnagramActivity extends AppCompatActivity {
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public class AnagramActivity extends AppCompatActivity implements FragmentListener {
+
+    SectionsPagerAdapter sectionsPagerAdapter;
+    ViewPager viewPager;
+    String word = "";
+    WordViewModel wordViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
         FullScreenMode.hideToolBr(this);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //Set The Navigation Bar to transparent===============================
-            Window w = getWindow(); // in Activity's onCreate() for instance
-            w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-            // ===============================
-        }
-        setContentView(R.layout.activity_anagram);
 
 
+        // The Fragments to load (Title, Fragment)
+        final Map<String, Fragment> fragmentList = new LinkedHashMap<>();
+        fragmentList.put("Word", WordEnterWordFragment.newInstance());
+        fragmentList.put("Solve", AnagramFragment.newInstance("TryAgain"));
 
-        if (savedInstanceState == null) {
-            // Get the FragmentManager and start a transaction.
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-                    .beginTransaction();
+        setContentView(R.layout.activity_tabbed_word_solve);
+        sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), fragmentList);
+        viewPager = findViewById(R.id.view_pager);
+        viewPager.setAdapter(sectionsPagerAdapter);
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        TabLayout tabs = findViewById(R.id.tabs);
+        tabs.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
-            // Add the SimpleFragment.
-            fragmentTransaction.add(R.id.content,
-                    new AnagramFragment(), "mainfrag").commit();
-        }
+            @Override
+            public void onPageSelected(int position) {
+                sectionsPagerAdapter.updatePageValue("Solve", AnagramFragment.newInstance(word));
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+            }
+        });
 
     }
 
     @Override
     public void onBackPressed() {
-        EditText tv = findViewById(R.id.editTextLettersToSolve);
-
-        if (tv.getText().toString().isEmpty()) {
-            super.onBackPressed();
+        if (viewPager.getCurrentItem() == 1) {
+            viewPager.setCurrentItem(0, true);
         } else {
-            tv.setText("");
-            tv.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            if (imm != null) {
-                imm.showSoftInput(tv, InputMethodManager.SHOW_IMPLICIT);
-            }
+            super.onBackPressed();
         }
     }
+
+    @Override
+    public void updateWord(String word) {
+        this.word = word;
+    }
+
+    @Override
+    public void changePage(int position) {
+
+        viewPager.setCurrentItem(position, true);
+
+    }
+
+
 }
+
+
