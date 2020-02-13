@@ -8,11 +8,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = {Word.class}, version = 1, exportSchema = false)
+@Database(entities = {Word.class, WordAndDefinition.class}, version = 1, exportSchema = false)
 public abstract class WordRoomDatabase extends RoomDatabase {
 
     private static WordRoomDatabase INSTANCE;
-    //private static ArrayList<String> mWordList;
+
     private static WordRoomDatabase.Callback sWordRoomDatabaseCallback =
             new RoomDatabase.Callback() {
 

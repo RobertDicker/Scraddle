@@ -19,9 +19,13 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     private final LayoutInflater mInflater;
     private final String[] COLOUR_CHOICES = {"#F44336", "#F44336", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722"};
     private List<Word> mWords; // Cached copy of words
+    private OnWordClickListener listener;
 
-    WordListAdapter(Context context) {
+
+    WordListAdapter(Context context, OnWordClickListener listener) {
         mInflater = LayoutInflater.from(context);
+        this.listener = listener;
+
     }
 
     @NonNull
@@ -30,7 +34,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
         View itemView = mInflater.inflate(R.layout.recycler_view_word_item, parent, false);
 
-        return new WordViewHolder(itemView);
+        return new WordViewHolder(itemView, listener);
     }
 
     @Override
@@ -53,9 +57,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
 
     void setWords(List<Word> words) {
-
         mWords = words;
-
         notifyDataSetChanged();
     }
 
@@ -64,14 +66,30 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         return mWords != null ? mWords.size() : 0;
     }
 
-    class WordViewHolder extends RecyclerView.ViewHolder {
+    class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView wordItemView;
         private final TextView scrabbleScore;
+        private OnWordClickListener mListener;
 
-        private WordViewHolder(View itemView) {
+
+
+        private WordViewHolder(View itemView, OnWordClickListener listener) {
             super(itemView);
+            this.mListener = listener;
+            itemView.setOnClickListener(this);
+
             wordItemView = itemView.findViewById(R.id.textViewSingleWordAnagramItem);
             scrabbleScore = itemView.findViewById(R.id.anagramTextViewScrabbleScore);
         }
+
+        @Override
+        public void onClick(View view) { mListener.onWordClick(wordItemView.getText().toString());}
     }
+
+   public interface OnWordClickListener{
+        void onWordClick(String word);
+    }
+
+
+
 }

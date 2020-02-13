@@ -4,14 +4,15 @@ import com.robbies.scraddle.WordData.Word;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 
 public class CheckWordIsAnagram implements Runnable {
 
     private Word word;
     private BigInteger anagramPrimeValue;
-    private List<Word> allMatchingWords;
+    private Map<Word,Integer> allMatchingWords;
 
-    public CheckWordIsAnagram(Word word, BigInteger anagramPrimeValue, List<Word> allMatchingWords) {
+    public CheckWordIsAnagram(Word word, BigInteger anagramPrimeValue, Map<Word, Integer> allMatchingWords) {
         this.word = word;
         this.anagramPrimeValue = anagramPrimeValue;
         this.allMatchingWords = allMatchingWords;
@@ -28,7 +29,7 @@ public class CheckWordIsAnagram implements Runnable {
 
             if (result.equals(BigInteger.ZERO)) {
 
-                allMatchingWords.add(word);
+                allMatchingWords.put(word, word.getWord().length());
             }
         }
     }

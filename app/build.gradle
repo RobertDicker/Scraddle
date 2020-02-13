@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.robbies.scraddle"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 5
         versionName "1.0 internal"

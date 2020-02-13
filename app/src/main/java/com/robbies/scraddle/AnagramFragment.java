@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,9 +19,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.robbies.scraddle.Utilities.CheckWordIsAnagram;
 import com.robbies.scraddle.Utilities.PrimeValue;
-import com.robbies.scraddle.Utilities.Timer;
 import com.robbies.scraddle.WordComparators.LengthComparator;
 import com.robbies.scraddle.WordComparators.LexicographicComparator;
 import com.robbies.scraddle.WordComparators.ScrabbleValueComparator;
@@ -32,13 +33,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class AnagramFragment extends Fragment implements View.OnClickListener {
+public class AnagramFragment extends Fragment implements View.OnClickListener, WordListAdapter.OnWordClickListener {
 
     // private OnFragmentInteractionListener mListener;
     private static final String WORD = "yourLetters";
@@ -51,15 +55,15 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
     private WordViewModel mWordViewModel;
     private WordListAdapter adapter;
-    private List<Word> constrainedMatchingWords;
-    private List<Word> mAllDictionaryWords;
-    private List<Word> mCachedAllMatchingWords;
+    private List<Word> allMatchingWords;
+    private Map<Word, Integer> mCachedAllMatchingWords;
 
     private Comparator<Word> defaultSortOrder;
     private List<Comparator<Word>> sortMethods;
 
     private boolean reverse = false;
     private FragmentListener mListener;
+
 
 
     public static AnagramFragment newInstance(String word) {
@@ -93,7 +97,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
                 new LengthComparator()
         ));
         defaultSortOrder = sortMethods.get(0);
-        adapter = new WordListAdapter(requireContext());
+        adapter = new WordListAdapter(requireContext(), this);
     }
 
     @Override
@@ -102,21 +106,33 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
 
         View view = inflater.inflate(R.layout.activity_anagram_checker, container, false);
 
+        // Status Bar
+        indeterminateProgressBar = view.findViewById(R.id.progressBarIndeterminate);
+
+
+
+        //================== Get All Words =====================================
         mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
             @Override
             public void onChanged(List<Word> words) {
-                mAllDictionaryWords = words;
-                // solver = AnagramSolver.getInstance(mAllDictionaryWords);
 
+                //Get and store a cache of matching letters;
+                String primeValueOfLetters = PrimeValue.calculatePrimeValue(letters);
+                if(primeValueOfLetters.length() < 19){
+                    mWordViewModel.getAnagramsOf(primeValueOfLetters, 0 , letters.length());
+                }else{
+                mWordViewModel.setAllAnagramsCache(getAnagrams(words,primeValueOfLetters));}
             }
         });
 
 
-        // ===================DISPLAY =========================
+
+        // ===================DISPLAY ==========================================
 
         //Set the chosen letters to screen and set a click listener so they can go back to change
         TextView yourLetters = view.findViewById(R.id.editTextLettersToSolve);
         yourLetters.setText(letters);
+
         yourLetters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,8 +140,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-
-        indeterminateProgressBar = view.findViewById(R.id.progressBarIndeterminate);
         numberOfWords = view.findViewById(R.id.anagramTextViewNumberOfWords);
         noWordsLinearLayout = view.findViewById(R.id.linearLayoutNoWords);
 
@@ -138,10 +152,23 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
             view.findViewById(button).setOnClickListener(this);
         }
 
-        //All Words
 
+        //================Ui Listener===========================================
+        mWordViewModel.getAnagrams().observe(getViewLifecycleOwner(), new Observer<Map<Word, Integer>>() {
+            @Override
+            public void onChanged(Map<Word, Integer> words) {
+                if (words != null) {
 
-        onClick(yourLetters);
+                    if(mCachedAllMatchingWords == null){
+                    mCachedAllMatchingWords = words;}
+
+                    allMatchingWords = new ArrayList<>(words.keySet());
+                    sortWords();
+                    updateUI();
+                }
+            }
+        });
+
         return view;
     }
 
@@ -168,120 +195,64 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         updateUI();
     }
 
-    private void solveAnagram(int buttonWordLength) {
-        constrainedMatchingWords = new ArrayList<>();
-        Log.d("BUTTON WORD LENGTH = ", "WordLength = " + buttonWordLength);
-        int maxWordLength = buttonWordLength == 0 | buttonWordLength == 1 | buttonWordLength == 8 ? R.string.maxAnagramLetters : buttonWordLength;
+    private void solveAnagram(final int buttonWordLength) {
+
+        Map<Word, Integer> newMap = new HashMap<>();
+
         numberOfWords.setText("");
 
-        final String anagramToSolve = letters;
-        final String anagramPrimeValue = PrimeValue.calculatePrimeValue(anagramToSolve);
-        Log.d("ANAGRAM PRIME VALUE = ", " = " + anagramPrimeValue.length());
+        switch (buttonWordLength) {
 
-
-        //Words have already been cached so look through them
-        if (buttonWordLength != 0 & mCachedAllMatchingWords != null) {
-            Log.d("CACHED IN LOOP", "Cached size: " + mCachedAllMatchingWords.size());
-            if (buttonWordLength == 1) {
-                constrainedMatchingWords.addAll(mCachedAllMatchingWords);
-            } else {
-                for (Word word : mCachedAllMatchingWords) {
-                    int wordLength = word.getWord().length();
-                    if (wordLength >= buttonWordLength & wordLength <= maxWordLength) {
-                        constrainedMatchingWords.add(word);
-
+            case (0):
+            case (1):
+                newMap = mCachedAllMatchingWords;
+            default:
+                for (Map.Entry<Word, Integer> wordEntry : mCachedAllMatchingWords.entrySet()) {
+                    if (wordEntry.getValue() == buttonWordLength) {
+                        newMap.put(wordEntry.getKey(), wordEntry.getValue());
+                    } else if (buttonWordLength == 8 & wordEntry.getValue() > 8) {
+                        newMap.put(wordEntry.getKey(), wordEntry.getValue());
                     }
                 }
-            }
-            sortWords();
-            updateUI();
-        }
-
-        //Words can be searched as numbers (Quicker)
-        else if (anagramPrimeValue.length() < 19) {
-            mWordViewModel.getAnagramsOf(anagramPrimeValue, buttonWordLength, maxWordLength).observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
-                @Override
-                public void onChanged(@Nullable final List<Word> words) {
-                    mCachedAllMatchingWords = new ArrayList<>();
-                    constrainedMatchingWords = words;
-                    if (constrainedMatchingWords != null) {
-                        sortWords();
-                        mCachedAllMatchingWords.addAll(constrainedMatchingWords);
-                    }
-                    updateUI();
-                }
-            });
-
-            //Words are too large to be searched for in Room so Get all the words and iterate over them to determine value in default sort order first time
-        } else {
-            mCachedAllMatchingWords = new ArrayList<>();
-            Log.d("Word Search", "apparently completed, words total:" + constrainedMatchingWords.size());
-
-            final Timer timer = new Timer();
-            timer.startTimer();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    while (mAllDictionaryWords == null) {
-                        try {
-                            Thread.sleep(300);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    constrainedMatchingWords = getAnagrams(mAllDictionaryWords, anagramPrimeValue);
-
-                    sortWords();
-                    mCachedAllMatchingWords.addAll(constrainedMatchingWords);
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            updateUI();
-
-                        }
-                    });
-                    Log.d("=====TIMER===", "time = " + timer.stopTimer());
-                }
-            }).start();
+                mWordViewModel.setSelectedAnagrams(newMap);
         }
     }
+
 
     //=====================  METHODS =================
 
     private void sortWords() {
 
         if (reverse) {
-            Collections.sort(constrainedMatchingWords, defaultSortOrder);
-            Collections.reverse(constrainedMatchingWords);
+            Collections.sort(allMatchingWords, defaultSortOrder);
+            Collections.reverse(allMatchingWords);
         } else {
-            Collections.sort(constrainedMatchingWords, defaultSortOrder);
+            Collections.sort(allMatchingWords, defaultSortOrder);
         }
     }
 
     private void updateUI() {
-        adapter.setWords(constrainedMatchingWords);
-        Log.d("WORDS ====", "NUMBER OF WORDS = " + constrainedMatchingWords.size());
-        numberOfWords.setText(String.format("Words: %s", constrainedMatchingWords.size()));
+        adapter.setWords(allMatchingWords);
+        Log.d("WORDS ====", "NUMBER OF WORDS = " + allMatchingWords.size());
+        numberOfWords.setText(String.format("Words: %s", allMatchingWords.size()));
 
         //Turn off
         showHideIndeterminateProgressBar();
 
         //If there are no current words show this
-        int visibilityNoWordsImage = constrainedMatchingWords.size() < 1 ? View.VISIBLE : View.GONE;
+        int visibilityNoWordsImage = allMatchingWords.size() < 1 ? View.VISIBLE : View.GONE;
         noWordsLinearLayout.setVisibility(visibilityNoWordsImage);
     }
 
 
-    private List<Word> getAnagrams(List<Word> words, String anagramPrimeValue) {
-        List<Word> allMatchingWords = new ArrayList<>();
-        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_CORES);
+    private Map<Word, Integer> getAnagrams(List<Word> words, String anagramPrimeValue) {
 
-        allMatchingWords = Collections.synchronizedList(allMatchingWords);
+        Map<Word, Integer> allMatchingWords = new ConcurrentHashMap<>();
+        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_CORES);
 
         BigInteger anagramPrimeValueBigInt = new BigInteger(anagramPrimeValue);
 
-        synchronized (allMatchingWords) {
+/*        synchronized (allMatchingWords) {*/
 
 
             for (Word word : words) {
@@ -289,7 +260,9 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
                 Runnable worker = new CheckWordIsAnagram(word, anagramPrimeValueBigInt, allMatchingWords);
                 pool.submit(worker);
             }
+/*
         }
+*/
 
         pool.shutdown();
         // Wait until all threads have completed
@@ -298,7 +271,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        Log.d("matching words", allMatchingWords.toString());
         return allMatchingWords;
     }
 
@@ -322,32 +295,14 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
             case (R.id.anagramChangeSortButton):
                 changeSortOrder(view);
                 break;
-            case (R.id.button_allWords):
-                solveAnagram(1);
-                break;
-            case (R.id.buttonTwoWords):
-                solveAnagram(2);
-                break;
-            case (R.id.buttonThree):
-                solveAnagram(3);
-                break;
-            case (R.id.buttonFour):
-                solveAnagram(4);
-                break;
-            case (R.id.buttonFive):
-                solveAnagram(5);
-                break;
-            case (R.id.buttonSix):
-                solveAnagram(6);
-                break;
-            case (R.id.buttonSeven):
-                solveAnagram(7);
-                break;
-            case (R.id.buttonEight):
-                solveAnagram(8);
-                break;
             default:
-                solveAnagram(0);
+
+                for(int i = 1; i < anagramFragmentButtons.length; i++){
+                    if(anagramFragmentButtons[i] == view.getId()){
+                        solveAnagram(i);
+                        break;
+                    }
+                }
         }
     }
 
@@ -361,12 +316,32 @@ public class AnagramFragment extends Fragment implements View.OnClickListener {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
+    @Override
+    public void onWordClick(String word) {
+
+                mWordViewModel.getDefinition(word).observe(getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(String s) {
+                        Snackbar.make(requireView(), s, Snackbar.LENGTH_SHORT)
+                                .show();
+
+                    }
+                });
+
+
+
+
+
+
+    }
 }

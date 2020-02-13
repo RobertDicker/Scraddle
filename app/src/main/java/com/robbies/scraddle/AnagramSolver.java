@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AnagramSolver {
 
+/*
     private static AnagramSolver INSTANCE;
     private List<Word> mAllWords;
     private List<Word> mMatchingWordCache;
@@ -26,7 +27,8 @@ public class AnagramSolver {
             Runtime.getRuntime().availableProcessors();
     private String cachedAnagramToSolve;
     private boolean status;
-
+*/
+/*
     public AnagramSolver(List<Word> allWords) {
         mAllWords = allWords;
         this.status = false;
@@ -38,69 +40,46 @@ public class AnagramSolver {
         if (INSTANCE == null)
             INSTANCE = new AnagramSolver(allWords);
         return INSTANCE;
-    }
+    }*/
+/*
+    public static List<Word> getAllAnagrams(String anagramToSolve, List<Word> mAllWords){
 
-    public List<Word> getAllAnagrams(String anagramToSolve){
-        status = false;
-        cachedAnagramToSolve = anagramToSolve;
-        mMatchingWordCache = new ArrayList<>();
+
         List<Word> allMatchingWords = new ArrayList<>();
         final String anagramPrimeValue = PrimeValue.calculatePrimeValue(anagramToSolve);
-        Log.d("CORES=======", NUMBER_OF_CORES + "");
-        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(NUMBER_OF_CORES);
+
+        ThreadPoolExecutor pool = (ThreadPoolExecutor) Executors.newFixedThreadPool(4);
         allMatchingWords = Collections.synchronizedList(allMatchingWords);
 
         BigInteger anagramPrimeValueBigInt = new BigInteger(anagramPrimeValue);
-
+        Log.d("Starting stuff", "===");
         synchronized (allMatchingWords) {
             Timer t = new Timer();
             t.startTimer();
             for (Word word : mAllWords) {
 
-                Runnable worker = new CheckWordIsAnagram(word, anagramPrimeValueBigInt, allMatchingWords);
+               *//* Runnable worker = new CheckWordIsAnagram(word, anagramPrimeValueBigInt, allMatchingWords);*//*
                 pool.submit(worker);
             }
             pool.shutdown();
-            status = pool.isTerminated();
-            // Wait until all threads have completed
 
-            try{
+            try {
                 pool.awaitTermination(20, TimeUnit.SECONDS);
-            }
-             catch (InterruptedException e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-                /*while(!pool.isTerminated()){
-                    try {
-                        Log.d("======", "completed "+ pool.getCompletedTaskCount() + " of " + pool.getTaskCount());
-                        Thread.sleep(300);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }*/
-
-            mMatchingWordCache = allMatchingWords;
-            Log.d("============", t.stopTimer() + "");
-            Log.d("Word Search" , "ACTUALLY completed, words total:" + allMatchingWords.size());
             return allMatchingWords;
         }
-    }
+    }*/
 
-    public List<Word> getMatchingWord(){
 
-        if(status){return mMatchingWordCache;}
-        return null;
-    }
+    public static List<Word> getAnagramsBetween(int minSize, int maxSize, List<Word> allWords){
 
-    public List<Word> getAnagramsBetween(int minSize, int maxSize){
-        if(mMatchingWordCache == null){
-            getAllAnagrams(cachedAnagramToSolve);
-        }
-        if(minSize == 1){return mMatchingWordCache;}
+        if(minSize < 2){return allWords;}
 
         List<Word> matchingWords = new ArrayList<>();
-        for(Word word : mMatchingWordCache){
+        for(Word word : allWords){
             int wordLength = word.getWord().length();
             if(wordLength >= minSize & wordLength <= maxSize){
                 matchingWords.add(word);

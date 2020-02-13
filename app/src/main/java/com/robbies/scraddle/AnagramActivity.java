@@ -19,20 +19,26 @@ public class AnagramActivity extends AppCompatActivity implements FragmentListen
 
     SectionsPagerAdapter sectionsPagerAdapter;
     ViewPager viewPager;
-    String word = "";
+    String word = "wrong";
     WordViewModel wordViewModel;
+    int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
-        FullScreenMode.hideToolBr(this);
 
+        FullScreenMode.hideToolBr(this);
+        mode = getIntent().getIntExtra("solveType",0);
 
         // The Fragments to load (Title, Fragment)
         final Map<String, Fragment> fragmentList = new LinkedHashMap<>();
-        fragmentList.put("Word", WordEnterWordFragment.newInstance());
-        fragmentList.put("Solve", AnagramFragment.newInstance("TryAgain"));
+        fragmentList.put("Word", WordEnterWordFragment.newInstance(mode));
+
+        if(mode == 1){
+           fragmentList.put("Solve", CrosswordFragment.newInstance("Demo"));
+        }else{
+        fragmentList.put("Solve", AnagramFragment.newInstance("TryAgain"));}
 
         setContentView(R.layout.activity_tabbed_word_solve);
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), fragmentList);
@@ -45,7 +51,10 @@ public class AnagramActivity extends AppCompatActivity implements FragmentListen
 
             @Override
             public void onPageSelected(int position) {
-                sectionsPagerAdapter.updatePageValue("Solve", AnagramFragment.newInstance(word));
+                if(mode == 1){
+                    sectionsPagerAdapter.updatePageValue("Solve", CrosswordFragment.newInstance(word));
+                }else{
+                sectionsPagerAdapter.updatePageValue("Solve", AnagramFragment.newInstance(word));}
 
             }
         });
@@ -64,12 +73,14 @@ public class AnagramActivity extends AppCompatActivity implements FragmentListen
     @Override
     public void updateWord(String word) {
         this.word = word;
+
     }
 
     @Override
     public void changePage(int position) {
 
         viewPager.setCurrentItem(position, true);
+
 
     }
 

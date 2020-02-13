@@ -19,7 +19,7 @@ import androidx.preference.PreferenceManager;
  */
 public final class MainMenuFragment extends Fragment implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private final int[] registeredMenuButtons = {R.id.buttonAnagramSolver, R.id.buttonStartNewGame, R.id.buttonLeaderBoard, R.id.buttonContinue, R.id.buttonSettings};
+    private final int[] registeredMenuButtons = {R.id.buttonAnagramSolver, R.id.buttonStartNewGame, R.id.buttonLeaderBoard, R.id.buttonContinue, R.id.buttonSettings, R.id.buttonCrossword};
     private long lastMatch = -1;
     private SharedPreferences sP;
 
@@ -70,12 +70,15 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-
+        Intent intent;
         switch (view.getId()) {
 
+
+
             case R.id.buttonAnagramSolver:
-                startActivity(new Intent(getContext(), AnagramActivity.class));
-                break;
+                intent = new Intent(getContext(), AnagramActivity.class);
+                intent.putExtra("solveType", 0);
+                startActivity(intent);
             case R.id.buttonStartNewGame:
                 startActivity(new Intent(getContext(), ScoringActivity.class));
                 break;
@@ -83,13 +86,18 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new LeaderboardFragment()).addToBackStack(null).commit();
                 break;
             case R.id.buttonContinue:
-                Intent intent = new Intent(getContext(), ScoringActivity.class);
+                intent = new Intent(getContext(), ScoringActivity.class);
                 intent.putExtra("lastMatchId", lastMatch);
                 startActivity(intent);
                 break;
             case R.id.buttonSettings:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new Settings()).addToBackStack(null).commit();
                 sP.registerOnSharedPreferenceChangeListener(this);
+                break;
+            case R.id.buttonCrossword:
+                intent = new Intent(getContext(), AnagramActivity.class);
+                intent.putExtra("solveType", 1);
+                startActivity(intent);
                 break;
         }
     }

@@ -7,6 +7,7 @@ import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,58 @@ import androidx.fragment.app.Fragment;
 
 public class WordEnterWordFragment extends Fragment {
 
-    private  FragmentListener mListener;
+    private static final String MODE = "mode";
+    EditText yourLettersTV;
+    private FragmentListener mListener;
     private StringBuilder yourWordBuilder;
     private Keyboard mKeyboard;
     private KeyboardView mKeyboardView;
-    EditText yourLettersTV;
+    private int mode;
+    private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {
+        @Override
+        public void onKey(int primaryCode, int[] keyCodes) {
+        }
 
+        @Override
+        public void onPress(int arg0) {
 
-    static WordEnterWordFragment newInstance() {
-        return new WordEnterWordFragment();
+            updateDisplayedWord(arg0);
+        }
+
+        @Override
+        public void onRelease(int primaryCode) {
+        }
+
+        @Override
+        public void onText(CharSequence text) {
+
+        }
+
+        @Override
+        public void swipeDown() {
+
+        }
+
+        @Override
+        public void swipeLeft() {
+        }
+
+        @Override
+        public void swipeRight() {
+        }
+
+        @Override
+        public void swipeUp() {
+
+        }
+    };
+
+    static WordEnterWordFragment newInstance(int mode) {
+        WordEnterWordFragment fragment = new WordEnterWordFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(MODE, mode);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
@@ -38,7 +82,16 @@ public class WordEnterWordFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             final Bundle savedInstanceState) {
+
+        if (getArguments() != null)  {
+            mode = getArguments().getInt(MODE);
+            Log.d("ARGUMENTS", "GETTING ==========" + mode);
+
+        }
+
         View root = inflater.inflate(R.layout.fragment_enter_word, container, false);
+
+
 
 
         yourWordBuilder = new StringBuilder();
@@ -62,12 +115,18 @@ public class WordEnterWordFragment extends Fragment {
 
         //===================KEYBOARD ====================
         // Create the Keyboard
-        mKeyboard= new Keyboard(requireContext(),R.xml.keyboard_letters_portrait);
+        if (mode == 1) {
+            //Keyboard with blanks
+            mKeyboard = new Keyboard(requireContext(), R.xml.keyboard_letters_with_space);
 
+            Log.d("wordenterfragment","Keyboard fragment for no spaces");
+        } else {
+            mKeyboard = new Keyboard(requireContext(), R.xml.keyboard_letters_portrait);
+        }
         // Lookup the KeyboardView
         mKeyboardView = root.findViewById(R.id.keyboardview);
         // Attach the keyboard to the view
-        mKeyboardView.setKeyboard( mKeyboard );
+        mKeyboardView.setKeyboard(mKeyboard);
 
         // Do not show the preview balloons
         mKeyboardView.setPreviewEnabled(false);
@@ -76,38 +135,42 @@ public class WordEnterWordFragment extends Fragment {
         mKeyboardView.setOnKeyboardActionListener(mOnKeyboardActionListener);
 
 
-
         //===================KEYBOARD ====================
 
         mKeyboardView.setVisibility(View.VISIBLE);
         mKeyboardView.setEnabled(true);
-        if( root!=null){((InputMethodManager)requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(root.getWindowToken(), 0);}
+        if (root != null) {
+            ((InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(root.getWindowToken(), 0);
+        }
 
         return root;
     }
 
-
-    public void updateDisplayedWord(int letterValue){
-
-        switch(letterValue){
+    public void updateDisplayedWord(int letterValue) {
+        Log.d("value",(char) letterValue + "");
+        switch (letterValue) {
 
             //Backspace
-            case(-5):
-                if(yourWordBuilder.length() > 0){
-                    yourWordBuilder.delete(yourWordBuilder.length()-1, yourWordBuilder.length());
+            case (-5):
+                if (yourWordBuilder.length() > 0) {
+                    yourWordBuilder.delete(yourWordBuilder.length() - 1, yourWordBuilder.length());
                 }
                 break;
-                //Done
-            case(-3):
-                    mListener.changePage(1);
-                    break;
+            //Done
+            case (-3):
+                mListener.changePage(1);
+                break;
+            case(-15):
+                if (yourWordBuilder.length() < R.string.maxAnagramLetters) {
+                    yourWordBuilder.append("*");
+                }
             default:
-                if(yourWordBuilder.length() < R.string.maxAnagramLetters){
-                yourWordBuilder.append((char)letterValue);}
+                if (yourWordBuilder.length() < R.string.maxAnagramLetters) {
+                    yourWordBuilder.append((char) letterValue);
+                }
         }
-        yourLettersTV.setText(yourWordBuilder.toString());
+        yourLettersTV.setText(yourWordBuilder.toString().replace(" ", "_"));
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -125,40 +188,6 @@ public class WordEnterWordFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-    private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {
-        @Override public void onKey(int primaryCode, int[] keyCodes)
-        {
-        }
-
-        @Override public void onPress(int arg0) {
-
-            updateDisplayedWord(arg0);
-        }
-
-        @Override public void onRelease(int primaryCode) {
-        }
-
-        @Override public void onText(CharSequence text) {
-
-        }
-
-        @Override public void swipeDown() {
-
-        }
-
-        @Override public void swipeLeft() {
-        }
-
-        @Override public void swipeRight() {
-        }
-
-        @Override public void swipeUp() {
-
-        }
-    };
-
-
 
 
 }

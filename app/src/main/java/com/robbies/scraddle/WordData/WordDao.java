@@ -31,4 +31,10 @@ public interface WordDao {
     @Query("SELECT * FROM word_table" +
             " WHERE LENGTH(Word) BETWEEN :minWordLength  AND :maxWordLength")
     LiveData<List<Word>> getAllWords(int minWordLength, int maxWordLength);
+
+    @Query("SELECT Definition FROM word_definition_table WHERE Word = :word")
+    LiveData<String> getDefinition(String word);
+
+    @Query("SELECT * FROM word_definition_table WHERE Word LIKE :letters")
+    LiveData<List<WordAndDefinition>> getMatchingCrosswordWords(String letters);
 }
