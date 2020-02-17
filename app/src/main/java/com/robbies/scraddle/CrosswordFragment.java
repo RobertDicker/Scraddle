@@ -1,12 +1,10 @@
 package com.robbies.scraddle;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,28 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.robbies.scraddle.Utilities.CheckWordIsAnagram;
-import com.robbies.scraddle.Utilities.PrimeValue;
-import com.robbies.scraddle.WordComparators.LengthComparator;
-import com.robbies.scraddle.WordComparators.LexicographicComparator;
-import com.robbies.scraddle.WordComparators.ScrabbleValueComparator;
-import com.robbies.scraddle.WordData.Word;
 import com.robbies.scraddle.WordData.WordAndDefinition;
 import com.robbies.scraddle.WordData.WordViewModel;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class CrosswordFragment extends Fragment implements WordListAdapter.OnWordClickListener {
 
@@ -57,7 +38,6 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
     private CrosswordListAdapter adapter;
 
     private FragmentListener mListener;
-
 
 
     public static CrosswordFragment newInstance(String word) {
@@ -98,7 +78,6 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
 
         // Status Bar
         indeterminateProgressBar = view.findViewById(R.id.progressBarIndeterminate);
-
 
 
         //================== Get Matching Words =====================================
@@ -156,18 +135,14 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
     @Override
     public void onWordClick(String word) {
 
-                mWordViewModel.getDefinition(word).observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-                        Snackbar.make(requireView(), s, Snackbar.LENGTH_SHORT)
-                                .show();
+        mWordViewModel.getDefinition(word).observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Snackbar.make(requireView(), s, Snackbar.LENGTH_SHORT)
+                        .show();
 
-                    }
-                });
-
-
-
-
+            }
+        });
 
 
     }

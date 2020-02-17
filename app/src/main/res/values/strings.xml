@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Scraddle</string>
 
-    <string name="start_new_game_text">Start\nScoring</string>
+    <string name="start_new_game_text">Start\nS\nc\no\nr\ni\nn\ng</string>
     <string name="leader_board">L\ne\na\nd\ne\nr\nb\no\na\nr\nd</string>
     <string name="continue_button_text">Continue</string>
     <string name="settings_button_text">Settings</string>
@@ -39,7 +39,7 @@
     <string name="leader_board_heading">Leader Board</string>
 
     <!-- CALC  -->
-    <string name="initial_heading_above_calc_before_first_move">Tap Numbers to begin…</string>
+    <string name="initial_heading_above_calc_before_first_move">Tap Start to begin…</string>
     <string name="button_clear">C</string>
     <string name="scoring_button_add_no_score">Next</string>
     <string name="buttonAddZeroText">0</string>
@@ -61,7 +61,7 @@
     <string name="leaderboard_games_won_label">Won:</string>
     <string name="leaderboard_games_lost_label">Lost:</string>
     <string name="leaderboard_games_drawn_label">Drawn:</string>
-    <string name="leaderboard_games_highest_match_score_label">Highest Match Score</string>
+    <string name="leaderboard_games_highest_match_score_label">Best Match Score</string>
     <string name="leaderboard_games_largest_word_score_label">Largest Word Score</string>
     <string name="scorecard_last_score_label">Last Score</string>
     <string name="scorecard_best_score_label">Best Score</string>
@@ -76,10 +76,29 @@
     <string name="default_sort_order_button_text">DEFAULT SORT ORDER</string>
     <string name="leaderboardButtonLabelLandscape">Leaderboard</string>
     <string name="continueButtonLabelLandscape">continue</string>
-    <string name="personalBestLabel">Highest Match Score</string>
+    <string name="personalBestLabel">Highest\nMatch Score</string>
     <string name="anagram_no_words_text">Much Nothing ...</string>
     <string name="anagram_image_robot_no_items_content_description">Picture of a robot, announcing there is no items</string>
+    <string name="title_activity_scorer">Scorer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="check_word">Check Word</string>
+    <string name="try_again">Try Again</string>
+    <string name="paused">Paused</string>
 
 
 </resources>

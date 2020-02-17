@@ -40,7 +40,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         if (requireActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
             requireActivity().getSupportFragmentManager().popBackStack();
         }
-        changeBack();
+        setDayNightMode();
 
         //Alter Continue button if there are no games to continue
         if (lastMatch == -1) {
@@ -74,11 +74,11 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
 
 
-
             case R.id.buttonAnagramSolver:
-                intent = new Intent(getContext(), AnagramActivity.class);
+                intent = new Intent(getContext(), WordSolveActivity.class);
                 intent.putExtra("solveType", 0);
                 startActivity(intent);
+                break;
             case R.id.buttonStartNewGame:
                 startActivity(new Intent(getContext(), ScoringActivity.class));
                 break;
@@ -95,7 +95,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 sP.registerOnSharedPreferenceChangeListener(this);
                 break;
             case R.id.buttonCrossword:
-                intent = new Intent(getContext(), AnagramActivity.class);
+                intent = new Intent(getContext(), WordSolveActivity.class);
                 intent.putExtra("solveType", 1);
                 startActivity(intent);
                 break;
@@ -115,12 +115,12 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         }
 
         if (s.equals(Settings.KEY_PREF_NIGHT_MODE)) {
-            changeBack();
+            setDayNightMode();
         }
 
     }
 
-    private void changeBack() {
+    private void setDayNightMode() {
         int currentTheme = sP.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
         AppCompatDelegate.setDefaultNightMode(currentTheme);
     }

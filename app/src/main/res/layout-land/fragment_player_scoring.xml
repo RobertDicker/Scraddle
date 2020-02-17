@@ -4,20 +4,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".ScoringActivity">
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rVPlayers"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
         tools:listitem="@layout/scorecard">
 
     </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewTimer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00BCD4"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="2:30"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <include
+            layout="@layout/player_scoring_landscape_numpad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewCurrentPlayerTurn"
@@ -34,86 +57,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Start adding values to begin.." />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#242020"
-        android:orientation="horizontal"
-        android:padding="2dp">
-
-        <Button
-            android:id="@+id/buttonClear"
-            style="@style/buttonCalcSmall"
-            android:text="@string/button_clear"
-            android:textColor="#F44336" />
-
-        <Button
-            android:id="@+id/buttonAddOne"
-            style="@style/buttonCalcSmall"
-            android:text="@string/scoring_button_plus_one" />
-
-        <Button
-            android:id="@+id/buttonAddTwo"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddTwoText"
-
-            />
-
-        <Button
-            android:id="@+id/buttonAddThree"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddThreeText" />
-
-        <Button
-            android:id="@+id/buttonAddFour"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddFourText" />
-
-        <Button
-            android:id="@+id/buttonAddFive"
-            style="@style/buttonCalcSmall"
-            android:text="@string/scoring_button_plus_five" />
-
-        <Button
-            android:id="@+id/buttonAddSix"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddSixText" />
-
-        <Button
-            android:id="@+id/buttonAddSeven"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddSevenText" />
-
-        <Button
-            android:id="@+id/buttonAddEight"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddEightText" />
-
-        <Button
-            android:id="@+id/buttonAddNine"
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddNineText" />
-
-        <Button
-            style="@style/buttonCalcSmall"
-            android:text="@string/buttonAddZeroText" />
-
-        <Button
-            android:id="@+id/buttonDeleteLast"
-            style="@style/buttonCalcSmall"
-            android:background="@drawable/ic_backspace_black_24dp"
-            android:backgroundTint="#E91E1E" />
-
-        <Button
-            android:id="@+id/buttonAddToPlayer"
-            style="@style/buttonCalcSmall"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:lines="1"
-            android:text="@string/scoring_button_add_no_score"
-            android:textColor="@android:color/white"
-            tools:text="Add To Player" />
-    </LinearLayout>
 
 </LinearLayout>

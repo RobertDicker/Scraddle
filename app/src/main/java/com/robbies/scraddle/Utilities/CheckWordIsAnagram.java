@@ -3,14 +3,13 @@ package com.robbies.scraddle.Utilities;
 import com.robbies.scraddle.WordData.Word;
 
 import java.math.BigInteger;
-import java.util.List;
 import java.util.Map;
 
 public class CheckWordIsAnagram implements Runnable {
 
     private Word word;
     private BigInteger anagramPrimeValue;
-    private Map<Word,Integer> allMatchingWords;
+    private Map<Word, Integer> allMatchingWords;
 
     public CheckWordIsAnagram(Word word, BigInteger anagramPrimeValue, Map<Word, Integer> allMatchingWords) {
         this.word = word;

@@ -1,21 +1,9 @@
 package com.robbies.scraddle;
 
-import android.util.Log;
-
-import com.robbies.scraddle.Utilities.CheckWordIsAnagram;
-import com.robbies.scraddle.Utilities.PrimeValue;
-import com.robbies.scraddle.Utilities.Timer;
 import com.robbies.scraddle.WordData.Word;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import java.util.List;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class AnagramSolver {
 
@@ -74,18 +62,20 @@ public class AnagramSolver {
     }*/
 
 
-    public static List<Word> getAnagramsBetween(int minSize, int maxSize, List<Word> allWords){
+    public static List<Word> getAnagramsBetween(int minSize, int maxSize, List<Word> allWords) {
 
-        if(minSize < 2){return allWords;}
+        if (minSize < 2) {
+            return allWords;
+        }
 
         List<Word> matchingWords = new ArrayList<>();
-        for(Word word : allWords){
+        for (Word word : allWords) {
             int wordLength = word.getWord().length();
-            if(wordLength >= minSize & wordLength <= maxSize){
+            if (wordLength >= minSize & wordLength <= maxSize) {
                 matchingWords.add(word);
             }
         }
-      return matchingWords;
+        return matchingWords;
     }
 
 }

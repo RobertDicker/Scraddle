@@ -15,7 +15,7 @@ import com.robbies.scraddle.WordData.WordViewModel;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AnagramActivity extends AppCompatActivity implements FragmentListener {
+public class WordSolveActivity extends AppCompatActivity implements FragmentListener {
 
     SectionsPagerAdapter sectionsPagerAdapter;
     ViewPager viewPager;
@@ -29,16 +29,17 @@ public class AnagramActivity extends AppCompatActivity implements FragmentListen
         wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
 
         FullScreenMode.hideToolBr(this);
-        mode = getIntent().getIntExtra("solveType",0);
+        mode = getIntent().getIntExtra("solveType", 0);
 
         // The Fragments to load (Title, Fragment)
         final Map<String, Fragment> fragmentList = new LinkedHashMap<>();
         fragmentList.put("Word", WordEnterWordFragment.newInstance(mode));
 
-        if(mode == 1){
-           fragmentList.put("Solve", CrosswordFragment.newInstance("Demo"));
-        }else{
-        fragmentList.put("Solve", AnagramFragment.newInstance("TryAgain"));}
+        if (mode == 1) {
+            fragmentList.put("Solve", CrosswordFragment.newInstance("Demo"));
+        } else {
+            fragmentList.put("Solve", AnagramFragment.newInstance("TryAgain"));
+        }
 
         setContentView(R.layout.activity_tabbed_word_solve);
         sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), fragmentList);
@@ -51,10 +52,11 @@ public class AnagramActivity extends AppCompatActivity implements FragmentListen
 
             @Override
             public void onPageSelected(int position) {
-                if(mode == 1){
+                if (mode == 1) {
                     sectionsPagerAdapter.updatePageValue("Solve", CrosswordFragment.newInstance(word));
-                }else{
-                sectionsPagerAdapter.updatePageValue("Solve", AnagramFragment.newInstance(word));}
+                } else {
+                    sectionsPagerAdapter.updatePageValue("Solve", AnagramFragment.newInstance(word));
+                }
 
             }
         });

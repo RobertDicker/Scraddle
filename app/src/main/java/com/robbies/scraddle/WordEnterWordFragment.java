@@ -2,6 +2,7 @@ package com.robbies.scraddle;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import androidx.fragment.app.Fragment;
 public class WordEnterWordFragment extends Fragment {
 
     private static final String MODE = "mode";
-    EditText yourLettersTV;
+    private EditText yourLettersTV;
     private FragmentListener mListener;
     private StringBuilder yourWordBuilder;
     private Keyboard mKeyboard;
@@ -83,7 +84,7 @@ public class WordEnterWordFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             final Bundle savedInstanceState) {
 
-        if (getArguments() != null)  {
+        if (getArguments() != null) {
             mode = getArguments().getInt(MODE);
             Log.d("ARGUMENTS", "GETTING ==========" + mode);
 
@@ -92,10 +93,9 @@ public class WordEnterWordFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_enter_word, container, false);
 
 
-
-
         yourWordBuilder = new StringBuilder();
         yourLettersTV = root.findViewById(R.id.editTextYourWord);
+
 
         yourLettersTV.addTextChangedListener(new TextWatcher() {
             @Override
@@ -113,13 +113,16 @@ public class WordEnterWordFragment extends Fragment {
         });
 
 
-        //===================KEYBOARD ====================
-        // Create the Keyboard
         if (mode == 1) {
-            //Keyboard with blanks
+            root.findViewById(R.id.enterWordConstraintLayout).setBackgroundColor(Color.parseColor("#FFF44336"));
+
+//===================KEYBOARD ====================
+
+            //Keyboard with blanks for crossword
+            // Create the Keyboard
             mKeyboard = new Keyboard(requireContext(), R.xml.keyboard_letters_with_space);
 
-            Log.d("wordenterfragment","Keyboard fragment for no spaces");
+            Log.d("wordenterfragment", "Keyboard fragment for no spaces");
         } else {
             mKeyboard = new Keyboard(requireContext(), R.xml.keyboard_letters_portrait);
         }
@@ -139,15 +142,15 @@ public class WordEnterWordFragment extends Fragment {
 
         mKeyboardView.setVisibility(View.VISIBLE);
         mKeyboardView.setEnabled(true);
-        if (root != null) {
-            ((InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(root.getWindowToken(), 0);
-        }
+
+        ((InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(root.getWindowToken(), 0);
+
 
         return root;
     }
 
-    public void updateDisplayedWord(int letterValue) {
-        Log.d("value",(char) letterValue + "");
+    private void updateDisplayedWord(int letterValue) {
+        Log.d("value", (char) letterValue + "");
         switch (letterValue) {
 
             //Backspace
@@ -160,7 +163,7 @@ public class WordEnterWordFragment extends Fragment {
             case (-3):
                 mListener.changePage(1);
                 break;
-            case(-15):
+            case (-15):
                 if (yourWordBuilder.length() < R.string.maxAnagramLetters) {
                     yourWordBuilder.append("*");
                 }
@@ -173,7 +176,7 @@ public class WordEnterWordFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof FragmentListener) {
             mListener = (FragmentListener) context;

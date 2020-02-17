@@ -37,5 +37,24 @@
             android:key="switchNightMode"
             android:title="Night Mode" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Scoring Settings">
+
+        <ListPreference
+            android:defaultValue="3"
+            android:entries="@array/timerLengthEntries"
+            android:entryValues="@array/timerLengthValues"
+            android:icon="@drawable/ic_timer_black_24dp"
+            android:key="timerLength"
+            android:title="Set Default Timer" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Primary Colour">
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/colourEntry"
+            android:entryValues="@array/colourValue"
+            android:icon="@drawable/ic_timer_black_24dp"
+            android:key="playerColour"
+            android:title="Set Default Scoring Colour" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

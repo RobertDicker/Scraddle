@@ -5,20 +5,15 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
-
-import com.robbies.scraddle.Data.Match;
-import com.robbies.scraddle.Data.Player;
-import com.robbies.scraddle.Utilities.PrimeValue;
 
 import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "word_definition_table",
-primaryKeys = {"Word"}, foreignKeys = {
-@ForeignKey(onDelete = CASCADE, entity = Word.class,
-        parentColumns = "Word", childColumns = "Word")},
+        primaryKeys = {"Word"}, foreignKeys = {
+        @ForeignKey(onDelete = CASCADE, entity = Word.class,
+                parentColumns = "Word", childColumns = "Word")},
         indices = {
-@Index("Word")
+                @Index("Word")
         })
 public class WordAndDefinition {
 

@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -65,7 +64,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
     private FragmentListener mListener;
 
 
-
     public static AnagramFragment newInstance(String word) {
         AnagramFragment fragment = new AnagramFragment();
         Bundle bundle = new Bundle();
@@ -110,7 +108,6 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
         indeterminateProgressBar = view.findViewById(R.id.progressBarIndeterminate);
 
 
-
         //================== Get All Words =====================================
         mWordViewModel.getAllWords().observe(getViewLifecycleOwner(), new Observer<List<Word>>() {
             @Override
@@ -118,13 +115,13 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
 
                 //Get and store a cache of matching letters;
                 String primeValueOfLetters = PrimeValue.calculatePrimeValue(letters);
-                if(primeValueOfLetters.length() < 19){
-                    mWordViewModel.getAnagramsOf(primeValueOfLetters, 0 , letters.length());
-                }else{
-                mWordViewModel.setAllAnagramsCache(getAnagrams(words,primeValueOfLetters));}
+                if (primeValueOfLetters.length() < 19) {
+                    mWordViewModel.getAnagramsOf(primeValueOfLetters, 0, letters.length());
+                } else {
+                    mWordViewModel.setAllAnagramsCache(getAnagrams(words, primeValueOfLetters));
+                }
             }
         });
-
 
 
         // ===================DISPLAY ==========================================
@@ -159,13 +156,16 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
             public void onChanged(Map<Word, Integer> words) {
                 if (words != null) {
 
-                    if(mCachedAllMatchingWords == null){
-                    mCachedAllMatchingWords = words;}
+                    if (mCachedAllMatchingWords == null) {
+                        mCachedAllMatchingWords = words;
+                    }
 
                     allMatchingWords = new ArrayList<>(words.keySet());
                     sortWords();
-                    updateUI();
                 }
+
+                updateUI();
+
             }
         });
 
@@ -176,6 +176,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
     //================== Button Handlers =======================
 
     private void reverse(View view) {
+        showIndeterminateProgressBar(true);
         reverse = !reverse;
         sortWords();
         view.setRotation(reverse ? 180 : 0);
@@ -183,7 +184,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
     }
 
     private void changeSortOrder(View view) {
-
+        showIndeterminateProgressBar(true);
         Collections.rotate(sortMethods, 1);
         defaultSortOrder = sortMethods.get(0);
 
@@ -237,11 +238,11 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
         numberOfWords.setText(String.format("Words: %s", allMatchingWords.size()));
 
         //Turn off
-        showHideIndeterminateProgressBar();
+        showIndeterminateProgressBar(false);
 
         //If there are no current words show this
-        int visibilityNoWordsImage = allMatchingWords.size() < 1 ? View.VISIBLE : View.GONE;
-        noWordsLinearLayout.setVisibility(visibilityNoWordsImage);
+        int visibilityOfNoWordsImage = allMatchingWords.size() < 1 ? View.VISIBLE : View.GONE;
+        noWordsLinearLayout.setVisibility(visibilityOfNoWordsImage);
     }
 
 
@@ -252,14 +253,14 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
 
         BigInteger anagramPrimeValueBigInt = new BigInteger(anagramPrimeValue);
 
-/*        synchronized (allMatchingWords) {*/
+        /*        synchronized (allMatchingWords) {*/
 
 
-            for (Word word : words) {
+        for (Word word : words) {
 
-                Runnable worker = new CheckWordIsAnagram(word, anagramPrimeValueBigInt, allMatchingWords);
-                pool.submit(worker);
-            }
+            Runnable worker = new CheckWordIsAnagram(word, anagramPrimeValueBigInt, allMatchingWords);
+            pool.submit(worker);
+        }
 /*
         }
 */
@@ -275,9 +276,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
         return allMatchingWords;
     }
 
-    private void showHideIndeterminateProgressBar() {
-        int visibility = indeterminateProgressBar.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE;
-        Log.d("PROGRESS BAR ", "VISIBILITY = " + visibility);
+    private void showIndeterminateProgressBar(Boolean show) {
+        int visibility = show ? View.VISIBLE : View.GONE;
         indeterminateProgressBar.setVisibility(visibility);
     }
 
@@ -285,7 +285,7 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
     @Override
     public void onClick(View view) {
 
-        showHideIndeterminateProgressBar();
+        showIndeterminateProgressBar(true);
 
         switch (view.getId()) {
 
@@ -297,8 +297,8 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
                 break;
             default:
 
-                for(int i = 1; i < anagramFragmentButtons.length; i++){
-                    if(anagramFragmentButtons[i] == view.getId()){
+                for (int i = 1; i < anagramFragmentButtons.length; i++) {
+                    if (anagramFragmentButtons[i] == view.getId()) {
                         solveAnagram(i);
                         break;
                     }
@@ -329,18 +329,14 @@ public class AnagramFragment extends Fragment implements View.OnClickListener, W
     @Override
     public void onWordClick(String word) {
 
-                mWordViewModel.getDefinition(word).observe(getViewLifecycleOwner(), new Observer<String>() {
-                    @Override
-                    public void onChanged(String s) {
-                        Snackbar.make(requireView(), s, Snackbar.LENGTH_SHORT)
-                                .show();
+        mWordViewModel.getDefinition(word).observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Snackbar.make(requireView(), s, Snackbar.LENGTH_SHORT)
+                        .show();
 
-                    }
-                });
-
-
-
-
+            }
+        });
 
 
     }

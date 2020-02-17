@@ -1,5 +1,6 @@
 package com.robbies.scraddle;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -37,7 +39,12 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
     private ArrayList<Player> mSelectedPlayers;
     private SharedPreferences mSharedPreferences;
     private ScoringViewModel mScoringViewModel;
+    private FragmentSwitcher mListener;
 
+
+    static SelectPlayerFragment newInstance() {
+        return new SelectPlayerFragment();
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +58,8 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             mSelectedPlayers = savedInstanceState.getParcelableArrayList("players");
             mAllPlayerAdapter.setPlayers(mSelectedPlayers);
         }
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
 
         mItemTouchHelper = new ItemTouchHelper(new ItemTouchHelper
@@ -71,17 +80,14 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
                 int from = viewHolder.getAdapterPosition();
                 mSelectedPlayers.remove(from);
                 mAllPlayerAdapter.notifyItemRemoved(from);
-//                        .setAction("Action", null).show();
             }
         });
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_select_players, container, false);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
         //Enable control of the toolbar within the fragment and not main activity
         setHasOptionsMenu(true);
@@ -133,6 +139,25 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
         mItemTouchHelper.attachToRecyclerView(recyclerViewAllPlayers);
 
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+
+                switch (item.getItemId()) {
+                    case (R.id.menuSelectPlayers):
+                        selectPlayers();
+                        break;
+                    case (R.id.menuCreatePlayer):
+                        createPlayerPopup();
+                        break;
+                }
+                return false;
+            }
+        });
+
+
         return view;
     }
 
@@ -146,6 +171,7 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
     private void startScoring() {
 
         long matchId = mScoringViewModel.insertMatch(new Match());
+
         if (mSelectedPlayers.size() > 0) {
 
             int order = 0;
@@ -155,18 +181,19 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             }
 
             mSharedPreferences.edit().putLong("matchId", matchId).apply();
-            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new ScoringFragment()).commit();
+
         } else {
             Snackbar.make(requireView(), "Try Selecting Players, it's going to be lonely otherwise", Snackbar.LENGTH_SHORT)
                     .show();
         }
+
+        mListener.switchFragment(ScoringFragment.newInstance(matchId));
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList("players", mSelectedPlayers);
-
     }
 
     private void selectPlayers() {
@@ -210,22 +237,6 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
 
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-        switch (id) {
-            case (R.id.menuSelectPlayers):
-                selectPlayers();
-                break;
-            case (R.id.menuCreatePlayer):
-                createPlayerPopup();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
     }
@@ -233,6 +244,25 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.buttonStartScoring) startScoring();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof FragmentSwitcher) {
+            mListener = (FragmentSwitcher) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+
     }
 
 }

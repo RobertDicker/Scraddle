@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-
 import java.util.List;
 
 class WordRepository {
@@ -50,11 +49,14 @@ class WordRepository {
         return mWordDao.getAllWords(minWordLength, maxWordLength);
     }
 
-    LiveData<String> getDefinition(String word) { return mWordDao.getDefinition(word);}
+    LiveData<String> getDefinition(String word) {
+        return mWordDao.getDefinition(word);
+    }
 
     public LiveData<List<WordAndDefinition>> getMatchingCrosswordWords(String letters) {
         return mWordDao.getMatchingCrosswordWords(letters);
     }
+
 
     private static class insertWordAsyncTask extends AsyncTask<Word, Void, Void> {
 

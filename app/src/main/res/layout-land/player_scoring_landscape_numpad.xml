@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/numpadConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242020"
+    android:orientation="horizontal"
+    android:padding="2dp"
+    tools:showIn="@layout/fragment_player_scoring">
+
+    <Button
+        android:id="@+id/buttonClear"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
+        android:text="@string/button_clear"
+        android:textColor="#F44336"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDeleteLast"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAddOne"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/scoring_button_plus_one"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddTwo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAddTwo"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="@string/buttonAddTwoText"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddThree"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddOne"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAddThree"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:text="@string/buttonAddThreeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddTwo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAddFour"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="68dp"
+        android:text="@string/buttonAddFourText"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddFive"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddOne" />
+
+    <Button
+        android:id="@+id/buttonAddFive"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="230dp"
+        android:text="@string/scoring_button_plus_five"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddSix"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddFour"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddTwo" />
+
+    <Button
+        android:id="@+id/buttonAddSix"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="7dp"
+        android:text="@string/buttonAddSixText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddFive"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddThree" />
+
+    <Button
+        android:id="@+id/buttonAddSeven"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonAddSevenText"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddEight"
+        app:layout_constraintHorizontal_bias="0.077"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddFour" />
+
+    <Button
+        android:id="@+id/buttonAddEight"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="425dp"
+        android:layout_marginEnd="228dp"
+        android:text="@string/buttonAddEightText"
+        app:layout_constraintEnd_toStartOf="@+id/buttonAddNine"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddSeven"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddFive" />
+
+    <Button
+        android:id="@+id/buttonAddNine"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="154dp"
+        android:layout_marginTop="22dp"
+        android:text="@string/buttonAddNineText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonAddEight"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddSix" />
+
+    <Button
+        android:id="@+id/button"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonAddZeroText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddEight" />
+
+    <Button
+        android:id="@+id/buttonDeleteLast"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_backspace_black_24dp"
+        android:backgroundTint="#E91E1E"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/buttonAddToPlayer"
+        style="@style/buttonCalcSmall"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:lines="1"
+        android:maxLines="1"
+        android:text="@string/scoring_button_add_no_score"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/buttonClear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        tools:text="Add To Player" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

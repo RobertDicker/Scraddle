@@ -60,7 +60,7 @@
 
                 android:lineSpacingExtra="-35dp"
 
-                android:text="@string/start_new_game_text"
+                android:text="@string/select_players_start_scoring_button"
                 app:autoSizeMaxTextSize="30dp"
                 app:autoSizeMinTextSize="12dp"
                 app:autoSizeStepGranularity="2dp"

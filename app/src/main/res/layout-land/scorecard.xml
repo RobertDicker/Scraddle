@@ -76,7 +76,8 @@
             android:layout_marginRight="8dp"
             android:labelFor="@id/textViewPersonalBest"
             android:text="@string/personalBestLabel"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textViewPersonalBest"
@@ -85,6 +86,7 @@
             android:layout_gravity="center"
             android:layout_margin="8dp"
             android:textSize="36sp"
+            android:visibility="gone"
             tools:text="56" />
 
     </LinearLayout>
@@ -99,6 +101,7 @@
             android:id="@+id/textViewPlayerTotal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
             android:padding="16dp"
@@ -123,10 +126,7 @@
             android:id="@+id/tVScoreTally"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:layout_margin="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:gravity="center"
             android:padding="16dp"
             android:visibility="visible"

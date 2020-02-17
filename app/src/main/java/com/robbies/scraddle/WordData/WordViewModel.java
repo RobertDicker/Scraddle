@@ -91,11 +91,13 @@ public class WordViewModel extends AndroidViewModel {
     }
 
     public LiveData<String> getDefinition(String word) {
-       return mRepository.getDefinition(word);
+        return mRepository.getDefinition(word);
     }
 
     public LiveData<List<WordAndDefinition>> getMatchingWordsForCrossword(String letters) {
         return mRepository.getMatchingCrosswordWords(letters);
 
     }
+
+
 }

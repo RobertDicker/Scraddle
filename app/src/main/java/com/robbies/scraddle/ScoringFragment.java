@@ -5,7 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,18 +27,21 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.robbies.scraddle.Data.GameDetail;
 import com.robbies.scraddle.Data.Player;
 import com.robbies.scraddle.Data.PlayerRecord;
 import com.robbies.scraddle.Data.Score;
 import com.robbies.scraddle.Data.ScoringViewModel;
 import com.robbies.scraddle.Utilities.TidyStringFormatterHelper;
+import com.robbies.scraddle.Utilities.Timer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
-public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPlayerListener, View.OnClickListener {
+public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPlayerListener, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, Timer.TimerUpdateListener {
 
     //CONSTANTS
     private static final int UNDO_PLAYER = -1;
@@ -44,12 +49,16 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     private static final int FINAL_SAVE = 1;
     private static final int REVERT_DATA = -2;
     private final int[] onClickRegisteredButtons = {R.id.buttonAddOne, R.id.buttonAddTwo, R.id.buttonAddThree, R.id.buttonAddFour, R.id.buttonAddFive, R.id.buttonAddSix, R.id.buttonAddSeven, R.id.buttonAddEight, R.id.buttonAddNine, R.id.buttonDeleteLast, R.id.buttonClear, R.id.buttonAddToPlayer};
-
+    CountDownTimer countDownTimer;
     //DATA
     private SharedPreferences sharedPreferences;
     private ScoringViewModel scoringViewModel;
     private ArrayList<GameDetail> playerDetails;
     private ArrayList<GameDetail> backupPlayerDetails;
+    private long timeRemaining;
+    private boolean paused = true;
+    private long countDownTime;
+
 
     //Buttons
     private GameDetail currentPlayer;
@@ -61,7 +70,16 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     private Button addToPlayerButton;
     private RecyclerView mRecyclerViewPlayers;
     private PlayerListAdapter playerAdapter;
+    private TextView timer;
 
+
+    public static ScoringFragment newInstance(long matchId) {
+        ScoringFragment fragment = new ScoringFragment();
+        Bundle bundle = new Bundle();
+        bundle.putLong("matchId", matchId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,13 +87,17 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         incrementScore = new StringBuilder();
         scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
+        countDownTime = Long.parseLong(sharedPreferences.getString("timerLength", "6000"));
+
+
+        if (getArguments() != null) {
+            matchId = getArguments().getLong("matchId");
+        }
 
         //Backup Turn data
         if (savedInstanceState != null) {
             backupPlayerDetails = savedInstanceState.getParcelableArrayList("backupPlayerTurnData");
         }
-
-        requireActivity().invalidateOptionsMenu();
 
     }
 
@@ -90,12 +112,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_player_scoring, container, false);
-
-        //Enable control of the toolbar within the fragment and not main activity
-        setHasOptionsMenu(true);
-
-        matchId = scoringViewModel.getCurrentMatchId();
+        View view = inflater.inflate(R.layout.scoring_fragment_navigation_drawer_layout, container, false);
 
         scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override
@@ -114,13 +131,14 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                         backupPlayerDetails.add(gameDetail);
                     }
                 }
-
             }
         });
+
 
         //Display
         tvCurrentPlayerTurn = view.findViewById(R.id.textViewCurrentPlayerTurn);
         addToPlayerButton = view.findViewById(R.id.buttonAddToPlayer);
+        timer = view.findViewById(R.id.textViewTimer);
 
         mRecyclerViewPlayers = view.findViewById(R.id.rVPlayers);
         playerAdapter = new PlayerListAdapter(playerDetails, this);
@@ -130,39 +148,83 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext()));
         } else {
-
             mRecyclerViewPlayers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
 
+        //TODO change this to seperate keyboard
         //Register the calculator buttons onclick methods
         for (int button : onClickRegisteredButtons) {
             view.findViewById(button).setOnClickListener(this);
         }
 
+        NavigationView navigationView = view.findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        timer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                paused = !paused;
+                //Start the Game
+                if (countDownTimer == null) {
+                    if (currentPlayer == null) {
+                        tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
+                    }
+                    startCountDown(countDownTime);
+                }
+
+                // Resume Timer
+                else if (paused) {
+                    startCountDown(timeRemaining);
+
+
+                }
+                // Pause the timer
+                else {
+                    countDownTimer.cancel();
+                    tvCurrentPlayerTurn.setBackgroundColor(Color.parseColor("#FF9800"));
+                    timer.setBackgroundColor(Color.parseColor("#FF9800"));
+                    timer.setText(R.string.paused);
+                }
+
+            }
+        });
+
         return view;
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-        switch (id) {
-
-            case (R.id.menuButtonSave):
-                returnToMain();
-                break;
-            case (R.id.menuButtonEndGame):
-                endMatch();
-                break;
-            case (R.id.menuButtonDeleteMatch):
-                deleteMatch();
-                break;
-            case (R.id.menuButtonUndo):
-                undoLastMove();
-                break;
+    private void startCountDown(long time) {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
         }
-        return super.onOptionsItemSelected(item);
+
+        tvCurrentPlayerTurn.setBackgroundColor(Color.parseColor("#00BCD4"));
+        timer.setBackgroundColor(Color.parseColor("#00BCD4"));
+        countDownTimer = new CountDownTimer(time, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                long minutes = (millisUntilFinished / 1000) / 60;
+                long seconds = (millisUntilFinished / 1000) % 60;
+                timer.setText(String.format(Locale.ENGLISH, "%d:%02d", minutes, seconds));
+                timeRemaining = millisUntilFinished;
+            }
+
+            public void onFinish() {
+                timer.setText("0:00");
+                timer.setBackgroundColor(Color.RED);
+                tvCurrentPlayerTurn.setText("TIMES UP!");
+                tvCurrentPlayerTurn.setBackgroundColor(Color.RED);
+
+            }
+        }.start();
+    }
+
+
+    private void checkWord() {
+        CheckWord dialog = CheckWord.newInstance();
+        dialog.show(requireActivity().getSupportFragmentManager(), "wordCheck");
+
+
     }
 
     private void undoLastMove() {
@@ -179,8 +241,14 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
     private void deleteMatch() {
         mRecyclerViewPlayers.setAdapter(null);
-        saveData(REVERT_DATA);
-        returnToMain();
+        new AlertDialog.Builder(requireContext()).setTitle("Do you wish to delete this match?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                saveData(REVERT_DATA);
+                returnToMain();
+            }
+        }).setNegativeButton("Oops, No!", null).show();
+
     }
 
 
@@ -222,6 +290,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         Collections.rotate(playerDetails, rotateDistance);
         //Set the title to show who's turn it is
         tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
+
     }
 
     private void endMatch() {
@@ -288,7 +357,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             });
             dialog.show();
         }
-
     }
 
     private void saveData(int method) {
@@ -368,13 +436,9 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         return winners;
     }
 
-
+    // Custom Keyboard
     @Override
     public void onClick(View view) {
-
-        if (currentPlayer == null) {
-            tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
-        }
 
         Button buttonClicked = (Button) view;
 
@@ -398,19 +462,55 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                 incrementScore.setLength(0);
                 changePlayer(-1);
                 saveData(SAVE_PLAYER);
+                startCountDown(countDownTime);
+
+
                 break;
             default:
                 if (incrementScore.length() < 3) {
                     incrementScore.append(buttonClicked.getText().toString());
                 }
         }
+
         String addAmountString;
         if (requireActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add\n%s", incrementScore);
         } else {
             addAmountString = incrementScore.length() == 0 ? "Skip" : String.format("Add %s", incrementScore);
         }
-
         addToPlayerButton.setText(addAmountString);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+
+            case (R.id.nav_home):
+                returnToMain();
+                break;
+            case (R.id.nav_finish):
+                endMatch();
+                break;
+            case (R.id.nav_checkWord):
+                checkWord();
+            case (R.id.nav_undo):
+                undoLastMove();
+                break;
+            case (R.id.nav_delete_match):
+                deleteMatch();
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public void updateTime(String time) {
+        timer.setText(time);
+    }
+
+    @Override
+    public void notifyTimeUp() {
+
     }
 }

@@ -17,8 +17,9 @@
         android:fontFamily="@font/sigmar_one"
         android:lineSpacingExtra="-35dp"
 
-        android:text="@string/crossword_solver"
+        android:lines="2"
 
+        android:text="@string/crossword_solver"
         app:autoSizeMaxTextSize="50dp"
         app:autoSizeMinTextSize="12dp"
         app:autoSizeStepGranularity="2dp"
@@ -31,55 +32,30 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/buttonLeaderBoard"
+            android:id="@+id/buttonStartNewGame"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+
             android:layout_weight="1"
-            android:backgroundTint="#FFEB3B"
+            android:backgroundTint="#FF9800"
             android:fontFamily="@font/sigmar_one"
+
+
             android:lineSpacingExtra="-10dp"
-
-            android:text="@string/leader_board"
-
+            android:lines="2"
+            android:maxLines="8"
+            android:text="Start\n Scoring"
             app:autoSizeMaxTextSize="50dp"
-            app:autoSizeMinTextSize="12dp"
+            app:autoSizeMinTextSize="10dp"
             app:autoSizeStepGranularity="2dp"
             app:autoSizeTextType="uniform" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/ic_scraddle_vertical_logo"
-            android:contentDescription="@string/scraddle_logo"
-            android:scaleX=".5"
-            android:scaleY="1" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
-
-            <Button
-                android:id="@+id/buttonStartNewGame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-
-                android:backgroundTint="#FF9800"
-                android:fontFamily="@font/sigmar_one"
-                android:lines="2"
-
-                android:text="@string/start_new_game_text"
-                app:autoSizeMaxTextSize="30dp"
-                app:autoSizeMinTextSize="12dp"
-                app:autoSizeStepGranularity="2dp"
-                app:autoSizeTextType="uniform" />
 
             <Button
                 android:id="@+id/buttonContinue"
@@ -96,6 +72,19 @@
                 app:autoSizeMinTextSize="12dp"
                 app:autoSizeStepGranularity="2dp"
                 app:autoSizeTextType="uniform" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_weight="5"
+                android:background="@drawable/ic_scraddle_vertical_logo"
+                android:contentDescription="@string/scraddle_logo"
+                android:scaleX=".5"
+                android:scaleY="1" />
 
             <Button
                 android:id="@+id/buttonSettings"
@@ -114,6 +103,22 @@
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonLeaderBoard"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="#FFEB3B"
+            android:fontFamily="@font/sigmar_one"
+
+            android:lineSpacingExtra="-10dp"
+
+            android:text="@string/leader_board"
+            app:autoSizeMaxTextSize="50dp"
+            app:autoSizeMinTextSize="12dp"
+            app:autoSizeStepGranularity="2dp"
+            app:autoSizeTextType="uniform" />
 
     </LinearLayout>
 

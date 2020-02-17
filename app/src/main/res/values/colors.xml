@@ -9,4 +9,12 @@
     <color name="colorPrimary">#00BCD4</color>
     <!--LEADER BOARD-->
 
+
+    <!--Colour Picker-->
+    <color name="blue">#00BCD4</color>
+    <color name="red">#E2FA0008</color>
+    <color name="green">#4CAF50</color>
+    <color name="purple">#673AB7</color>
+    <color name="pink">#FF39E0</color>
+    <color name="orange">#F44336</color>
 </resources>

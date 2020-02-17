@@ -1,7 +1,6 @@
 package com.robbies.scraddle;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.robbies.scraddle.WordData.Word;
 import com.robbies.scraddle.WordData.WordAndDefinition;
 
 import java.util.List;
@@ -64,7 +62,7 @@ public class CrosswordListAdapter extends RecyclerView.Adapter<CrosswordListAdap
         return mWords != null ? mWords.size() : 0;
     }
 
-    class WordViewHolder extends RecyclerView.ViewHolder{
+    class WordViewHolder extends RecyclerView.ViewHolder {
         private TextView wordTextView;
         private TextView definition;
 

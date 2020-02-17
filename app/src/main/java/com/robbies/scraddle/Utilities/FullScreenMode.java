@@ -1,9 +1,7 @@
 package com.robbies.scraddle.Utilities;
 
 import android.app.Activity;
-
 import android.view.View;
-
 
 
 public class FullScreenMode {

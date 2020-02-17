@@ -1,4 +1,50 @@
 <resources>
     <!-- Reply Preference -->
 
+    <string-array name="timerLengthEntries">
+        <item>0:00</item>
+        <item>0:15</item>
+        <item>0:20</item>
+        <item>0:30</item>
+        <item>0:45</item>
+        <item>1:00</item>
+        <item>1:30</item>
+        <item>2:00</item>
+        <item>2:30</item>
+        <item>3:00</item>
+        <item>3:30</item>
+    </string-array>
+
+    <string-array name="timerLengthValues">
+        <item>0</item>
+        <item>1500</item>
+        <item>2000</item>
+        <item>3000</item>
+        <item>4500</item>
+        <item>6000</item>
+        <item>9000</item>
+        <item>120000</item>
+        <item>150000</item>
+        <item>180000</item>
+        <item>210000</item>
+    </string-array>
+
+
+    <string-array name="colourEntry">
+        <item>Blue</item>
+        <item>Red</item>
+        <item>Green</item>
+        <item>Purple</item>
+        <item>Pink</item>
+        <item>Orange</item>
+    </string-array>
+
+    <string-array name="colourValue">
+        <item>@color/blue</item>
+        <item>@color/red</item>
+        <item>@color/green</item>
+        <item>@color/purple</item>
+        <item>@color/pink</item>
+        <item>@color/orange</item>
+    </string-array>
 </resources>

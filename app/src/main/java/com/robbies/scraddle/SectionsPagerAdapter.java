@@ -25,8 +25,7 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
     private List<String> pagesTitles;
 
 
-
-    public SectionsPagerAdapter(Context context, FragmentManager fm, Map<String,Fragment> pages) {
+    public SectionsPagerAdapter(Context context, FragmentManager fm, Map<String, Fragment> pages) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mContext = context;
         word = "";
@@ -49,8 +48,8 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     }*/
 
-    public void updatePageValue(String key, Fragment fragment){
-        int position =pagesTitles.indexOf(key);
+    public void updatePageValue(String key, Fragment fragment) {
+        int position = pagesTitles.indexOf(key);
         pages.set(position, fragment);
         notifyDataSetChanged();
     }
@@ -69,7 +68,7 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(@NonNull Object object) {
-                 return POSITION_NONE;
+        return POSITION_NONE;
 
     }
 }

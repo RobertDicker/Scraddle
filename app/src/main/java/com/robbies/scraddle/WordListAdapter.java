@@ -66,11 +66,14 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         return mWords != null ? mWords.size() : 0;
     }
 
-    class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public interface OnWordClickListener {
+        void onWordClick(String word);
+    }
+
+    class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView wordItemView;
         private final TextView scrabbleScore;
         private OnWordClickListener mListener;
-
 
 
         private WordViewHolder(View itemView, OnWordClickListener listener) {
@@ -83,13 +86,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         }
 
         @Override
-        public void onClick(View view) { mListener.onWordClick(wordItemView.getText().toString());}
+        public void onClick(View view) {
+            mListener.onWordClick(wordItemView.getText().toString());
+        }
     }
-
-   public interface OnWordClickListener{
-        void onWordClick(String word);
-    }
-
 
 
 }
