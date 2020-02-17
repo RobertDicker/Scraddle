@@ -1,6 +1,7 @@
 package com.robbies.scraddle;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.ListPreference;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.navigation.NavigationView;
 import com.robbies.scraddle.Data.ScoringViewModel;
@@ -28,6 +31,10 @@ public class ScoringActivity extends AppCompatActivity implements FragmentSwitch
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
 
+
+        setTheTheme();
+
+
         long matchId = getIntent().getLongExtra("lastMatchId", -1);
 
         if (savedInstanceState == null) {
@@ -43,6 +50,33 @@ public class ScoringActivity extends AppCompatActivity implements FragmentSwitch
         }
 
 
+    }
+
+    private void setTheTheme() {
+        String themeColour = PreferenceManager.getDefaultSharedPreferences(this).getString("theme", "");
+        int theme;
+        switch(themeColour){
+            case("Red"):
+                theme = R.style.Theme_Red;
+                break;
+            case("Purple"):
+                theme = R.style.Theme_Purple;
+                break;
+            case("Pink"):
+                theme = R.style.Theme_Pink;
+                break;
+            case("Orange"):
+                theme = R.style.Theme_Orange;
+                break;
+            case("Green"):
+                theme = R.style.Theme_Green;
+                break;
+            default:
+                theme = R.style.Theme_Blue;
+
+        }
+
+        setTheme(theme);
     }
 
     @Override

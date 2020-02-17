@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/side_nav_bar"
-        android:backgroundTint="#FFC107"
+        android:backgroundTint="?android:attr/colorPrimary"
         android:gravity="center"
         android:text="@string/leader_board_heading"
         android:textColor="@android:color/secondary_text_light"

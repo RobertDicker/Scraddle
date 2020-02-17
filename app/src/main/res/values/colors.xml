@@ -4,10 +4,20 @@
     <color name="inactivePlayer">#000</color>
     <color name="preferenceScreenBackgroundColorDark">#000000</color>
     <color name="preferenceScreenBackgroundColorLight">#DFDFDF</color>
-    <color name="colorPrimaryDark">#000</color>
+
     <color name="colorPrimaryLight">#FFF</color>
-    <color name="colorPrimary">#00BCD4</color>
+
     <!--LEADER BOARD-->
+
+
+
+        <color name="colorPrimary">#00BCD4</color>
+        <color name="colorPrimaryDark">#000</color>
+        <color name="colorAccent">#E91E63</color>
+       <color name="primaryText">#9C27B0</color>
+        <color name="buttonNormal">#03A9F4</color>
+        <color name="buttonHighlight">#00BCD4</color>
+        <color name="buttonText">#FFFFFF</color>
 
 
     <!--Colour Picker-->
@@ -17,4 +27,65 @@
     <color name="purple">#673AB7</color>
     <color name="pink">#FF39E0</color>
     <color name="orange">#F44336</color>
+
+
+
+<!-- Green Theme -->
+    <color name="greenColorPrimary">#76be2f</color>
+    <color name="greenColorPrimaryDark">#289b23</color>
+    <color name="greenColorAccent">#f9a825</color>
+    <color name="greenPrimaryText">#424242</color>
+    <color name="greenButtonNormal">#76be2f</color>
+    <color name="greenButtonHighlight">#81c784</color>
+    <color name="greenButtonText">#FFFFFF</color>
+
+
+    <!-- Blue Theme -->
+    <color name="blueColorPrimary">#00BCD4</color>
+    <color name="blueColorPrimaryDark">#2196F3</color>
+    <color name="blueColorAccent">#8BC34A</color>
+    <color name="bluePrimaryText">#FFFFFF</color>
+    <color name="blueButtonNormal">@color/blueColorPrimary</color>
+    <color name="blueButtonHighlight">#00BCD4</color>
+    <color name="blueButtonText">#FFFFFF</color>
+
+    <!-- Red Theme -->
+    <color name="redColorPrimary">#DF2E20</color>
+    <color name="redColorPrimaryDark">#C01306</color>
+    <color name="redColorAccent">#FF9800</color>
+    <color name="redPrimaryText">#FFFFFF</color>
+    <color name="redButtonNormal">@color/redColorPrimary</color>
+    <color name="redButtonHighlight">#E91E63</color>
+    <color name="redButtonText">#FFFFFF</color>
+
+    <!-- Pink Theme -->
+    <color name="pinkColorPrimary">#F2FF3DCC</color>
+    <color name="pinkColorPrimaryDark">#F2F710BF</color>
+    <color name="pinkColorAccent">#00BCD4</color>
+    <color name="pinkPrimaryText">#FFFFFF</color>
+    <color name="pinkButtonNormal">@color/pinkColorPrimary</color>
+    <color name="pinkButtonHighlight">#F3719A</color>
+    <color name="pinkButtonText">#FFFFFF</color>
+
+
+    <!-- purple Theme -->
+    <color name="purpleColorPrimary">#673AB7</color>
+    <color name="purpleColorPrimaryDark">#6113EC</color>
+    <color name="purpleColorAccent">#00BCD4</color>
+    <color name="purplePrimaryText">#FFFFFF</color>
+    <color name="purpleButtonNormal">@color/purpleColorPrimary</color>
+    <color name="purpleButtonHighlight">#946FE2</color>
+    <color name="purpleButtonText">#FFFFFF</color>
+
+    <!-- orange Theme -->
+    <color name="orangeColorPrimary">#FF9800</color>
+    <color name="orangeColorPrimaryDark">#FF5722</color>
+    <color name="orangeColorAccent">#FFEB3B</color>
+    <color name="orangePrimaryText">#FFFFFF</color>
+    <color name="orangeButtonNormal">@color/orangeColorPrimary</color>
+    <color name="orangeButtonHighlight">#CDDC39</color>
+    <color name="orangeButtonText">#FFFFFF</color>
+
+
+
 </resources>

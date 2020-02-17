@@ -9,15 +9,15 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppBarOverlay">
+        >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/activePlayer"
+            android:background="?android:attr/colorPrimary"
             app:menu="@menu/menu_players"
-            app:popupTheme="@style/PopupOverlay" />
+           />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/calc_button_border_blue"
-            android:backgroundTint="@color/activePlayer"
+            android:backgroundTint="?android:attr/colorPrimaryDark"
 
             android:shadowDx="-50"
             android:shadowRadius="50"

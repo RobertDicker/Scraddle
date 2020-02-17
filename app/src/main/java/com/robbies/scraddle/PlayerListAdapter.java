@@ -17,9 +17,11 @@ public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.Ac
     private ArrayList<GameDetail> playerDetails;
     private OnPlayerListener mOnPlayerListener;
 
+
     PlayerListAdapter(ArrayList<GameDetail> playerDetails, OnPlayerListener onPlayerListener) {
         this.playerDetails = playerDetails;
         this.mOnPlayerListener = onPlayerListener;
+
     }
 
     @NonNull

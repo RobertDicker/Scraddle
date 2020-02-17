@@ -39,12 +39,4 @@
         <item>Orange</item>
     </string-array>
 
-    <string-array name="colourValue">
-        <item>@color/blue</item>
-        <item>@color/red</item>
-        <item>@color/green</item>
-        <item>@color/purple</item>
-        <item>@color/pink</item>
-        <item>@color/orange</item>
-    </string-array>
 </resources>

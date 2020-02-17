@@ -6,5 +6,5 @@
     <stroke
         android:width="5dp"
 
-        android:color="@color/activePlayer" />
+        android:color="?android:attr/colorPrimary" />
 </shape>

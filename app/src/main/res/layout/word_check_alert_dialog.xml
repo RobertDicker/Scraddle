@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rounded_border_blue"
+    android:background="@drawable/rounded_border"
     android:orientation="vertical">
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_height="2dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="1"
-        android:background="@drawable/rounded_border_blue"
+        android:background="@drawable/rounded_border"
         app:srcCompat="?attr/dividerHorizontal" />
 
     <com.google.android.material.textfield.TextInputLayout
