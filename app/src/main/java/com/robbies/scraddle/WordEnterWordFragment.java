@@ -176,6 +176,14 @@ public class WordEnterWordFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+
+           super.onResume();
+        yourWordBuilder.setLength(0);
+        yourLettersTV.setText("");
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof FragmentListener) {

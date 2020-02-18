@@ -5,9 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -58,6 +60,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     private long timeRemaining;
     private boolean paused = true;
     private long countDownTime;
+    private int defaultThemeColor;
 
 
     //Buttons
@@ -89,6 +92,9 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         scoringViewModel = new ViewModelProvider(requireActivity()).get(ScoringViewModel.class);
         countDownTime = Long.parseLong(sharedPreferences.getString("timerLength", "6000"));
 
+        TypedValue typedValue = new TypedValue();
+        requireContext().getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        defaultThemeColor = typedValue.data;
 
         if (getArguments() != null) {
             matchId = getArguments().getLong("matchId");
@@ -164,6 +170,8 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(countDownTime == 0){ }
+
                 paused = !paused;
                 //Start the Game
                 if (countDownTimer == null) {
@@ -198,8 +206,8 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             countDownTimer.cancel();
         }
 
-        tvCurrentPlayerTurn.setBackgroundColor(Color.parseColor("#00BCD4"));
-        timer.setBackgroundColor(Color.parseColor("#00BCD4"));
+        tvCurrentPlayerTurn.setBackgroundColor(defaultThemeColor);
+        timer.setBackgroundColor(defaultThemeColor);
         countDownTimer = new CountDownTimer(time, 1000) {
 
             public void onTick(long millisUntilFinished) {

@@ -9,49 +9,67 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class WordViewModel extends AndroidViewModel {
 
+    private final List<Word> mAllAnagramList;
     private WordRepository mRepository;
     private LiveData<List<Word>> mAllWords;
-    private MediatorLiveData<Map<Word, Integer>> mUIObservedAnagrams;
-    private MutableLiveData<Map<Word, Integer>> mAllRetrievedAnagrams;
-    private MutableLiveData<Map<Word, Integer>> selectedAnagrams;
+    private MutableLiveData<String> mLetters;
+    private MediatorLiveData<List<Word>> mUIObservedAnagrams;
+    private MutableLiveData<Map<Integer, List<Word>>> mAllRetrievedAnagrams;
+    private MutableLiveData<List<Word>> selectedAnagrams;
 
 
     public WordViewModel(final Application application) {
         super(application);
+        mAllAnagramList = new ArrayList<>();
         mRepository = WordRepository.getInstance(application);
         mAllWords = mRepository.getAllWords();
         mUIObservedAnagrams = new MediatorLiveData<>();
         mAllRetrievedAnagrams = new MutableLiveData<>();
         selectedAnagrams = new MutableLiveData<>();
+        mLetters = new MutableLiveData<>();
+        mLetters.setValue("");
 
 
-        mUIObservedAnagrams.addSource(selectedAnagrams, new Observer<Map<Word, Integer>>() {
+        mUIObservedAnagrams.addSource(selectedAnagrams, new Observer<List<Word>>() {
             @Override
-            public void onChanged(Map<Word, Integer> wordIntegerMap) {
-                mUIObservedAnagrams.setValue(wordIntegerMap);
+            public void onChanged(List<Word> words) {
+                mUIObservedAnagrams.setValue(words);
             }
         });
 
 
-        mUIObservedAnagrams.addSource(mAllRetrievedAnagrams, new Observer<Map<Word, Integer>>() {
+        mUIObservedAnagrams.addSource(mAllRetrievedAnagrams, new Observer<Map<Integer, List<Word>>>() {
             @Override
-            public void onChanged(Map<Word, Integer> wordIntegerMap) {
-                mUIObservedAnagrams.setValue(wordIntegerMap);
+            public void onChanged(Map<Integer, List<Word>> wordIntegerMap) {
+
+                List<Word> allWords = new ArrayList<>();
+                for (List<Word> list : wordIntegerMap.values()) {
+                    allWords.addAll(list);
+                }
+                mUIObservedAnagrams.setValue(allWords);
             }
         });
     }
 
-    public void setAllAnagramsCache(Map<Word, Integer> allAnagrams) {
+    public void setAllAnagramsCache(Map<Integer, List<Word>> allAnagrams) {
+
+        for(List<Word> lists : allAnagrams.values()){
+
+            mAllAnagramList.addAll(lists);
+        }
+
+
         mAllRetrievedAnagrams.setValue(allAnagrams);
     }
 
-    public LiveData<Map<Word, Integer>> getAnagrams() {
+    public LiveData<List<Word>> getAnagrams() {
         return mUIObservedAnagrams;
     }
 
@@ -65,14 +83,24 @@ public class WordViewModel extends AndroidViewModel {
         mUIObservedAnagrams.addSource(mRepository.getMatchingPrimeWords(anagramPrimeValue, minimumLength, maxLength), new Observer<List<Word>>() {
             @Override
             public void onChanged(List<Word> words) {
-
                 Log.d("Started", "==Searching for words and creating map completed");
-                Map<Word, Integer> newMap = new ConcurrentHashMap<>();
-                for (Word word : words) {
-                    newMap.put(word, word.getWord().length());
+                Map<Integer, List<Word>> allMatchingWords = new ConcurrentHashMap<>();
+                for (int i = 2; i < 9; i++) {
+                    allMatchingWords.put(i, new ArrayList<Word>());
                 }
+                for (Word word : words) {
+                    mAllAnagramList.add(word);
+                    int wordLength = word.getWord().length() < 8 ? word.getWord().length() : 8;
+                    if (allMatchingWords.containsKey(wordLength)) {
+                        allMatchingWords.get(wordLength).add(word);
+                    }
+
+                }
+                mAllRetrievedAnagrams.setValue(allMatchingWords);
+
+
                 Log.d("DONE", "==Searching for words and creating map completed");
-                mAllRetrievedAnagrams.setValue(newMap);
+
 
             }
 
@@ -81,12 +109,20 @@ public class WordViewModel extends AndroidViewModel {
 
     }
 
-    public void insertWord(Word word) {
-        mRepository.insertWord(word);
+    public void insertWord(Word insertWord) {
+        mRepository.insertWord(insertWord);
     }
 
-    public void setSelectedAnagrams(Map<Word, Integer> selection) {
-        selectedAnagrams.setValue(selection);
+    public void setSelectedAnagrams(int length) {
+
+        if(length < 2){
+            selectedAnagrams.setValue(mAllAnagramList);
+        } else{
+
+            //Selected Length
+            selectedAnagrams.setValue(mAllRetrievedAnagrams.getValue().get(length));
+        }
+
 
     }
 
@@ -94,10 +130,18 @@ public class WordViewModel extends AndroidViewModel {
         return mRepository.getDefinition(word);
     }
 
-    public LiveData<List<WordAndDefinition>> getMatchingWordsForCrossword(String letters) {
-        return mRepository.getMatchingCrosswordWords(letters);
+    public LiveData<List<WordAndDefinition>> getMatchingWordsForCrossword() {
+        Log.d("=wordviewmodel==", ""+ mLetters.getValue());
+        return mRepository.getMatchingCrosswordWords(mLetters.getValue());
 
     }
 
+    public void setWord(String letters) {
+        mLetters.setValue(letters.replace(" ", "_").toLowerCase());
+    }
+
+    public LiveData<String> getLetters() {
+        return mLetters;
+    }
 
 }

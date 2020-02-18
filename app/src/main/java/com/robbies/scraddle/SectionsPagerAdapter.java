@@ -48,11 +48,11 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     }*/
 
-    public void updatePageValue(String key, Fragment fragment) {
+/*    public void updatePageValue(String key, Fragment fragment) {
         int position = pagesTitles.indexOf(key);
         pages.set(position, fragment);
         notifyDataSetChanged();
-    }
+    }*/
 
     @Nullable
     @Override

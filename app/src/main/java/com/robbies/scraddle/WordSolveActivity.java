@@ -19,9 +19,10 @@ public class WordSolveActivity extends AppCompatActivity implements FragmentList
 
     SectionsPagerAdapter sectionsPagerAdapter;
     ViewPager viewPager;
-    String word = "wrong";
+  //  String letters = "wrong";
     WordViewModel wordViewModel;
     int mode;
+    private String letters;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +37,9 @@ public class WordSolveActivity extends AppCompatActivity implements FragmentList
         fragmentList.put("Word", WordEnterWordFragment.newInstance(mode));
 
         if (mode == 1) {
-            fragmentList.put("Solve", CrosswordFragment.newInstance("Demo"));
+            fragmentList.put("Solve", CrosswordFragment.newInstance());
         } else {
-            fragmentList.put("Solve", AnagramFragment.newInstance("TryAgain"));
+            fragmentList.put("Solve", AnagramFragment.newInstance());
         }
 
         setContentView(R.layout.activity_tabbed_word_solve);
@@ -48,16 +49,13 @@ public class WordSolveActivity extends AppCompatActivity implements FragmentList
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+       viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
-                if (mode == 1) {
-                    sectionsPagerAdapter.updatePageValue("Solve", CrosswordFragment.newInstance(word));
-                } else {
-                    sectionsPagerAdapter.updatePageValue("Solve", AnagramFragment.newInstance(word));
+                if(position == 1) {
+                    wordViewModel.setWord(letters);
                 }
-
             }
         });
 
@@ -74,7 +72,7 @@ public class WordSolveActivity extends AppCompatActivity implements FragmentList
 
     @Override
     public void updateWord(String word) {
-        this.word = word;
+        this.letters = word;
 
     }
 
