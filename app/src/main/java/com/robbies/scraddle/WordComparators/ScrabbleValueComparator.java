@@ -8,11 +8,16 @@ public class ScrabbleValueComparator implements Comparator<Word> {
     @Override
     public int compare(Word a, Word b) {
 
-        try {
-            return Integer.compare(Integer.parseInt(b.getScrabbleValue()), Integer.parseInt(a.getScrabbleValue()));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (a == null) {
+            if (b == null) {
+                return 0;
+            }
+            return -1;
+        } else if (b == null) {
+            return 1;
         }
-        return 0;
+
+        return Integer.compare(Integer.parseInt(b.getScrabbleValue()), Integer.parseInt(a.getScrabbleValue()));
+
     }
 }

@@ -14,7 +14,7 @@ import com.robbies.scraddle.Utilities.FullScreenMode;
 public class MainActivity extends AppCompatActivity {
 
     private final static String FRAGMENT_TAG_STRING = "MainMenu";
-    private MainMenuFragment mainMenuFragment;
+
 
     private static void setDayNightTheme(SharedPreferences prefs) {
         int currentTheme = prefs.getBoolean(Settings.KEY_PREF_NIGHT_MODE, false) ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO;
@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setDayNightTheme(sP);
         setContentView(R.layout.activity_main_menu);
 
+        MainMenuFragment mainMenuFragment;
 
         if (savedInstanceState == null) {
             mainMenuFragment = new MainMenuFragment();

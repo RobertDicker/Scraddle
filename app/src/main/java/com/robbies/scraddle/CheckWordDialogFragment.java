@@ -22,7 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.robbies.scraddle.WordData.WordViewModel;
 
 
-public class CheckWord extends DialogFragment {
+public class CheckWordDialogFragment extends DialogFragment {
 
     private WordViewModel wordViewModel;
     private EditText editText;
@@ -34,13 +34,12 @@ public class CheckWord extends DialogFragment {
     private GradientDrawable divider;
     private Observer<String> wordObserver;
 
-    public CheckWord() {
+    public CheckWordDialogFragment() {
         // Required empty public constructor
     }
 
-
-    static CheckWord newInstance() {
-        return new CheckWord();
+    static CheckWordDialogFragment newInstance() {
+        return new CheckWordDialogFragment();
     }
 
     @Nullable

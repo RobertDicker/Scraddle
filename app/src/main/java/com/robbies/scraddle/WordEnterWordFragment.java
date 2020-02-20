@@ -86,7 +86,6 @@ public class WordEnterWordFragment extends Fragment {
 
         if (getArguments() != null) {
             mode = getArguments().getInt(MODE);
-            Log.d("ARGUMENTS", "GETTING ==========" + mode);
 
         }
 
@@ -122,7 +121,6 @@ public class WordEnterWordFragment extends Fragment {
             // Create the Keyboard
             mKeyboard = new Keyboard(requireContext(), R.xml.keyboard_letters_with_space);
 
-            Log.d("wordenterfragment", "Keyboard fragment for no spaces");
         } else {
             mKeyboard = new Keyboard(requireContext(), R.xml.keyboard_letters_portrait);
         }
@@ -150,7 +148,6 @@ public class WordEnterWordFragment extends Fragment {
     }
 
     private void updateDisplayedWord(int letterValue) {
-        Log.d("value", (char) letterValue + "");
         switch (letterValue) {
 
             //Backspace
@@ -178,7 +175,7 @@ public class WordEnterWordFragment extends Fragment {
     @Override
     public void onResume() {
 
-           super.onResume();
+        super.onResume();
         yourWordBuilder.setLength(0);
         yourLettersTV.setText("");
     }

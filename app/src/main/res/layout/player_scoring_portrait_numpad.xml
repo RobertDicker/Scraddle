@@ -51,6 +51,7 @@
 
 
         <Button
+            android:id="@+id/buttonAddZero"
             style="@style/buttonCalcPortrait"
             android:text="@string/buttonAddZeroText" />
 

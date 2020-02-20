@@ -17,11 +17,8 @@ import java.util.Map;
 
 public class WordSolveActivity extends AppCompatActivity implements FragmentListener {
 
-    SectionsPagerAdapter sectionsPagerAdapter;
-    ViewPager viewPager;
-  //  String letters = "wrong";
-    WordViewModel wordViewModel;
-    int mode;
+    private ViewPager viewPager;
+    private WordViewModel wordViewModel;
     private String letters;
 
     @Override
@@ -30,35 +27,34 @@ public class WordSolveActivity extends AppCompatActivity implements FragmentList
         wordViewModel = new ViewModelProvider(this).get(WordViewModel.class);
 
         FullScreenMode.hideToolBr(this);
-        mode = getIntent().getIntExtra("solveType", 0);
+        int mode = getIntent().getIntExtra("solveType", 0);
 
         // The Fragments to load (Title, Fragment)
         final Map<String, Fragment> fragmentList = new LinkedHashMap<>();
         fragmentList.put("Word", WordEnterWordFragment.newInstance(mode));
 
         if (mode == 1) {
-            fragmentList.put("Solve", CrosswordFragment.newInstance());
+            fragmentList.put("Solve", WordCrosswordFragment.newInstance());
         } else {
-            fragmentList.put("Solve", AnagramFragment.newInstance());
+            fragmentList.put("Solve", WordAnagramFragment.newInstance());
         }
 
         setContentView(R.layout.activity_tabbed_word_solve);
-        sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), fragmentList);
+        WordSectionsPagerAdapter sectionsPagerAdapter = new WordSectionsPagerAdapter(this, getSupportFragmentManager(), fragmentList);
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
-       viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 1) {
+                if (position == 1) {
                     wordViewModel.setWord(letters);
                 }
             }
         });
-
     }
 
     @Override
@@ -78,8 +74,9 @@ public class WordSolveActivity extends AppCompatActivity implements FragmentList
 
     @Override
     public void changePage(int position) {
-
-        viewPager.setCurrentItem(position, true);
+        if (letters.length() > 1) {
+            viewPager.setCurrentItem(position, true);
+        }
 
 
     }

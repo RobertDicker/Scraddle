@@ -17,12 +17,12 @@
 
     <string-array name="timerLengthValues">
         <item>0</item>
-        <item>1500</item>
-        <item>2000</item>
-        <item>3000</item>
-        <item>4500</item>
-        <item>6000</item>
-        <item>9000</item>
+        <item>15000</item>
+        <item>20000</item>
+        <item>30000</item>
+        <item>45000</item>
+        <item>60000</item>
+        <item>90000</item>
         <item>120000</item>
         <item>150000</item>
         <item>180000</item>

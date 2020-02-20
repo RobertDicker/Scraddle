@@ -31,14 +31,14 @@
             android:background="?android:attr/colorPrimaryDark"
             android:clickable="true"
             android:gravity="center"
-            android:text="2:30"
+            android:text="Start"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
         <include
             layout="@layout/player_scoring_landscape_numpad"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1" />
     </LinearLayout>
 

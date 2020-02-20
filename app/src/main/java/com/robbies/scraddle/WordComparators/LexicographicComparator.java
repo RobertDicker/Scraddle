@@ -8,11 +8,18 @@ public class LexicographicComparator implements Comparator<Word> {
     @Override
     public int compare(Word a, Word b) {
 
-        try {
-            return a.getWord().compareToIgnoreCase(b.getWord());
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (a == null) {
+            if (b == null) {
+                return 0;
+            }
+            return -1;
+        } else if (b == null) {
+            return 1;
+
         }
-        return 0;
+
+        return a.getWord().compareToIgnoreCase(b.getWord());
+
+
     }
 }

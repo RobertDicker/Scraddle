@@ -16,19 +16,16 @@ import java.util.Map;
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
-public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-
+public class WordSectionsPagerAdapter extends FragmentStatePagerAdapter {
 
     private final Context mContext;
-    private String word;
     private List<Fragment> pages;
     private List<String> pagesTitles;
 
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm, Map<String, Fragment> pages) {
+    public WordSectionsPagerAdapter(Context context, FragmentManager fm, Map<String, Fragment> pages) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mContext = context;
-        word = "";
 
         this.pages = new ArrayList<>();
         this.pages.addAll(pages.values());
@@ -37,22 +34,10 @@ public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         pagesTitles.addAll(pages.keySet());
     }
 
-
     @Override
-    public Fragment getItem(int position) {
+    public Fragment getItem(@NonNull int position) {
         return pages.get(position);
     }
-
-/*    public void setWord(String word){
-        this.word = word;
-
-    }*/
-
-/*    public void updatePageValue(String key, Fragment fragment) {
-        int position = pagesTitles.indexOf(key);
-        pages.set(position, fragment);
-        notifyDataSetChanged();
-    }*/
 
     @Nullable
     @Override

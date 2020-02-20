@@ -99,6 +99,8 @@
     <string name="check_word">Check Word</string>
     <string name="try_again">Try Again</string>
     <string name="paused">Paused</string>
+    <string name="times_up_message">TIMES UP!</string>
+    <string name="timer_string_no_time_remaining">0:00</string>
 
 
 </resources>

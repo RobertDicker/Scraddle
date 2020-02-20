@@ -125,7 +125,7 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonAddSix" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonAddZero"
         style="@style/buttonCalcSmall"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonClear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddZero"
         tools:text="Add To Player" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

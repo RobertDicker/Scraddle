@@ -60,7 +60,7 @@ public class WordViewModel extends AndroidViewModel {
 
     public void setAllAnagramsCache(Map<Integer, List<Word>> allAnagrams) {
 
-        for(List<Word> lists : allAnagrams.values()){
+        for (List<Word> lists : allAnagrams.values()) {
 
             mAllAnagramList.addAll(lists);
         }
@@ -78,12 +78,10 @@ public class WordViewModel extends AndroidViewModel {
     }
 
     public void getAnagramsOf(String anagramPrimeValue, int minimumLength, int maxLength) {
-        Log.d("Started", "==ENTERED GETANAGRAMOF looking for words");
 
         mUIObservedAnagrams.addSource(mRepository.getMatchingPrimeWords(anagramPrimeValue, minimumLength, maxLength), new Observer<List<Word>>() {
             @Override
             public void onChanged(List<Word> words) {
-                Log.d("Started", "==Searching for words and creating map completed");
                 Map<Integer, List<Word>> allMatchingWords = new ConcurrentHashMap<>();
                 for (int i = 2; i < 9; i++) {
                     allMatchingWords.put(i, new ArrayList<Word>());
@@ -92,6 +90,7 @@ public class WordViewModel extends AndroidViewModel {
                     mAllAnagramList.add(word);
                     int wordLength = word.getWord().length() < 8 ? word.getWord().length() : 8;
                     if (allMatchingWords.containsKey(wordLength)) {
+
                         allMatchingWords.get(wordLength).add(word);
                     }
 
@@ -99,7 +98,6 @@ public class WordViewModel extends AndroidViewModel {
                 mAllRetrievedAnagrams.setValue(allMatchingWords);
 
 
-                Log.d("DONE", "==Searching for words and creating map completed");
 
 
             }
@@ -115,12 +113,14 @@ public class WordViewModel extends AndroidViewModel {
 
     public void setSelectedAnagrams(int length) {
 
-        if(length < 2){
+        if (length < 2) {
             selectedAnagrams.setValue(mAllAnagramList);
-        } else{
+        } else {
 
             //Selected Length
-            selectedAnagrams.setValue(mAllRetrievedAnagrams.getValue().get(length));
+            if (mAllRetrievedAnagrams.getValue() != null) {
+                selectedAnagrams.setValue(mAllRetrievedAnagrams.getValue().get(length));
+            }
         }
 
 
@@ -131,7 +131,6 @@ public class WordViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<WordAndDefinition>> getMatchingWordsForCrossword() {
-        Log.d("=wordviewmodel==", ""+ mLetters.getValue());
         return mRepository.getMatchingCrosswordWords(mLetters.getValue());
 
     }

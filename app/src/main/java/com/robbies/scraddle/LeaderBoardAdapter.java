@@ -87,7 +87,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
     static class DetailViewHolder extends RecyclerView.ViewHolder {
 
-        //  OnPlayerListener onPlayerListener;
+
         TextView playerNameTextView;
         TextView playerRankTextView;
         TextView playerGamesPlayedTextView;

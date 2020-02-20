@@ -41,18 +41,23 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     public void onBindViewHolder(@NonNull WordViewHolder holder, int position) {
 
         if (mWords != null) {
+
             Word current = mWords.get(position);
-            holder.wordItemView.setText(current.getWord());
-            holder.scrabbleScore.setText(String.format("%spts", current.getScrabbleValue()));
+            if (current != null) {
+                holder.wordItemView.setText(current.getWord());
+                holder.scrabbleScore.setText(String.format("%spts", current.getScrabbleValue()));
 
-            String backgroundColorOfWord = COLOUR_CHOICES[0];
-            backgroundColorOfWord = current.getWord().length() <= 8 ? COLOUR_CHOICES[current.getWord().length()] : backgroundColorOfWord;
+                String backgroundColorOfWord = COLOUR_CHOICES[0];
+                backgroundColorOfWord = current.getWord().length() <= 8 ? COLOUR_CHOICES[current.getWord().length()] : backgroundColorOfWord;
 
-            holder.scrabbleScore.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
-            holder.wordItemView.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
+                holder.scrabbleScore.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
+                holder.wordItemView.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
+            }
+
         } else {
             holder.wordItemView.setText(R.string.no_words);
         }
+
     }
 
 

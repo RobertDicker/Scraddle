@@ -13,8 +13,8 @@ public abstract class BaseDao<T> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract long insert(T entity);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract void insert(T... entity);
+/*    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract void insert(T... entity);*/
 
     @Update
     abstract void update(T entity);

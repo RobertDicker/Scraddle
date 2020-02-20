@@ -10,14 +10,13 @@
     <!--LEADER BOARD-->
 
 
-
-        <color name="colorPrimary">#00BCD4</color>
-        <color name="colorPrimaryDark">#000</color>
-        <color name="colorAccent">#E91E63</color>
-       <color name="primaryText">#9C27B0</color>
-        <color name="buttonNormal">#03A9F4</color>
-        <color name="buttonHighlight">#00BCD4</color>
-        <color name="buttonText">#FFFFFF</color>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#E91E63</color>
+    <color name="primaryText">#9C27B0</color>
+    <color name="buttonNormal">#03A9F4</color>
+    <color name="buttonHighlight">#00BCD4</color>
+    <color name="buttonText">#FFFFFF</color>
 
 
     <!--Colour Picker-->
@@ -29,8 +28,7 @@
     <color name="orange">#F44336</color>
 
 
-
-<!-- Green Theme -->
+    <!-- Green Theme -->
     <color name="greenColorPrimary">#76be2f</color>
     <color name="greenColorPrimaryDark">#289b23</color>
     <color name="greenColorAccent">#f9a825</color>
@@ -85,7 +83,6 @@
     <color name="orangeButtonNormal">@color/orangeColorPrimary</color>
     <color name="orangeButtonHighlight">#CDDC39</color>
     <color name="orangeButtonText">#FFFFFF</color>
-
 
 
 </resources>

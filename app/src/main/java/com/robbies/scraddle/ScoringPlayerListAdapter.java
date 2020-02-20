@@ -12,13 +12,13 @@ import com.robbies.scraddle.Data.GameDetail;
 
 import java.util.ArrayList;
 
-public class PlayerListAdapter extends RecyclerView.Adapter<PlayerListAdapter.ActivePlayerViewHolder> {
+public class ScoringPlayerListAdapter extends RecyclerView.Adapter<ScoringPlayerListAdapter.ActivePlayerViewHolder> {
 
     private ArrayList<GameDetail> playerDetails;
     private OnPlayerListener mOnPlayerListener;
 
 
-    PlayerListAdapter(ArrayList<GameDetail> playerDetails, OnPlayerListener onPlayerListener) {
+    ScoringPlayerListAdapter(ArrayList<GameDetail> playerDetails, OnPlayerListener onPlayerListener) {
         this.playerDetails = playerDetails;
         this.mOnPlayerListener = onPlayerListener;
 

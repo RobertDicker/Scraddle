@@ -13,13 +13,12 @@ import com.robbies.scraddle.WordData.WordAndDefinition;
 
 import java.util.List;
 
-public class CrosswordListAdapter extends RecyclerView.Adapter<CrosswordListAdapter.WordViewHolder> {
+public class WordCrosswordListAdapter extends RecyclerView.Adapter<WordCrosswordListAdapter.WordViewHolder> {
 
     private final LayoutInflater mInflater;
-    private final String[] COLOUR_CHOICES = {"#F44336", "#F44336", "#4CAF50", "#8BC34A", "#CDDC39", "#FFEB3B", "#FFC107", "#FF9800", "#FF5722"};
     private List<WordAndDefinition> mWords; // Cached copy of words
 
-    CrosswordListAdapter(Context context) {
+    WordCrosswordListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
@@ -40,11 +39,6 @@ public class CrosswordListAdapter extends RecyclerView.Adapter<CrosswordListAdap
             holder.wordTextView.setText(current.getWord());
             holder.definition.setText(current.getDefinition());
 
-        /*    String backgroundColorOfWord = COLOUR_CHOICES[0];
-            backgroundColorOfWord = current.getWord().length() <= 8 ? COLOUR_CHOICES[current.getWord().length()] : backgroundColorOfWord;
-
-            holder.scrabbleScore.setBackgroundColor(Color.parseColor(backgroundColorOfWord));
-            holder.wordItemView.setBackgroundColor(Color.parseColor(backgroundColorOfWord));*/
         } else {
             holder.wordTextView.setText(R.string.no_words);
             holder.definition.setVisibility(View.GONE);

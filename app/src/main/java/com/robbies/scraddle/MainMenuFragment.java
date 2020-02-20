@@ -117,7 +117,6 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
         if (s.equals(Settings.KEY_PREF_NIGHT_MODE)) {
             setDayNightMode();
         }
-
     }
 
     private void setDayNightMode() {

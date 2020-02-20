@@ -8,16 +8,14 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?android:attr/colorPrimary"
-            app:menu="@menu/menu_players"
-            />
+            app:menu="@menu/menu_players" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -10,15 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
-            android:name=".Scorer"
-            android:label="@string/title_activity_scorer"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.robbies.scraddle.MainActivity" />
-        </activity>
-        <activity
             android:name=".WordSolveActivity"
             android:label="Anagram Activity"
             android:parentActivityName=".MainActivity"

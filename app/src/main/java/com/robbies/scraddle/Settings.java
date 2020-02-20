@@ -39,12 +39,6 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
         View view = super.onCreateView(inflater, container, savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
-        if (view != null) {
-            // Change the background color based on the theme present
-            int backgroundColor = sharedPreferences.getBoolean(KEY_PREF_NIGHT_MODE, false) ? R.color.preferenceScreenBackgroundColorDark : R.color.preferenceScreenBackgroundColorLight;
-            view.setBackgroundColor(getResources().getColor(backgroundColor));
-        }
-
         return view;
     }
 

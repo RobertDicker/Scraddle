@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -43,15 +42,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPlayerListener, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, Timer.TimerUpdateListener {
+public class ScoringFragment extends Fragment implements ScoringPlayerListAdapter.OnPlayerListener, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener, Timer.TimerUpdateListener {
 
     //CONSTANTS
     private static final int UNDO_PLAYER = -1;
     private static final int SAVE_PLAYER = 0;
     private static final int FINAL_SAVE = 1;
     private static final int REVERT_DATA = -2;
-    private final int[] onClickRegisteredButtons = {R.id.buttonAddOne, R.id.buttonAddTwo, R.id.buttonAddThree, R.id.buttonAddFour, R.id.buttonAddFive, R.id.buttonAddSix, R.id.buttonAddSeven, R.id.buttonAddEight, R.id.buttonAddNine, R.id.buttonDeleteLast, R.id.buttonClear, R.id.buttonAddToPlayer};
-    CountDownTimer countDownTimer;
+    private final int[] onClickRegisteredButtons = {R.id.buttonAddZero, R.id.buttonAddOne, R.id.buttonAddTwo, R.id.buttonAddThree, R.id.buttonAddFour, R.id.buttonAddFive, R.id.buttonAddSix, R.id.buttonAddSeven, R.id.buttonAddEight, R.id.buttonAddNine, R.id.buttonDeleteLast, R.id.buttonClear, R.id.buttonAddToPlayer};
+    private CountDownTimer countDownTimer;
     //DATA
     private SharedPreferences sharedPreferences;
     private ScoringViewModel scoringViewModel;
@@ -72,11 +71,11 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
     private TextView tvCurrentPlayerTurn;
     private Button addToPlayerButton;
     private RecyclerView mRecyclerViewPlayers;
-    private PlayerListAdapter playerAdapter;
+    private ScoringPlayerListAdapter playerAdapter;
     private TextView timer;
 
 
-    public static ScoringFragment newInstance(long matchId) {
+    static ScoringFragment newInstance(long matchId) {
         ScoringFragment fragment = new ScoringFragment();
         Bundle bundle = new Bundle();
         bundle.putLong("matchId", matchId);
@@ -98,11 +97,15 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
         if (getArguments() != null) {
             matchId = getArguments().getLong("matchId");
+
         }
 
         //Backup Turn data
         if (savedInstanceState != null) {
             backupPlayerDetails = savedInstanceState.getParcelableArrayList("backupPlayerTurnData");
+            timeRemaining = savedInstanceState.getLong("timeRemaining");
+            paused = savedInstanceState.getBoolean("paused");
+
         }
 
     }
@@ -112,6 +115,8 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         super.onSaveInstanceState(outState);
         // Save the backup turn data
         outState.putParcelableArrayList("backupPlayerTurnData", backupPlayerDetails);
+        outState.putLong("timeRemaining", timeRemaining);
+        outState.putBoolean("paused", true);
     }
 
     @Override
@@ -140,14 +145,19 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             }
         });
 
-
         //Display
         tvCurrentPlayerTurn = view.findViewById(R.id.textViewCurrentPlayerTurn);
         addToPlayerButton = view.findViewById(R.id.buttonAddToPlayer);
         timer = view.findViewById(R.id.textViewTimer);
 
+        if (savedInstanceState != null) {
+            tvCurrentPlayerTurn.setBackgroundColor(Color.parseColor("#FF9800"));
+            timer.setBackgroundColor(Color.parseColor("#FF9800"));
+            timer.setText(R.string.paused);
+        }
+
         mRecyclerViewPlayers = view.findViewById(R.id.rVPlayers);
-        playerAdapter = new PlayerListAdapter(playerDetails, this);
+        playerAdapter = new ScoringPlayerListAdapter(playerDetails, this);
         mRecyclerViewPlayers.setAdapter(playerAdapter);
 
         //Handle screen Rotations
@@ -166,27 +176,27 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
         NavigationView navigationView = view.findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         timer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(countDownTime == 0){ }
+                //  if(countDownTime == 0){ }
 
+                //Pause or Unpause on click
                 paused = !paused;
-                //Start the Game
-                if (countDownTimer == null) {
+
+                // Existing timer
+                if (timeRemaining != 0 & !paused) {
+                    startCountDown(timeRemaining);
+                }
+
+                // Start Initial game timer
+                else if (countDownTimer == null) {
                     if (currentPlayer == null) {
                         tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
                     }
                     startCountDown(countDownTime);
                 }
 
-                // Resume Timer
-                else if (paused) {
-                    startCountDown(timeRemaining);
-
-
-                }
                 // Pause the timer
                 else {
                     countDownTimer.cancel();
@@ -194,7 +204,6 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
                     timer.setBackgroundColor(Color.parseColor("#FF9800"));
                     timer.setText(R.string.paused);
                 }
-
             }
         });
 
@@ -218,9 +227,10 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
             }
 
             public void onFinish() {
-                timer.setText("0:00");
+                timer.setText(R.string.timer_string_no_time_remaining);
+                timeRemaining = 0;
                 timer.setBackgroundColor(Color.RED);
-                tvCurrentPlayerTurn.setText("TIMES UP!");
+                tvCurrentPlayerTurn.setText(R.string.times_up_message);
                 tvCurrentPlayerTurn.setBackgroundColor(Color.RED);
 
             }
@@ -229,7 +239,7 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
 
     private void checkWord() {
-        CheckWord dialog = CheckWord.newInstance();
+        CheckWordDialogFragment dialog = CheckWordDialogFragment.newInstance();
         dialog.show(requireActivity().getSupportFragmentManager(), "wordCheck");
 
 
@@ -248,10 +258,11 @@ public class ScoringFragment extends Fragment implements PlayerListAdapter.OnPla
 
 
     private void deleteMatch() {
-        mRecyclerViewPlayers.setAdapter(null);
+
         new AlertDialog.Builder(requireContext()).setTitle("Do you wish to delete this match?").setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                mRecyclerViewPlayers.setAdapter(null);
                 saveData(REVERT_DATA);
                 returnToMain();
             }

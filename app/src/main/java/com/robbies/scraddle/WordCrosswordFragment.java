@@ -21,7 +21,7 @@ import com.robbies.scraddle.WordData.WordViewModel;
 
 import java.util.List;
 
-public class CrosswordFragment extends Fragment implements WordListAdapter.OnWordClickListener {
+public class WordCrosswordFragment extends Fragment implements WordListAdapter.OnWordClickListener {
 
     private String letters;
     private LinearLayout noWordsLinearLayout;
@@ -29,12 +29,11 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
     private ProgressBar indeterminateProgressBar;
 
     private WordViewModel mWordViewModel;
-    private CrosswordListAdapter adapter;
+    private WordCrosswordListAdapter adapter;
 
 
-
-    public static CrosswordFragment newInstance() {
-       return new CrosswordFragment();
+    static WordCrosswordFragment newInstance() {
+        return new WordCrosswordFragment();
     }
 
 
@@ -46,7 +45,7 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
 
         mWordViewModel = new ViewModelProvider(requireActivity()).get(WordViewModel.class);
 
-        adapter = new CrosswordListAdapter(requireContext());
+        adapter = new WordCrosswordListAdapter(requireContext());
     }
 
     @Override
@@ -98,7 +97,7 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
     private void updateUI(List<WordAndDefinition> allMatchingWords) {
 
         numberOfWords.setText(String.format("Words: %s", allMatchingWords.size()));
-        showIndeterminateProgressBar(false);
+        indeterminateProgressBar.setVisibility(View.GONE);
 
         //If there are no current words show this
         int visibilityNoWordsImage = allMatchingWords.size() < 1 ? View.VISIBLE : View.GONE;
@@ -106,10 +105,6 @@ public class CrosswordFragment extends Fragment implements WordListAdapter.OnWor
         adapter.setWords(allMatchingWords);
     }
 
-    private void showIndeterminateProgressBar(Boolean show) {
-        int visibility = show ? View.VISIBLE : View.GONE;
-        indeterminateProgressBar.setVisibility(visibility);
-    }
 
     @Override
     public void onWordClick(String word) {

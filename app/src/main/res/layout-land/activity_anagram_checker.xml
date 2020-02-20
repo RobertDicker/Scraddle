@@ -66,7 +66,7 @@
 
     <include
         android:id="@+id/includeFilter"
-        layout="@layout/anagram_filter_layout"
+        layout="@layout/anagram_filter"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
