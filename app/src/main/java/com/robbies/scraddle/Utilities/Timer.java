@@ -30,7 +30,6 @@ public class Timer {
             @Override
             public void run() {
                 while (timeRemainingInSeconds > 0) {
-                    Log.d("Timer ", "" + timeRemainingInSeconds);
                     try {
                         wait(500);
                     } catch (InterruptedException e) {
