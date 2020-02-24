@@ -14,6 +14,7 @@
             android:label="Anagram Activity"
             android:parentActivityName=".MainActivity"
             android:theme="@style/NoActionBar"
+            android:launchMode = "singleTop"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
