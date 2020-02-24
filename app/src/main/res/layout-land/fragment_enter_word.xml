@@ -39,7 +39,7 @@
             android:singleLine="true"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/holo_blue_bright"
-            app:autoSizeMaxTextSize="50dp"
+            app:autoSizeMaxTextSize="150dp"
             app:autoSizeMinTextSize="30dp"
             app:autoSizeStepGranularity="2dp"
             app:autoSizeTextType="uniform" />

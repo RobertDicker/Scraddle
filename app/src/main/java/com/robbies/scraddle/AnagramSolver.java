@@ -1,7 +1,5 @@
 package com.robbies.scraddle;
 
-import android.util.Log;
-
 import com.robbies.scraddle.Utilities.CheckWordIsAnagram;
 import com.robbies.scraddle.WordData.Word;
 

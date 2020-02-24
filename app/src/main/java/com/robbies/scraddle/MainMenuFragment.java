@@ -61,6 +61,17 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        for (int button : registeredMenuButtons) {
+
+            getView().findViewById(button).setEnabled(true);
+
+        }
+
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -70,6 +81,8 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+
+        view.setEnabled(false);
         Intent intent;
         switch (view.getId()) {
 
@@ -77,10 +90,11 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
             case R.id.buttonAnagramSolver:
                 intent = new Intent(getContext(), WordSolveActivity.class);
                 intent.putExtra("solveType", 0);
-                startActivity(intent);
+                animate(intent);
+                //
                 break;
             case R.id.buttonStartNewGame:
-                startActivity(new Intent(getContext(), ScoringActivity.class));
+                animate(new Intent(getContext(), ScoringActivity.class));
                 break;
             case R.id.buttonLeaderBoard:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new LeaderboardFragment()).addToBackStack(null).commit();
@@ -88,7 +102,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
             case R.id.buttonContinue:
                 intent = new Intent(getContext(), ScoringActivity.class);
                 intent.putExtra("lastMatchId", lastMatch);
-                startActivity(intent);
+                animate(intent);
                 break;
             case R.id.buttonSettings:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new Settings()).addToBackStack(null).commit();
@@ -97,10 +111,51 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
             case R.id.buttonCrossword:
                 intent = new Intent(getContext(), WordSolveActivity.class);
                 intent.putExtra("solveType", 1);
-                startActivity(intent);
+                animate(intent);
+
                 break;
         }
     }
+
+
+    private void animate(final Intent intent) {
+
+        final Runnable r = new Runnable() {
+
+            @Override
+            public void run() {
+
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out_rotate_scale_small);
+
+                setAllowEnterTransitionOverlap(true);
+
+                for (int button : registeredMenuButtons) {
+                    View buttonView = requireView().findViewById(button);
+                    float buttonX = buttonView.getX();
+                    float buttonTranslationX = buttonView.getTranslationX();
+                    buttonView.animate().x(buttonX - buttonTranslationX).setDuration(3000).start();
+                }
+            }
+        };
+
+        // Used to change the direction of translation
+        boolean even = true;
+        for (int button : registeredMenuButtons) {
+
+            if (even = !even) {
+                requireActivity().findViewById(button).animate().translationXBy(-3000).setDuration(1000).start();
+
+            } else {
+                requireActivity().findViewById(button).animate().translationXBy(3000).setDuration(1000).start();
+            }
+        }
+
+        requireActivity().findViewById(R.id.scraddleLogo).animate().setStartDelay(500).withEndAction(r).start();
+
+
+    }
+
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {

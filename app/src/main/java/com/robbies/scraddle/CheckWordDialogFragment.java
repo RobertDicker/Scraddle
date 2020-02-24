@@ -1,10 +1,12 @@
 package com.robbies.scraddle;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -95,11 +98,18 @@ public class CheckWordDialogFragment extends DialogFragment {
                     wordViewModel.getDefinition(editText.getText().toString()).observe(requireActivity(), wordObserver);
 
                 } else {
+
+                    TypedValue typedValue = new TypedValue();
+                    Resources.Theme theme = requireContext().getTheme();
+                    theme.resolveAttribute(R.attr.colorPrimary, typedValue, true);
+                    @ColorInt int color = typedValue.data;
+
+
                     checkWordButton.setText(R.string.check_word);
-                    buttonDrawable.setTint(Color.parseColor("#00BCD4"));
+                    buttonDrawable.setTint(color);
                     editText.setText("");
-                    drawable.setStroke(2, Color.parseColor("#00BCD4"));
-                    divider.setStroke(2, Color.parseColor("#00BCD4"));
+                    drawable.setStroke(2, color);
+                    divider.setStroke(2, color);
 
                 }
             }

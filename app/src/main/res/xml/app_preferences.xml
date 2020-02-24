@@ -2,10 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="?android:attr/colorPrimaryDark">
+    android:background="?android:attr/colorPrimaryDark"
+    android:backgroundTint="#8B8989">
 
 
-    <PreferenceCategory android:title="Data">
+    <PreferenceCategory
+        android:background="?android:attr/colorPrimaryDark"
+        android:title="Data">
 
         <Preference
             android:layout_width="match_parent"
@@ -51,6 +54,7 @@
 
     <PreferenceCategory android:title="Theme">
         <ListPreference
+            android:defaultValue="false"
             android:entries="@array/colourEntry"
             android:entryValues="@array/colourEntry"
             android:icon="@drawable/ic_theme_24dp"

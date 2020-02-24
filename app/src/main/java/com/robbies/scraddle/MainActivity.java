@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
 import com.robbies.scraddle.Utilities.FullScreenMode;
+import com.robbies.scraddle.Utilities.ThemeChanger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sP = PreferenceManager.getDefaultSharedPreferences(this);
         setDayNightTheme(sP);
+        setTheme(ThemeChanger.getThemeFromPreferences(getApplicationContext()));
         setContentView(R.layout.activity_main_menu);
 
         MainMenuFragment mainMenuFragment;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
             mainMenuFragment = (MainMenuFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG_STRING);
         }
     }
+
 
     @Override
     public void onBackPressed() {

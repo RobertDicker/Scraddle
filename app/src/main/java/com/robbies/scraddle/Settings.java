@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,15 +17,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.robbies.scraddle.Data.Player;
 import com.robbies.scraddle.Data.ScoringViewModel;
+import com.robbies.scraddle.Utilities.ThemeChanger;
 import com.robbies.scraddle.Utilities.TidyStringFormatterHelper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Settings extends PreferenceFragmentCompat implements SelectPlayerDialog.SelectPlayerDialogOnClickListener {
 
@@ -39,12 +44,23 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
         View view = super.onCreateView(inflater, container, savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
 
+
+        if (view != null) {
+            // Change the background color based on the theme present
+            int backgroundColor = sharedPreferences.getBoolean(KEY_PREF_NIGHT_MODE, false) ? R.color.preferenceScreenBackgroundColorDark : R.color.preferenceScreenBackgroundColorLight;
+
+            view.setBackgroundColor(getResources().getColor(backgroundColor, null));
+        }
+
+
         return view;
     }
+
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.app_preferences);
+        requireActivity().setTheme(ThemeChanger.getThemeFromPreferences(requireContext()));
         mScoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
         mScoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
@@ -59,6 +75,33 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
                 }
             }
         });
+
+        ListPreference listPreference = findPreference("theme");
+        if (listPreference != null) {
+            listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int themeColour = ThemeChanger.getThemeFromPreferences(requireContext());
+                    requireContext().setTheme(themeColour);
+
+                    Map<String, Integer> iconColor = new HashMap<>();
+                    iconColor.put("Blue", Color.BLUE);
+                    iconColor.put("Pink", Color.parseColor("#FF39E0"));
+                    iconColor.put("Red", Color.RED);
+                    iconColor.put("Green", Color.GREEN);
+                    iconColor.put("Purple", Color.parseColor("#673AB7"));
+                    iconColor.put("Orange", Color.parseColor("#FF9800"));
+
+
+                    preference.getIcon().setTint(iconColor.get(newValue.toString()));
+                    /*
+                    listPreference.getIcon().setTint(color);*/
+
+                    return true;
+                }
+
+            });
+        }
 
 
         Preference deleteAllPlayersButton = findPreference("deleteAll");

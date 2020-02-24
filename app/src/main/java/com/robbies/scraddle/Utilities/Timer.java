@@ -1,7 +1,5 @@
 package com.robbies.scraddle.Utilities;
 
-import android.util.Log;
-
 public class Timer {
 
     long timeRemainingInSeconds;

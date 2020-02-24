@@ -58,8 +58,8 @@
 
     <!-- Pink Theme -->
     <color name="pinkColorPrimary">#F2FF3DCC</color>
-    <color name="pinkColorPrimaryDark">#F2F710BF</color>
-    <color name="pinkColorAccent">#00BCD4</color>
+    <color name="pinkColorPrimaryDark">#E868A1</color>
+    <color name="pinkColorAccent">#FF9E73</color>
     <color name="pinkPrimaryText">#FFFFFF</color>
     <color name="pinkButtonNormal">@color/pinkColorPrimary</color>
     <color name="pinkButtonHighlight">#F3719A</color>

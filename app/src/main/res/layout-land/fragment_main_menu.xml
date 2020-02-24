@@ -8,6 +8,7 @@
     tools:context=".MainMenuFragment">
 
     <ImageView
+        android:id="@+id/scraddleLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -25,10 +26,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-
         android:backgroundTint="#F44336"
+
         android:fontFamily="@font/sigmar_one"
         android:lineSpacingExtra="-35dp"
+        android:stateListAnimator="@xml/button_animation"
 
         android:text="CrossWord Solver"
 
@@ -54,12 +56,12 @@
                 android:id="@+id/buttonStartNewGame"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-
                 android:layout_weight="1"
                 android:backgroundTint="#FF9800"
                 android:fontFamily="@font/sigmar_one"
-
                 android:lineSpacingExtra="-35dp"
+
+                android:stateListAnimator="@xml/button_animation"
 
                 android:text="@string/select_players_start_scoring_button"
                 app:autoSizeMaxTextSize="30dp"
@@ -74,9 +76,9 @@
                 android:layout_weight="1"
                 android:backgroundTint="#FFEB3B"
                 android:fontFamily="@font/sigmar_one"
-
-
                 android:maxLines="1"
+
+                android:stateListAnimator="@xml/button_animation"
 
                 android:text="@string/leaderboardButtonLabelLandscape"
                 app:autoSizeMaxTextSize="50dp"
@@ -97,9 +99,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-
                 android:backgroundTint="#4CAF50"
                 android:fontFamily="@font/sigmar_one"
+                android:stateListAnimator="@xml/button_animation"
 
 
                 android:text="@string/continueButtonLabelLandscape"
@@ -113,10 +115,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-
                 android:backgroundTint="#FF5722"
                 android:fontFamily="@font/sigmar_one"
                 android:maxLines="1"
+                android:stateListAnimator="@xml/button_animation"
 
                 android:text="@string/settings_button_text"
                 app:autoSizeMaxTextSize="100dp"
@@ -136,6 +138,7 @@
         android:backgroundTint="#008AD4"
         android:fontFamily="@font/sigmar_one"
         android:lineSpacingExtra="-20dp"
+        android:stateListAnimator="@xml/button_animation"
         android:text="@string/anagram_solver_button_text"
         app:autoSizeMaxTextSize="50dp"
         app:autoSizeMinTextSize="12dp"

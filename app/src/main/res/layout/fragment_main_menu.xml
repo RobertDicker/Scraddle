@@ -1,141 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout3"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".MainMenuFragment">
 
     <Button
         android:id="@+id/buttonCrossword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:backgroundTint="#F44336"
         android:fontFamily="@font/sigmar_one"
-        android:lineSpacingExtra="-35dp"
-
+        android:lineSpacingExtra="-20dp"
         android:lines="2"
+
+        android:stateListAnimator="@xml/button_animation"
 
         android:text="@string/crossword_solver"
         app:autoSizeMaxTextSize="50dp"
         app:autoSizeMinTextSize="12dp"
         app:autoSizeStepGranularity="2dp"
-        app:autoSizeTextType="uniform" />
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContinue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/buttonStartNewGame"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/buttonStartNewGame"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1"
-            android:backgroundTint="#FF9800"
-            android:fontFamily="@font/sigmar_one"
+        android:backgroundTint="#FF9800"
+        android:fontFamily="@font/sigmar_one"
 
 
-            android:lineSpacingExtra="-10dp"
-            android:lines="2"
-            android:maxLines="8"
-            android:text="Start\n Scoring"
-            app:autoSizeMaxTextSize="50dp"
-            app:autoSizeMinTextSize="10dp"
-            app:autoSizeStepGranularity="2dp"
-            app:autoSizeTextType="uniform" />
+        android:lineSpacingExtra="-10dp"
+        android:lines="2"
+        android:maxLines="8"
+        android:stateListAnimator="@xml/button_animation"
+        android:text="Start\n Scoring"
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="10dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAnagramSolver"
+        app:layout_constraintEnd_toStartOf="@id/buttonSettings"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCrossword" />
 
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+    <Button
+        android:id="@+id/buttonContinue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
+        android:backgroundTint="#4CAF50"
+        android:fontFamily="@font/sigmar_one"
 
-            <Button
-                android:id="@+id/buttonContinue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+        android:lines="1"
+        android:padding="8dp"
+        android:stateListAnimator="@xml/button_animation"
+        android:text="@string/continue_button_text"
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="12dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/scraddleLogo"
+        app:layout_constraintEnd_toStartOf="@+id/buttonLeaderBoard"
+        app:layout_constraintStart_toEndOf="@+id/buttonStartNewGame"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCrossword" />
 
-                android:backgroundTint="#4CAF50"
-                android:fontFamily="@font/sigmar_one"
+    <ImageView
+        android:id="@+id/scraddleLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_scraddle_vertical_logo"
+        android:contentDescription="@string/scraddle_logo"
+        android:scaleType="fitXY"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:stateListAnimator="@xml/button_animation"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSettings"
+        app:layout_constraintEnd_toStartOf="@+id/buttonLeaderBoard"
+        app:layout_constraintStart_toEndOf="@+id/buttonStartNewGame"
+        app:layout_constraintTop_toBottomOf="@+id/buttonContinue" />
 
-                android:lines="1"
-                android:padding="8dp"
-                android:text="@string/continue_button_text"
-                app:autoSizeMaxTextSize="50dp"
-                app:autoSizeMinTextSize="12dp"
-                app:autoSizeStepGranularity="2dp"
-                app:autoSizeTextType="uniform" />
+    <Button
+        android:id="@+id/buttonSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FF5722"
+        android:fontFamily="@font/sigmar_one"
+        android:maxLines="1"
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_weight="5"
-                android:background="@drawable/ic_scraddle_vertical_logo"
-                android:contentDescription="@string/scraddle_logo"
-                android:scaleX=".5"
-                android:scaleY="1" />
+        android:padding="8dp"
+        android:stateListAnimator="@xml/button_animation"
+        android:text="@string/settings_button_text"
+        app:autoSizeMaxTextSize="100dp"
+        app:autoSizeMinTextSize="12dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAnagramSolver"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLeaderBoard"
+        app:layout_constraintStart_toStartOf="@+id/buttonStartNewGame"
+        app:layout_constraintTop_toBottomOf="@+id/scraddleLogo" />
 
-            <Button
-                android:id="@+id/buttonSettings"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
 
-                android:backgroundTint="#FF5722"
-                android:fontFamily="@font/sigmar_one"
-                android:maxLines="1"
+    <Button
+        android:id="@+id/buttonLeaderBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:backgroundTint="#FFEB3B"
+        android:fontFamily="@font/sigmar_one"
 
-                android:padding="8dp"
-                android:text="@string/settings_button_text"
-                app:autoSizeMaxTextSize="100dp"
-                app:autoSizeMinTextSize="12dp"
-                app:autoSizeStepGranularity="2dp"
-                app:autoSizeTextType="uniform" />
+        android:lineSpacingExtra="-10dp"
 
-        </LinearLayout>
+        android:stateListAnimator="@xml/button_animation"
+        android:text="@string/leader_board"
+        app:autoSizeMaxTextSize="50dp"
+        app:autoSizeMinTextSize="12dp"
+        app:autoSizeStepGranularity="2dp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAnagramSolver"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttonSettings"
+        app:layout_constraintTop_toBottomOf="@+id/buttonCrossword" />
 
-        <Button
-            android:id="@+id/buttonLeaderBoard"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="#FFEB3B"
-            android:fontFamily="@font/sigmar_one"
-
-            android:lineSpacingExtra="-10dp"
-
-            android:text="@string/leader_board"
-            app:autoSizeMaxTextSize="50dp"
-            app:autoSizeMinTextSize="12dp"
-            app:autoSizeStepGranularity="2dp"
-            app:autoSizeTextType="uniform" />
-
-    </LinearLayout>
 
     <Button
         android:id="@+id/buttonAnagramSolver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:backgroundTint="#008AD4"
         android:fontFamily="@font/sigmar_one"
         android:lineSpacingExtra="-20dp"
+        android:stateListAnimator="@xml/button_animation"
         android:text="@string/anagram_solver_button_text"
         app:autoSizeMaxTextSize="50dp"
         app:autoSizeMinTextSize="12dp"
         app:autoSizeStepGranularity="2dp"
-        app:autoSizeTextType="uniform" />
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSettings" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
