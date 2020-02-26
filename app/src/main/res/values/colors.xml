@@ -78,7 +78,7 @@
     <!-- orange Theme -->
     <color name="orangeColorPrimary">#FF9800</color>
     <color name="orangeColorPrimaryDark">#FF5722</color>
-    <color name="orangeColorAccent">#FFEB3B</color>
+    <color name="orangeColorAccent">#FFC107</color>
     <color name="orangePrimaryText">#FFFFFF</color>
     <color name="orangeButtonNormal">@color/orangeColorPrimary</color>
     <color name="orangeButtonHighlight">#CDDC39</color>

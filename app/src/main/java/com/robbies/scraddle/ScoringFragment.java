@@ -125,6 +125,14 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
 
         View view = inflater.inflate(R.layout.scoring_fragment_navigation_drawer_layout, container, false);
 
+        tvCurrentPlayerTurn = view.findViewById(R.id.textViewCurrentPlayerTurn);
+        addToPlayerButton = view.findViewById(R.id.buttonAddToPlayer);
+        timer = view.findViewById(R.id.textViewTimer);
+        if(countDownTime == 0){
+            timer.setVisibility(View.GONE);
+
+        }
+
         scoringViewModel.getPlayersDetails(matchId).observe(getViewLifecycleOwner(), new Observer<List<GameDetail>>() {
             @Override
             public void onChanged(List<GameDetail> gameDetails) {
@@ -136,7 +144,9 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
                 if (backupPlayerDetails == null) {
 
                     backupPlayerDetails = new ArrayList<>();
-
+                    if(countDownTime == 0){
+                        tvCurrentPlayerTurn.setText(String.format("%s's Turn", playerDetails.get(0).getName()));
+                    }
                     //Create backups NOT REFERENCES
                     for (GameDetail gameDetail : gameDetails) {
                         backupPlayerDetails.add(gameDetail);
@@ -145,10 +155,6 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
             }
         });
 
-        //Display
-        tvCurrentPlayerTurn = view.findViewById(R.id.textViewCurrentPlayerTurn);
-        addToPlayerButton = view.findViewById(R.id.buttonAddToPlayer);
-        timer = view.findViewById(R.id.textViewTimer);
 
         if (savedInstanceState != null) {
             tvCurrentPlayerTurn.setBackgroundColor(Color.parseColor("#FF9800"));
@@ -227,11 +233,13 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
             }
 
             public void onFinish() {
+                if(countDownTime != 0){
                 timer.setText(R.string.timer_string_no_time_remaining);
                 timeRemaining = 0;
                 timer.setBackgroundColor(Color.RED);
                 tvCurrentPlayerTurn.setText(R.string.times_up_message);
                 tvCurrentPlayerTurn.setBackgroundColor(Color.RED);
+                }
 
             }
         }.start();

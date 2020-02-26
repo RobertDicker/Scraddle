@@ -1,13 +1,16 @@
 package com.robbies.scraddle;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
@@ -60,16 +63,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 .registerOnSharedPreferenceChangeListener(this);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        for (int button : registeredMenuButtons) {
 
-            getView().findViewById(button).setEnabled(true);
-
-        }
-
-    }
 
     @Override
     public void onStop() {
@@ -98,6 +92,8 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.buttonLeaderBoard:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new LeaderboardFragment()).addToBackStack(null).commit();
+
+                view.setEnabled(true);
                 break;
             case R.id.buttonContinue:
                 intent = new Intent(getContext(), ScoringActivity.class);
@@ -107,6 +103,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
             case R.id.buttonSettings:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new Settings()).addToBackStack(null).commit();
                 sP.registerOnSharedPreferenceChangeListener(this);
+                view.setEnabled(true);
                 break;
             case R.id.buttonCrossword:
                 intent = new Intent(getContext(), WordSolveActivity.class);
@@ -135,6 +132,7 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                     float buttonX = buttonView.getX();
                     float buttonTranslationX = buttonView.getTranslationX();
                     buttonView.animate().x(buttonX - buttonTranslationX).setDuration(3000).start();
+                    buttonView.setEnabled(true);
                 }
             }
         };

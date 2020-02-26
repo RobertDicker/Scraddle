@@ -181,13 +181,11 @@ public class SelectPlayerFragment extends Fragment implements SelectPlayerAdapte
             }
 
             mSharedPreferences.edit().putLong("matchId", matchId).apply();
-
+            mListener.switchFragment(ScoringFragment.newInstance(matchId));
         } else {
             Snackbar.make(requireView(), "Try Selecting Players, it's going to be lonely otherwise", Snackbar.LENGTH_SHORT)
                     .show();
         }
-
-        mListener.switchFragment(ScoringFragment.newInstance(matchId));
     }
 
     @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:background="?android:attr/colorPrimaryDark"
+    android:background="?android:attr/colorAccent"
     android:orientation="vertical">
 
 
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
 
-            android:background="?android:attr/colorPrimary"
+            android:background="?android:attr/colorPrimaryDark"
             android:fontFamily="sans-serif-condensed-medium"
             android:lines="1"
             android:maxLines="1"
@@ -64,6 +64,7 @@
         android:layout_height="wrap_content"
         android:background="?android:attr/colorPrimary"
         android:padding="16dp"
+        android:textColor="@android:color/white"
         android:visibility="gone"
         tools:text="4 + 4 +56 +78 +89 +65"
         tools:visibility="visible" />
