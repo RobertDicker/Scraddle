@@ -7,8 +7,8 @@ android {
         applicationId "com.robbies.scraddle"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.2 alpha"
+        versionCode 9
+        versionName "1.3 alpha"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
