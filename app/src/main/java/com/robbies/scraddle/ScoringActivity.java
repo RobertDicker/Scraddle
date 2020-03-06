@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.navigation.NavigationView;
 import com.robbies.scraddle.Data.ScoringViewModel;
 import com.robbies.scraddle.Utilities.FullScreenMode;
-import com.robbies.scraddle.Utilities.ThemeChanger;
+import com.robbies.scraddle.Utilities.CustomTheme;
 
 public class ScoringActivity extends AppCompatActivity implements FragmentSwitcher, NavigationView.OnNavigationItemSelectedListener {
 
@@ -28,7 +28,7 @@ public class ScoringActivity extends AppCompatActivity implements FragmentSwitch
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
 
-        setTheme(ThemeChanger.getThemeFromPreferences(getApplicationContext()));
+        setTheme(CustomTheme.getThemeFromPreferences(getApplicationContext()));
 
         long matchId = getIntent().getLongExtra("lastMatchId", -1);
 

@@ -28,8 +28,7 @@ public class WordEnterWordFragment extends Fragment {
     private int mode;
     private KeyboardView.OnKeyboardActionListener mOnKeyboardActionListener = new KeyboardView.OnKeyboardActionListener() {
         @Override
-        public void onKey(int primaryCode, int[] keyCodes) {
-        }
+        public void onKey(int primaryCode, int[] keyCodes) {}
 
         @Override
         public void onPress(int arg0) {
@@ -38,31 +37,22 @@ public class WordEnterWordFragment extends Fragment {
         }
 
         @Override
-        public void onRelease(int primaryCode) {
-        }
+        public void onRelease(int primaryCode) {}
 
         @Override
-        public void onText(CharSequence text) {
-
-        }
+        public void onText(CharSequence text) {}
 
         @Override
-        public void swipeDown() {
-
-        }
+        public void swipeDown() {}
 
         @Override
-        public void swipeLeft() {
-        }
+        public void swipeLeft() {}
 
         @Override
-        public void swipeRight() {
-        }
+        public void swipeRight() {}
 
         @Override
-        public void swipeUp() {
-
-        }
+        public void swipeUp() {}
     };
 
     static WordEnterWordFragment newInstance(int mode) {
@@ -93,7 +83,6 @@ public class WordEnterWordFragment extends Fragment {
 
         yourWordBuilder = new StringBuilder();
         yourLettersTV = root.findViewById(R.id.editTextYourWord);
-
 
         yourLettersTV.addTextChangedListener(new TextWatcher() {
             @Override

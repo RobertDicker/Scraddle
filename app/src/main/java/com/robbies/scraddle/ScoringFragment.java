@@ -292,8 +292,13 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
         }
     }
 
-
-    private void addToPlayer(int scoreToAdd) {
+    /**
+     * Adds the score to player at position 0
+     * Creates a backup of the player
+     * Updates score records
+     * @param scoreToAdd
+     */
+    private void updatePlayerScore(int scoreToAdd) {
 
         currentPlayer = playerDetails.get(0);
         //Players state before they take a move
@@ -442,7 +447,6 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
         startActivity(intent);
     }
 
-
     private List<Integer> getIndexOfWinners() {
         int leaderHighScore = 0;
         List<Integer> winners = new ArrayList<>();
@@ -484,7 +488,7 @@ public class ScoringFragment extends Fragment implements ScoringPlayerListAdapte
                     incrementScore.append("0");
                 }
 
-                addToPlayer(Integer.parseInt(incrementScore.toString()));
+                updatePlayerScore(Integer.parseInt(incrementScore.toString()));
                 // Next Player clear button text and shuffle list
                 incrementScore.setLength(0);
                 changePlayer(-1);

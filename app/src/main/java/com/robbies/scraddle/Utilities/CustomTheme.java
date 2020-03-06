@@ -6,7 +6,7 @@ import androidx.preference.PreferenceManager;
 
 import com.robbies.scraddle.R;
 
-public class ThemeChanger {
+public class CustomTheme {
 
 
     public static int getThemeFromPreferences(Context context) {

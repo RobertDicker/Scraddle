@@ -81,31 +81,33 @@ public final class MainMenuFragment extends Fragment implements View.OnClickList
                 intent = new Intent(getContext(), WordSolveActivity.class);
                 intent.putExtra("solveType", 0);
                 animate(intent);
-                //
                 break;
+
             case R.id.buttonStartNewGame:
                 animate(new Intent(getContext(), ScoringActivity.class));
                 break;
+
             case R.id.buttonLeaderBoard:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new LeaderboardFragment()).addToBackStack(null).commit();
-
                 view.setEnabled(true);
                 break;
+
             case R.id.buttonContinue:
                 intent = new Intent(getContext(), ScoringActivity.class);
                 intent.putExtra("lastMatchId", lastMatch);
                 animate(intent);
                 break;
+
             case R.id.buttonSettings:
                 requireActivity().getSupportFragmentManager().beginTransaction().add(R.id.content, new Settings()).addToBackStack(null).commit();
                 sP.registerOnSharedPreferenceChangeListener(this);
                 view.setEnabled(true);
                 break;
+
             case R.id.buttonCrossword:
                 intent = new Intent(getContext(), WordSolveActivity.class);
                 intent.putExtra("solveType", 1);
                 animate(intent);
-
                 break;
         }
     }

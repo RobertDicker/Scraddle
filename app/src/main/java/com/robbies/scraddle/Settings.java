@@ -24,7 +24,7 @@ import androidx.preference.PreferenceManager;
 
 import com.robbies.scraddle.Data.Player;
 import com.robbies.scraddle.Data.ScoringViewModel;
-import com.robbies.scraddle.Utilities.ThemeChanger;
+import com.robbies.scraddle.Utilities.CustomTheme;
 import com.robbies.scraddle.Utilities.TidyStringFormatterHelper;
 
 import java.util.HashMap;
@@ -60,7 +60,7 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.app_preferences);
-        requireActivity().setTheme(ThemeChanger.getThemeFromPreferences(requireContext()));
+        requireActivity().setTheme(CustomTheme.getThemeFromPreferences(requireContext()));
         mScoringViewModel = new ViewModelProvider(this).get(ScoringViewModel.class);
 
         mScoringViewModel.getAllPlayers().observe(this, new Observer<List<Player>>() {
@@ -81,7 +81,7 @@ public class Settings extends PreferenceFragmentCompat implements SelectPlayerDi
             listPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int themeColour = ThemeChanger.getThemeFromPreferences(requireContext());
+                    int themeColour = CustomTheme.getThemeFromPreferences(requireContext());
                     requireContext().setTheme(themeColour);
 
                     Map<String, Integer> iconColor = new HashMap<>();

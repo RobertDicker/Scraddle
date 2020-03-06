@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 
 import com.robbies.scraddle.Utilities.FullScreenMode;
-import com.robbies.scraddle.Utilities.ThemeChanger;
+import com.robbies.scraddle.Utilities.CustomTheme;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,10 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_scoring);
 
-
         SharedPreferences sP = PreferenceManager.getDefaultSharedPreferences(this);
         setDayNightTheme(sP);
-        setTheme(ThemeChanger.getThemeFromPreferences(getApplicationContext()));
+        setTheme(CustomTheme.getThemeFromPreferences(getApplicationContext()));
         setContentView(R.layout.activity_main_menu);
 
         MainMenuFragment mainMenuFragment;

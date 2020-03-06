@@ -36,10 +36,6 @@ public class GameRepository {
         return this.allPlayers;
     }
 
-  /*  LiveData<Match> getLastMatch() {
-        return matchDao.getLastMatch();
-    }*/
-
     LiveData<List<GameDetail>> getGameDetails(long matchId) {
         return gameDao.getGameDetails(matchId);
     }
@@ -110,7 +106,6 @@ public class GameRepository {
         }
     }
 
-
     private static class insertPlayerRecordAsyncTask extends AsyncTask<PlayerRecord, Void, Void> {
 
         private PlayerRecordDao mAsyncTaskDao;
@@ -126,7 +121,6 @@ public class GameRepository {
         }
     }
 
-
     private static class insertMatchAsyncTask extends AsyncTask<Match, Void, Long> {
 
         private MatchDao mAsyncTaskDao;
@@ -140,7 +134,6 @@ public class GameRepository {
             return mAsyncTaskDao.insert(matches[0]);
         }
     }
-
 
     private static class insertScoreAsyncTask extends AsyncTask<Score, Void, Void> {
 
@@ -157,7 +150,6 @@ public class GameRepository {
         }
     }
 
-
     private static class deleteMatchAsyncTask extends AsyncTask<Long, Void, Void> {
 
         private MatchDao mAsyncTaskDao;
@@ -172,7 +164,6 @@ public class GameRepository {
             return null;
         }
     }
-
 
     private static class deletePlayerAsyncTask extends AsyncTask<Long, Void, Void> {
 
